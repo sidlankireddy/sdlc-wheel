@@ -3,122 +3,168 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SDLC Interactive Wheel</title>
+<title>SDLC Phases Interactive Wheel</title>
 <style>
   body {
+    margin: 0;
+    padding: 0;
+    font-family: "Segoe UI", sans-serif;
     background: #f4f6f9;
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
     overflow: hidden;
-    margin: 0;
   }
-  .sdlc-wheel-container {
-    max-width: 600px;
-    width: 90%;
-    position: relative;
-  }
-  svg { width: 100%; height: auto; }
 
-  .sdlc-segment {
-    cursor: pointer;
-    transition: transform 0.25s ease, filter 0.25s ease;
+  .sdlc-container {
+    position: relative;
+    max-width: 750px;
+    width: 95vw;
+    aspect-ratio: 1/1;
   }
-  .sdlc-segment:hover {
-    transform: scale(1.05);
-    filter: brightness(1.2);
+
+  .sdlc-wheel {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    display: block;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
   }
-  .sdlc-label {
-    font-family: 'Segoe UI', sans-serif;
-    fill: white;
-    font-size: 12px;
+
+  /* Common Phase Hotspot Style */
+  .phase {
+    position: absolute;
+    width: 28%;
+    height: 28%;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
     font-weight: 600;
-    text-anchor: middle;
-    pointer-events: none;
+    text-align: center;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.4);
+    transition: transform 0.2s ease, box-shadow 0.3s ease;
   }
-  .sdlc-center { fill: #222; }
-  .sdlc-center-text {
-    font-family: 'Segoe UI Semibold', sans-serif;
-    fill: #fff;
-    font-size: 20px;
-    text-anchor: middle;
-    pointer-events: none;
+
+  .phase:hover {
+    transform: translate(-50%, -50%) scale(1.08);
+    z-index: 10;
   }
-  .sdlc-tooltip {
+
+  /* Tooltip */
+  .tooltip {
     position: absolute;
     background: #fff;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-    padding: 8px 12px;
-    font-size: 13px;
     color: #333;
+    border-radius: 8px;
+    padding: 10px 14px;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.15);
     opacity: 0;
-    transition: opacity 0.2s ease;
     pointer-events: none;
-    max-width: 220px;
+    font-size: 13px;
+    width: 220px;
+    transform: translate(-50%, -120%);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    z-index: 5;
+  }
+
+  .phase:hover .tooltip {
+    opacity: 1;
+    transform: translate(-50%, -140%);
+  }
+
+  /* Individual Phases - aligned to background image */
+  .phase1 { top: 16%; left: 50%; }
+  .phase2 { top: 33%; left: 82%; }
+  .phase3 { top: 67%; left: 82%; }
+  .phase4 { top: 84%; left: 50%; }
+  .phase5 { top: 67%; left: 18%; }
+  .phase6 { top: 33%; left: 18%; }
+
+  .phase1:hover { box-shadow: 0 0 30px 12px rgba(0,138,255,0.4); }
+  .phase2:hover { box-shadow: 0 0 30px 12px rgba(0,190,255,0.4); }
+  .phase3:hover { box-shadow: 0 0 30px 12px rgba(0,190,100,0.4); }
+  .phase4:hover { box-shadow: 0 0 30px 12px rgba(255,180,0,0.5); }
+  .phase5:hover { box-shadow: 0 0 30px 12px rgba(255,100,0,0.5); }
+  .phase6:hover { box-shadow: 0 0 30px 12px rgba(255,0,60,0.5); }
+
+  /* Center circle */
+  .center-label {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(0,0,0,0.85);
+    color: #fff;
+    border-radius: 50%;
+    width: 200px;
+    height: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-weight: 600;
+    font-size: 1.5rem;
+    line-height: 1.3;
+    box-shadow: inset 0 0 20px rgba(255,255,255,0.05);
+  }
+
+  @media(max-width: 768px) {
+    .center-label {
+      width: 150px;
+      height: 150px;
+      font-size: 1.2rem;
+    }
+    .tooltip { width: 180px; font-size: 12px; }
   }
 </style>
 </head>
 <body>
-  <div class="sdlc-wheel-container">
-    <svg viewBox="0 0 400 400">
-      <g transform="translate(200,200)">
-        <path class="sdlc-segment" fill="#e74c3c"
-          d="M0,0 L0,-150 A150,150 0 0,1 129.9,-75 Z"
-          data-title="Planning & Analysis"
-          data-desc="Gather requirements, analyze feasibility, and define objectives."
-          data-url="/sites/ICT-India-AI-SDLC-Hub/Planning%20%20Analysis/Forms/AllItems.aspx"></path>
-        <path class="sdlc-segment" fill="#3498db"
-          d="M0,0 L129.9,-75 A150,150 0 0,1 129.9,75 Z"
-          data-title="Design"
-          data-desc="Create UI, architecture, and technical blueprints for development."
-          data-url="/sites/ICT-India-AI-SDLC-Hub/Lists/Design%20Accelerators/AllItems.aspx"></path>
-        <path class="sdlc-segment" fill="#16a085"
-          d="M0,0 L129.9,75 A150,150 0 0,1 0,150 Z"
-          data-title="Implementation"
-          data-desc="Develop features, integrate modules, and ensure quality coding standards."
-          data-url="/sites/ICT-India-AI-SDLC-Hub/Implementation%20Accelerators/Forms/AllItems.aspx"></path>
-        <path class="sdlc-segment" fill="#f39c12"
-          d="M0,0 L0,150 A150,150 0 0,1 -129.9,75 Z"
-          data-title="Testing & Integration"
-          data-desc="Validate software, fix defects, and ensure functional reliability."
-          data-url="/sites/ICT-India-AI-SDLC-Hub/Testing%20%20Integration/Forms/AllItems.aspx"></path>
-        <path class="sdlc-segment" fill="#d35400"
-          d="M0,0 L-129.9,75 A150,150 0 0,1 -129.9,-75 Z"
-          data-title="Deployment"
-          data-desc="Deploy builds, verify user acceptance, and ensure a smooth launch."
-          data-url="/sites/ICT-India-AI-SDLC-Hub/Deployment%20%20Operations%20Accelerators/Forms/AllItems.aspx"></path>
-        <path class="sdlc-segment" fill="#c0392b"
-          d="M0,0 L-129.9,-75 A150,150 0 0,1 0,-150 Z"
-          data-title="Maintenance"
-          data-desc="Monitor system health, patch issues, and deliver continuous improvements."
-          data-url="/sites/ICT-India-AI-SDLC-Hub/Maintenance/Forms/AllItems.aspx"></path>
-      </g>
-      <circle cx="200" cy="200" r="60" class="sdlc-center"></circle>
-      <text x="200" y="205" class="sdlc-center-text">SDLC</text>
-    </svg>
-    <div class="sdlc-tooltip" id="tooltip"></div>
-  </div>
+  <div class="sdlc-container">
+    <img src="https://sidlankireddy.github.io/sdlc-wheel/sdlc-wheel.png"
+         alt="SDLC Wheel" class="sdlc-wheel">
 
-<script>
-  const tooltip = document.getElementById('tooltip');
-  const segments = document.querySelectorAll('.sdlc-segment');
-  segments.forEach(seg => {
-    seg.addEventListener('mousemove', e => {
-      tooltip.innerHTML = '<b>' + seg.dataset.title + '</b><br>' + seg.dataset.desc;
-      tooltip.style.left = (e.pageX + 10) + 'px';
-      tooltip.style.top = (e.pageY - 40) + 'px';
-      tooltip.style.opacity = 1;
-    });
-    seg.addEventListener('mouseleave', () => { tooltip.style.opacity = 0; });
-    seg.addEventListener('click', () => {
-      const link = seg.dataset.url.startsWith('http')
-        ? seg.dataset.url
-        : window.location.origin + seg.dataset.url;
-      window.open(link, '_blank');
-    });
-  });
-</script>
+    <div class="center-label">SDLC<br>Phases</div>
+
+    <!-- 1️⃣ Planning & Analysis -->
+    <div class="phase phase1" onclick="window.open('https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Planning%20%20Analysis/Forms/AllItems.aspx','_blank')">
+      1. Planning & Analysis
+      <div class="tooltip">Gather requirements, analyze feasibility, and define objectives.</div>
+    </div>
+
+    <!-- 2️⃣ Design -->
+    <div class="phase phase2" onclick="window.open('https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Lists/Design%20Accelerators/AllItems.aspx','_blank')">
+      2. Design
+      <div class="tooltip">Create UI, architecture, and technical blueprints for development.</div>
+    </div>
+
+    <!-- 3️⃣ Implementation -->
+    <div class="phase phase3" onclick="window.open('https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Implementation%20Accelerators/Forms/AllItems.aspx','_blank')">
+      3. Implementation
+      <div class="tooltip">Develop features, integrate modules, and ensure quality coding standards.</div>
+    </div>
+
+    <!-- 4️⃣ Testing & Integration -->
+    <div class="phase phase4" onclick="window.open('https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Testing%20%20Integration/Forms/AllItems.aspx','_blank')">
+      4. Testing & Integration
+      <div class="tooltip">Validate software, fix defects, and ensure functional reliability.</div>
+    </div>
+
+    <!-- 5️⃣ Deployment -->
+    <div class="phase phase5" onclick="window.open('https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Deployment%20%20Operations%20Accelerators/Forms/AllItems.aspx','_blank')">
+      5. Deployment
+      <div class="tooltip">Deploy builds, verify user acceptance, and ensure a smooth launch.</div>
+    </div>
+
+    <!-- 6️⃣ Maintenance -->
+    <div class="phase phase6" onclick="window.open('https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Maintenance/Forms/AllItems.aspx','_blank')">
+      6. Maintenance
+      <div class="tooltip">Monitor system health, patch issues, and deliver continuous improvements.</div>
+    </div>
+  </div>
 </body>
 </html>
