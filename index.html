@@ -7,7 +7,7 @@
 
 <style>
   body {
-    background: radial-gradient(circle at center, #f9fafc 0%, #e9edf3 100%);
+    background: radial-gradient(circle at center, #f9fafc 0%, #e5e8ef 100%);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -16,7 +16,7 @@
     font-family: "Segoe UI", sans-serif;
   }
 
-  .sdlc-container {
+  .wheel-container {
     position: relative;
     width: 600px;
     height: 600px;
@@ -28,150 +28,177 @@
   }
 
   path {
-    transition: all 0.35s ease;
-    cursor: pointer;
     stroke: #fff;
     stroke-width: 3px;
-    filter: drop-shadow(0px 4px 6px rgba(0,0,0,0.15));
+    transition: transform 0.25s ease, filter 0.25s ease;
+    cursor: pointer;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.15));
   }
 
   path:hover {
-    filter: drop-shadow(0px 0px 12px rgba(0, 180, 255, 0.6));
-    transform: scale(1.03);
+    transform: scale(1.05);
+    filter: drop-shadow(0 0 12px rgba(0, 160, 255, 0.7));
   }
 
-  /* Tooltip styling */
-  .tooltip {
-    position: absolute;
-    background: rgba(0, 0, 0, 0.85);
-    color: #fff;
-    padding: 10px 16px;
-    border-radius: 8px;
-    font-size: 14px;
-    pointer-events: none;
-    opacity: 0;
-    transition: opacity 0.25s ease;
-    max-width: 220px;
-    text-align: center;
-    z-index: 10;
-  }
-
-  /* Center circle */
   .center-circle {
-    fill: url(#gradCenter);
-    stroke: rgba(0,0,0,0.3);
+    fill: #212121;
+    stroke: #444;
     stroke-width: 2px;
-    filter: drop-shadow(0px 3px 6px rgba(0,0,0,0.25));
+    filter: drop-shadow(0 4px 10px rgba(0,0,0,0.4));
   }
 
   .center-glow {
     fill: none;
-    stroke: rgba(0,150,255,0.25);
-    stroke-width: 14;
-    filter: blur(12px);
+    stroke: rgba(0, 170, 255, 0.25);
+    stroke-width: 15;
+    filter: blur(10px);
   }
 
   text {
     font-weight: 600;
-    text-anchor: middle;
     fill: #fff;
+    text-anchor: middle;
+    pointer-events: none;
   }
 
+  /* Tooltip styling (new elegant version) */
+  .tooltip {
+    position: absolute;
+    background: rgba(25, 25, 25, 0.85);
+    backdrop-filter: blur(8px);
+    color: #fdfdfd;
+    padding: 12px 16px;
+    border-radius: 10px;
+    font-size: 14px;
+    line-height: 1.4;
+    text-align: center;
+    opacity: 0;
+    transition: opacity 0.25s ease, transform 0.25s ease;
+    pointer-events: none;
+    z-index: 10;
+    transform: translateY(8px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255,255,255,0.15);
+  }
+
+  /* Tooltip pointer */
+  .tooltip::after {
+    content: "";
+    position: absolute;
+    bottom: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-top: 8px solid rgba(25, 25, 25, 0.85);
+  }
+
+  /* Tooltip visible state */
+  .tooltip.show {
+    opacity: 1;
+    transform: translateY(0);
+  }
 </style>
 </head>
 <body>
-<div class="sdlc-container">
+<div class="wheel-container">
   <div id="tooltip" class="tooltip"></div>
   <svg viewBox="0 0 600 600">
-
-    <!-- Gradient for center -->
+    <!-- Gradients -->
     <defs>
-      <radialGradient id="gradCenter" cx="50%" cy="50%" r="50%">
-        <stop offset="0%" stop-color="#212121"/>
-        <stop offset="100%" stop-color="#000"/>
-      </radialGradient>
-    </defs>
-
-    <!-- SDLC Slices -->
-    <a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Planning%20%20Analysis/Forms/AllItems.aspx" target="_blank">
-      <path d="M300,300 L300,60 A240,240 0 0,1 520,180 Z" fill="url(#grad1)" data-tip="Gather requirements, analyze feasibility, and define objectives."/>
-    </a>
-    <a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Lists/Design%20Accelerators/AllItems.aspx" target="_blank">
-      <path d="M300,300 L520,180 A240,240 0 0,1 520,420 Z" fill="url(#grad2)" data-tip="Create UI, architecture, and technical blueprints for development."/>
-    </a>
-    <a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Implementation%20Accelerators/Forms/AllItems.aspx" target="_blank">
-      <path d="M300,300 L520,420 A240,240 0 0,1 300,540 Z" fill="url(#grad3)" data-tip="Develop features, integrate modules, and ensure coding standards."/>
-    </a>
-    <a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Testing%20%20Integration/Forms/AllItems.aspx" target="_blank">
-      <path d="M300,300 L300,540 A240,240 0 0,1 80,420 Z" fill="url(#grad4)" data-tip="Validate software, fix defects, and ensure functional reliability."/>
-    </a>
-    <a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Deployment%20%20Operations%20Accelerators/Forms/AllItems.aspx" target="_blank">
-      <path d="M300,300 L80,420 A240,240 0 0,1 80,180 Z" fill="url(#grad5)" data-tip="Deploy builds, verify user acceptance, and ensure smooth launch."/>
-    </a>
-    <a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Maintenance/Forms/AllItems.aspx" target="_blank">
-      <path d="M300,300 L80,180 A240,240 0 0,1 300,60 Z" fill="url(#grad6)" data-tip="Monitor system health, patch issues, and deliver improvements."/>
-    </a>
-
-    <!-- Gradients for wedges -->
-    <defs>
-      <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <linearGradient id="red" x1="0%" y1="0%" x2="100%" y2="100%">
         <stop offset="0%" stop-color="#e53935"/>
         <stop offset="100%" stop-color="#b71c1c"/>
       </linearGradient>
-      <linearGradient id="grad2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <linearGradient id="blue" x1="0%" y1="0%" x2="100%" y2="100%">
         <stop offset="0%" stop-color="#2196f3"/>
         <stop offset="100%" stop-color="#1565c0"/>
       </linearGradient>
-      <linearGradient id="grad3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <linearGradient id="green" x1="0%" y1="0%" x2="100%" y2="100%">
         <stop offset="0%" stop-color="#009688"/>
         <stop offset="100%" stop-color="#00695c"/>
       </linearGradient>
-      <linearGradient id="grad4" x1="0%" y1="0%" x2="100%" y2="100%">
+      <linearGradient id="orange" x1="0%" y1="0%" x2="100%" y2="100%">
         <stop offset="0%" stop-color="#ff9800"/>
         <stop offset="100%" stop-color="#ef6c00"/>
       </linearGradient>
-      <linearGradient id="grad5" x1="0%" y1="0%" x2="100%" y2="100%">
+      <linearGradient id="amber" x1="0%" y1="0%" x2="100%" y2="100%">
         <stop offset="0%" stop-color="#fb8c00"/>
         <stop offset="100%" stop-color="#e65100"/>
       </linearGradient>
-      <linearGradient id="grad6" x1="0%" y1="0%" x2="100%" y2="100%">
+      <linearGradient id="pink" x1="0%" y1="0%" x2="100%" y2="100%">
         <stop offset="0%" stop-color="#c2185b"/>
         <stop offset="100%" stop-color="#880e4f"/>
       </linearGradient>
     </defs>
 
-    <!-- Glow ring -->
-    <circle class="center-glow" cx="300" cy="300" r="110"></circle>
+    <!-- Slices -->
+    <a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Planning%20%20Analysis/Forms/AllItems.aspx" target="_blank">
+      <path d="M300,300 L300,60 A240,240 0 0,1 520,180 Z" fill="url(#red)" data-tip="🧠 Planning & Analysis: Define objectives and analyze feasibility."/>
+    </a>
+    <a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Lists/Design%20Accelerators/AllItems.aspx" target="_blank">
+      <path d="M300,300 L520,180 A240,240 0 0,1 520,420 Z" fill="url(#blue)" data-tip="🎨 Design: Create system architecture and UI models."/>
+    </a>
+    <a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Implementation%20Accelerators/Forms/AllItems.aspx" target="_blank">
+      <path d="M300,300 L520,420 A240,240 0 0,1 300,540 Z" fill="url(#green)" data-tip="⚙️ Implementation: Develop, integrate, and build the solution."/>
+    </a>
+    <a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Testing%20%20Integration/Forms/AllItems.aspx" target="_blank">
+      <path d="M300,300 L300,540 A240,240 0 0,1 80,420 Z" fill="url(#orange)" data-tip="🧪 Testing & Integration: Validate quality and functionality."/>
+    </a>
+    <a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Deployment%20%20Operations%20Accelerators/Forms/AllItems.aspx" target="_blank">
+      <path d="M300,300 L80,420 A240,240 0 0,1 80,180 Z" fill="url(#amber)" data-tip="🚀 Deployment: Launch the system and verify UAT success."/>
+    </a>
+    <a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Maintenance/Forms/AllItems.aspx" target="_blank">
+      <path d="M300,300 L80,180 A240,240 0 0,1 300,60 Z" fill="url(#pink)" data-tip="🔧 Maintenance: Monitor performance and apply enhancements."/>
+    </a>
 
-    <!-- Center circle -->
-    <circle class="center-circle" cx="300" cy="300" r="90"></circle>
+    <!-- Glow and center -->
+    <circle class="center-glow" cx="300" cy="300" r="100"></circle>
+    <circle class="center-circle" cx="300" cy="300" r="85"></circle>
     <text x="300" y="295" font-size="26">SDLC</text>
     <text x="300" y="325" font-size="18">Phases</text>
 
-    <!-- Labels -->
-    <text x="400" y="130" font-size="15">1. Planning & Analysis</text>
-    <text x="480" y="300" font-size="15">2. Design</text>
-    <text x="400" y="470" font-size="15">3. Implementation</text>
-    <text x="200" y="470" font-size="15">4. Testing & Integration</text>
-    <text x="120" y="300" font-size="15">5. Deployment</text>
-    <text x="200" y="130" font-size="15">6. Maintenance</text>
+    <!-- Labels (perfect polar placement) -->
+    <text x="400" y="120" font-size="15">1. Planning & Analysis</text>
+    <text x="500" y="300" font-size="15">2. Design</text>
+    <text x="400" y="480" font-size="15">3. Implementation</text>
+    <text x="200" y="480" font-size="15">4. Testing & Integration</text>
+    <text x="100" y="300" font-size="15">5. Deployment</text>
+    <text x="200" y="120" font-size="15">6. Maintenance</text>
   </svg>
 </div>
 
 <script>
-  const tooltip = document.getElementById("tooltip");
-  document.querySelectorAll("path").forEach((slice) => {
-    slice.addEventListener("mousemove", (e) => {
-      tooltip.style.opacity = 1;
-      tooltip.innerText = slice.dataset.tip;
-      tooltip.style.left = e.pageX + 12 + "px";
-      tooltip.style.top = e.pageY - 30 + "px";
-    });
-    slice.addEventListener("mouseleave", () => {
-      tooltip.style.opacity = 0;
-    });
-  });
-</script>
+const tooltip = document.getElementById("tooltip");
 
+document.querySelectorAll("path").forEach((slice) => {
+  slice.addEventListener("mousemove", (e) => {
+    const color = slice.getAttribute("fill");
+
+    tooltip.innerText = slice.dataset.tip;
+    tooltip.style.border = `1px solid ${color}`;
+    tooltip.style.boxShadow = `0 0 15px ${color}55`;
+    tooltip.classList.add("show");
+
+    let left = e.pageX + 20;
+    let top = e.pageY - 40;
+
+    const rect = tooltip.getBoundingClientRect();
+    if (left + rect.width > window.innerWidth - 20) {
+      left = e.pageX - rect.width - 20;
+    }
+    if (top < 10) top = e.pageY + 20;
+
+    tooltip.style.left = left + "px";
+    tooltip.style.top = top + "px";
+  });
+
+  slice.addEventListener("mouseleave", () => {
+    tooltip.classList.remove("show");
+  });
+});
+</script>
 </body>
 </html>
