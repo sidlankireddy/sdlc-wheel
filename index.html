@@ -1,101 +1,177 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SDLC Interactive Wheel</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SDLC Interactive Wheel</title>
 
-  <style>
-    body {
-      background: #f5f7fa;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      margin: 0;
-      font-family: "Segoe UI", sans-serif;
-    }
+<style>
+  body {
+    background: radial-gradient(circle at center, #f9fafc 0%, #e9edf3 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    font-family: "Segoe UI", sans-serif;
+  }
 
-    .sdlc-container {
-      width: 600px;
-      height: 600px;
-      position: relative;
-    }
+  .sdlc-container {
+    position: relative;
+    width: 600px;
+    height: 600px;
+  }
 
-    .sdlc-wheel {
-      width: 100%;
-      height: 100%;
-      border-radius: 50%;
-      box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
-      transition: all 0.3s ease;
-    }
+  svg {
+    width: 100%;
+    height: 100%;
+  }
 
-    path {
-      transition: all 0.3s ease;
-      cursor: pointer;
-    }
+  path {
+    transition: all 0.35s ease;
+    cursor: pointer;
+    stroke: #fff;
+    stroke-width: 3px;
+    filter: drop-shadow(0px 4px 6px rgba(0,0,0,0.15));
+  }
 
-    path:hover {
-      filter: brightness(1.2);
-      stroke: white;
-      stroke-width: 3;
-    }
+  path:hover {
+    filter: drop-shadow(0px 0px 12px rgba(0, 180, 255, 0.6));
+    transform: scale(1.03);
+  }
 
-    text {
-      text-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
-    }
+  /* Tooltip styling */
+  .tooltip {
+    position: absolute;
+    background: rgba(0, 0, 0, 0.85);
+    color: #fff;
+    padding: 10px 16px;
+    border-radius: 8px;
+    font-size: 14px;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.25s ease;
+    max-width: 220px;
+    text-align: center;
+    z-index: 10;
+  }
 
-    circle {
-      cursor: default;
-    }
+  /* Center circle */
+  .center-circle {
+    fill: url(#gradCenter);
+    stroke: rgba(0,0,0,0.3);
+    stroke-width: 2px;
+    filter: drop-shadow(0px 3px 6px rgba(0,0,0,0.25));
+  }
 
-    a {
-      text-decoration: none;
-    }
-  </style>
+  .center-glow {
+    fill: none;
+    stroke: rgba(0,150,255,0.25);
+    stroke-width: 14;
+    filter: blur(12px);
+  }
+
+  text {
+    font-weight: 600;
+    text-anchor: middle;
+    fill: #fff;
+  }
+
+</style>
 </head>
 <body>
-  <div class="sdlc-container">
-    <svg viewBox="0 0 600 600" class="sdlc-wheel">
-      
-      <!-- 1. Planning & Analysis -->
-      <a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Planning%20%20Analysis/Forms/AllItems.aspx" target="_blank">
-        <path d="M300,300 L300,40 A260,260 0 0,1 540,200 Z" fill="#D32F2F"></path>
-      </a>
-      <!-- 2. Design -->
-      <a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Lists/Design%20Accelerators/AllItems.aspx" target="_blank">
-        <path d="M300,300 L540,200 A260,260 0 0,1 480,460 Z" fill="#1976D2"></path>
-      </a>
-      <!-- 3. Implementation -->
-      <a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Implementation%20Accelerators/Forms/AllItems.aspx" target="_blank">
-        <path d="M300,300 L480,460 A260,260 0 0,1 120,460 Z" fill="#009688"></path>
-      </a>
-      <!-- 4. Testing & Integration -->
-      <a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Testing%20%20Integration/Forms/AllItems.aspx" target="_blank">
-        <path d="M300,300 L120,460 A260,260 0 0,1 60,200 Z" fill="#F57C00"></path>
-      </a>
-      <!-- 5. Deployment -->
-      <a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Deployment%20%20Operations%20Accelerators/Forms/AllItems.aspx" target="_blank">
-        <path d="M300,300 L60,200 A260,260 0 0,1 300,40 Z" fill="#FFA000"></path>
-      </a>
-      <!-- 6. Maintenance -->
-      <a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Maintenance/Forms/AllItems.aspx" target="_blank">
-        <path d="M300,300 L300,40 A260,260 0 0,0 60,200 Z" fill="#C2185B"></path>
-      </a>
+<div class="sdlc-container">
+  <div id="tooltip" class="tooltip"></div>
+  <svg viewBox="0 0 600 600">
 
-      <!-- Center Circle -->
-      <circle cx="300" cy="300" r="90" fill="#212121"></circle>
-      <text x="300" y="295" text-anchor="middle" fill="white" font-size="24" font-weight="600">SDLC</text>
-      <text x="300" y="320" text-anchor="middle" fill="white" font-size="18">Phases</text>
+    <!-- Gradient for center -->
+    <defs>
+      <radialGradient id="gradCenter" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stop-color="#212121"/>
+        <stop offset="100%" stop-color="#000"/>
+      </radialGradient>
+    </defs>
 
-      <!-- Labels -->
-      <text x="430" y="80" text-anchor="middle" fill="white" font-weight="600" font-size="15">1. Planning & Analysis</text>
-      <text x="520" y="250" text-anchor="middle" fill="white" font-weight="600" font-size="15">2. Design</text>
-      <text x="420" y="480" text-anchor="middle" fill="white" font-weight="600" font-size="15">3. Implementation</text>
-      <text x="180" y="480" text-anchor="middle" fill="white" font-weight="600" font-size="15">4. Testing & Integration</text>
-      <text x="100" y="250" text-anchor="middle" fill="white" font-weight="600" font-size="15">5. Deployment</text>
-      <text x="180" y="80" text-anchor="middle" fill="white" font-weight="600" font-size="15">6. Maintenance</text>
-    </svg>
-  </div>
+    <!-- SDLC Slices -->
+    <a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Planning%20%20Analysis/Forms/AllItems.aspx" target="_blank">
+      <path d="M300,300 L300,60 A240,240 0 0,1 520,180 Z" fill="url(#grad1)" data-tip="Gather requirements, analyze feasibility, and define objectives."/>
+    </a>
+    <a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Lists/Design%20Accelerators/AllItems.aspx" target="_blank">
+      <path d="M300,300 L520,180 A240,240 0 0,1 520,420 Z" fill="url(#grad2)" data-tip="Create UI, architecture, and technical blueprints for development."/>
+    </a>
+    <a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Implementation%20Accelerators/Forms/AllItems.aspx" target="_blank">
+      <path d="M300,300 L520,420 A240,240 0 0,1 300,540 Z" fill="url(#grad3)" data-tip="Develop features, integrate modules, and ensure coding standards."/>
+    </a>
+    <a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Testing%20%20Integration/Forms/AllItems.aspx" target="_blank">
+      <path d="M300,300 L300,540 A240,240 0 0,1 80,420 Z" fill="url(#grad4)" data-tip="Validate software, fix defects, and ensure functional reliability."/>
+    </a>
+    <a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Deployment%20%20Operations%20Accelerators/Forms/AllItems.aspx" target="_blank">
+      <path d="M300,300 L80,420 A240,240 0 0,1 80,180 Z" fill="url(#grad5)" data-tip="Deploy builds, verify user acceptance, and ensure smooth launch."/>
+    </a>
+    <a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Maintenance/Forms/AllItems.aspx" target="_blank">
+      <path d="M300,300 L80,180 A240,240 0 0,1 300,60 Z" fill="url(#grad6)" data-tip="Monitor system health, patch issues, and deliver improvements."/>
+    </a>
+
+    <!-- Gradients for wedges -->
+    <defs>
+      <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#e53935"/>
+        <stop offset="100%" stop-color="#b71c1c"/>
+      </linearGradient>
+      <linearGradient id="grad2" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#2196f3"/>
+        <stop offset="100%" stop-color="#1565c0"/>
+      </linearGradient>
+      <linearGradient id="grad3" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#009688"/>
+        <stop offset="100%" stop-color="#00695c"/>
+      </linearGradient>
+      <linearGradient id="grad4" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#ff9800"/>
+        <stop offset="100%" stop-color="#ef6c00"/>
+      </linearGradient>
+      <linearGradient id="grad5" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#fb8c00"/>
+        <stop offset="100%" stop-color="#e65100"/>
+      </linearGradient>
+      <linearGradient id="grad6" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#c2185b"/>
+        <stop offset="100%" stop-color="#880e4f"/>
+      </linearGradient>
+    </defs>
+
+    <!-- Glow ring -->
+    <circle class="center-glow" cx="300" cy="300" r="110"></circle>
+
+    <!-- Center circle -->
+    <circle class="center-circle" cx="300" cy="300" r="90"></circle>
+    <text x="300" y="295" font-size="26">SDLC</text>
+    <text x="300" y="325" font-size="18">Phases</text>
+
+    <!-- Labels -->
+    <text x="400" y="130" font-size="15">1. Planning & Analysis</text>
+    <text x="480" y="300" font-size="15">2. Design</text>
+    <text x="400" y="470" font-size="15">3. Implementation</text>
+    <text x="200" y="470" font-size="15">4. Testing & Integration</text>
+    <text x="120" y="300" font-size="15">5. Deployment</text>
+    <text x="200" y="130" font-size="15">6. Maintenance</text>
+  </svg>
+</div>
+
+<script>
+  const tooltip = document.getElementById("tooltip");
+  document.querySelectorAll("path").forEach((slice) => {
+    slice.addEventListener("mousemove", (e) => {
+      tooltip.style.opacity = 1;
+      tooltip.innerText = slice.dataset.tip;
+      tooltip.style.left = e.pageX + 12 + "px";
+      tooltip.style.top = e.pageY - 30 + "px";
+    });
+    slice.addEventListener("mouseleave", () => {
+      tooltip.style.opacity = 0;
+    });
+  });
+</script>
+
 </body>
 </html>
