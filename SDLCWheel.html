@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SDLC Interactive Wheel</title>
+<style>
+  body {
+    background: #f4f6f9;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    overflow: hidden;
+    margin: 0;
+  }
+  .sdlc-wheel-container {
+    max-width: 600px;
+    width: 90%;
+    position: relative;
+  }
+  svg { width: 100%; height: auto; }
+
+  .sdlc-segment {
+    cursor: pointer;
+    transition: transform 0.25s ease, filter 0.25s ease;
+  }
+  .sdlc-segment:hover {
+    transform: scale(1.05);
+    filter: brightness(1.2);
+  }
+  .sdlc-label {
+    font-family: 'Segoe UI', sans-serif;
+    fill: white;
+    font-size: 12px;
+    font-weight: 600;
+    text-anchor: middle;
+    pointer-events: none;
+  }
+  .sdlc-center { fill: #222; }
+  .sdlc-center-text {
+    font-family: 'Segoe UI Semibold', sans-serif;
+    fill: #fff;
+    font-size: 20px;
+    text-anchor: middle;
+    pointer-events: none;
+  }
+  .sdlc-tooltip {
+    position: absolute;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    padding: 8px 12px;
+    font-size: 13px;
+    color: #333;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    pointer-events: none;
+    max-width: 220px;
+  }
+</style>
+</head>
+<body>
+  <div class="sdlc-wheel-container">
+    <svg viewBox="0 0 400 400">
+      <g transform="translate(200,200)">
+        <path class="sdlc-segment" fill="#e74c3c"
+          d="M0,0 L0,-150 A150,150 0 0,1 129.9,-75 Z"
+          data-title="Planning & Analysis"
+          data-desc="Gather requirements, analyze feasibility, and define objectives."
+          data-url="/sites/ICT-India-AI-SDLC-Hub/Planning%20%20Analysis/Forms/AllItems.aspx"></path>
+        <path class="sdlc-segment" fill="#3498db"
+          d="M0,0 L129.9,-75 A150,150 0 0,1 129.9,75 Z"
+          data-title="Design"
+          data-desc="Create UI, architecture, and technical blueprints for development."
+          data-url="/sites/ICT-India-AI-SDLC-Hub/Lists/Design%20Accelerators/AllItems.aspx"></path>
+        <path class="sdlc-segment" fill="#16a085"
+          d="M0,0 L129.9,75 A150,150 0 0,1 0,150 Z"
+          data-title="Implementation"
+          data-desc="Develop features, integrate modules, and ensure quality coding standards."
+          data-url="/sites/ICT-India-AI-SDLC-Hub/Implementation%20Accelerators/Forms/AllItems.aspx"></path>
+        <path class="sdlc-segment" fill="#f39c12"
+          d="M0,0 L0,150 A150,150 0 0,1 -129.9,75 Z"
+          data-title="Testing & Integration"
+          data-desc="Validate software, fix defects, and ensure functional reliability."
+          data-url="/sites/ICT-India-AI-SDLC-Hub/Testing%20%20Integration/Forms/AllItems.aspx"></path>
+        <path class="sdlc-segment" fill="#d35400"
+          d="M0,0 L-129.9,75 A150,150 0 0,1 -129.9,-75 Z"
+          data-title="Deployment"
+          data-desc="Deploy builds, verify user acceptance, and ensure a smooth launch."
+          data-url="/sites/ICT-India-AI-SDLC-Hub/Deployment%20%20Operations%20Accelerators/Forms/AllItems.aspx"></path>
+        <path class="sdlc-segment" fill="#c0392b"
+          d="M0,0 L-129.9,-75 A150,150 0 0,1 0,-150 Z"
+          data-title="Maintenance"
+          data-desc="Monitor system health, patch issues, and deliver continuous improvements."
+          data-url="/sites/ICT-India-AI-SDLC-Hub/Maintenance/Forms/AllItems.aspx"></path>
+      </g>
+      <circle cx="200" cy="200" r="60" class="sdlc-center"></circle>
+      <text x="200" y="205" class="sdlc-center-text">SDLC</text>
+    </svg>
+    <div class="sdlc-tooltip" id="tooltip"></div>
+  </div>
+
+<script>
+  const tooltip = document.getElementById('tooltip');
+  const segments = document.querySelectorAll('.sdlc-segment');
+  segments.forEach(seg => {
+    seg.addEventListener('mousemove', e => {
+      tooltip.innerHTML = '<b>' + seg.dataset.title + '</b><br>' + seg.dataset.desc;
+      tooltip.style.left = (e.pageX + 10) + 'px';
+      tooltip.style.top = (e.pageY - 40) + 'px';
+      tooltip.style.opacity = 1;
+    });
+    seg.addEventListener('mouseleave', () => { tooltip.style.opacity = 0; });
+    seg.addEventListener('click', () => {
+      const link = seg.dataset.url.startsWith('http')
+        ? seg.dataset.url
+        : window.location.origin + seg.dataset.url;
+      window.open(link, '_blank');
+    });
+  });
+</script>
+</body>
+</html>
