@@ -182,25 +182,26 @@ const phases = [
 const wheel = document.getElementById('wheel');
 const radius = 180;
 
-// 🎯 Individual radius fine-tuning (positive = farther out)
+// per-phase radial offsets (positive = farther from center)
 const radiusAdjustments = {
-  "Planning": -10,
-  "Design": -10,
-  "Implementation": -10,
-  "Testing": -10,
-  "Deployment": -10,
-  "Maintenance": +40
+  "Planning":       +38,  // upper-right
+  "Design":         +40,  // right
+  "Implementation": +42,  // lower-right
+  "Testing":        +42,  // lower-left
+  "Deployment":     +40,  // left
+  "Maintenance":    +40   // top-left (your reference)
 };
 
-// 🎯 Individual Y corrections (negative = move upward)
+// per-phase vertical corrections (negative = move upward)
 const yAdjustments = {
-  "Planning": 0,
-  "Design": 0,
-  "Implementation": 0,
-  "Testing": 0,
-  "Deployment": 0,
-  "Maintenance": -50
+  "Planning":       -36,  // top-right: mild upward correction
+  "Design":         -30,  // right: slightly up to match visual line
+  "Implementation": -56,  // bottom-right: lift more to align arc
+  "Testing":        -50,  // bottom-left: similar lift
+  "Deployment":     -44,  // left: small lift
+  "Maintenance":    -50   // top-left: your reference
 };
+
 
 
 
@@ -230,6 +231,7 @@ el.style.top  = `calc(50% + ${y}px)`;
 
 </body>
 </html>
+
 
 
 
