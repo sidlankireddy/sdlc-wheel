@@ -180,7 +180,16 @@ const phases = [
 ];
 
 const wheel = document.getElementById('wheel');
-const radius = 150;
+const radius = 180;
+  / 🎯 Optional per-phase radius fine-tuning (positive = farther out, negative = closer in)
+const radiusAdjustments = {
+  "Planning": 0,
+  "Design": 0,
+  "Implementation": +3,
+  "Testing": +2,
+  "Deployment": +4,
+  "Maintenance": 0
+};
 
 // 🎯 Individual Y corrections per phase (positive = down, negative = up)
 const yAdjustments = {
@@ -198,9 +207,15 @@ phases.forEach(p => {
   el.className = 'phase-label';
   el.style.background = p.color;
 
-  const rad = (p.angle - 90) * Math.PI / 180;
-  const x = radius * Math.cos(rad);
-  const y = radius * Math.sin(rad) + (yAdjustments[p.name.split('<')[0]] || 0);
+ const rad = (p.angle - 90) * Math.PI / 180;
+const phaseKey = p.name.split('<')[0]; // extract clean name like "Design"
+
+const r = radius + (radiusAdjustments[phaseKey] || 0);
+const yOff = yAdjustments[phaseKey] || 0;
+
+const x = r * Math.cos(rad);
+const y = r * Math.sin(rad) + yOff;
+
 
 
   el.style.left = `calc(50% + ${x}px)`;
@@ -214,6 +229,7 @@ phases.forEach(p => {
 
 </body>
 </html>
+
 
 
 
