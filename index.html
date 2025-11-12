@@ -293,10 +293,13 @@ footer {
           </linearGradient>
         </defs>
 
-        <!-- Slices with Corrected Labels -->
+        <!-- Fixed Text Wheel -->
         <a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Planning%20%20Analysis/Forms/AllItems.aspx" target="_blank">
           <path d="M300,300 L300,70 A230,230 0 0,1 520,190 Z" fill="url(#p1)" data-tip="🧠 Planning & Analysis: Define objectives and feasibility."/>
-          <text x="410" y="120"><tspan x="410" dy="0">Planning &</tspan><tspan x="410" dy="22">Analysis</tspan></text>
+          <text x="410" y="120" text-anchor="middle">
+            <tspan x="410" dy="0">Planning &</tspan>
+            <tspan x="410" dy="22">Analysis</tspan>
+          </text>
         </a>
         <a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Lists/Design%20Accelerators/AllItems.aspx" target="_blank">
           <path d="M300,300 L520,190 A230,230 0 0,1 520,410 Z" fill="url(#p2)" data-tip="🎨 Design: Create system architecture and UI models."/>
@@ -308,19 +311,24 @@ footer {
         </a>
         <a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Testing%20%20Integration/Forms/AllItems.aspx" target="_blank">
           <path d="M300,300 L300,530 A230,230 0 0,1 80,410 Z" fill="url(#p4)" data-tip="🧪 Testing & Integration: Validate quality and functionality."/>
-          <text x="200" y="490"><tspan x="200" dy="0">Testing &</tspan><tspan x="200" dy="22">Integration</tspan></text>
+          <text x="200" y="480" text-anchor="middle">
+            <tspan x="200" dy="0">Testing &</tspan>
+            <tspan x="200" dy="22">Integration</tspan>
+          </text>
         </a>
         <a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Deployment%20%20Operations%20Accelerators/Forms/AllItems.aspx" target="_blank">
           <path d="M300,300 L80,410 A230,230 0 0,1 80,190 Z" fill="url(#p3)" data-tip="🚀 Deployment: Launch and verify readiness."/>
-          <text x="120" y="300">Deployment</text>
+          <text x="130" y="300">Deployment</text>
         </a>
         <a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Maintenance/Forms/AllItems.aspx" target="_blank">
           <path d="M300,300 L80,190 A230,230 0 0,1 300,70 Z" fill="url(#p4)" data-tip="🔧 Maintenance: Continuous support and improvement."/>
-          <text x="200" y="120">Maintenance</text>
+          <text x="190" y="120">Maintenance</text>
         </a>
-        <circle class="center-circle" cx="300" cy="300" r="90"></circle>
-        <text x="300" y="295" font-size="22">SDLC</text>
-        <text x="300" y="325" font-size="15">Phases</text>
+
+        <!-- Center Circle -->
+        <circle cx="300" cy="300" r="90" fill="#0078d4" stroke="#004578" stroke-width="3"></circle>
+        <text x="300" y="295" text-anchor="middle" font-size="22" fill="#fff">SDLC</text>
+        <text x="300" y="320" text-anchor="middle" font-size="16" fill="#fff">Phases</text>
       </svg>
     </div>
   </div>
@@ -355,7 +363,6 @@ footer {
   © 2025 ICT India – AI-SDLC Hub | Powered by SharePoint & Azure Static Web Apps
 </footer>
 
-<!-- ============= JAVASCRIPT ============= -->
 <script>
 const tooltip = document.getElementById("tooltip");
 document.querySelectorAll("path").forEach(slice => {
@@ -373,9 +380,6 @@ document.querySelectorAll("path").forEach(slice => {
   slice.addEventListener("mouseleave", () => tooltip.classList.remove("show"));
 });
 
-/* =======================
-   AI-SDLC Assistant Logic
-   ======================= */
 const chat = document.getElementById("ai-chat");
 const input = document.getElementById("userInput");
 
@@ -405,5 +409,4 @@ function typeText(text, bubble, speed = 25) {
 
 function getReply(msg) {
   const query = msg.toLowerCase();
-  if (query.includes("design")) return `🎨 Explore <a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Lists/Design%20Accelerators/AllItems.aspx" target="_blank">Design Accelerators</a>.`;
-  if (query.includes("implementation") || query.includes("develop")) return `⚙️ Visit <a href="https://shiftup.sharepoint.com/sites/ICT-India
+  if (query.includes("design")) return `🎨 Explore <a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC
