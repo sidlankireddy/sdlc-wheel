@@ -185,8 +185,8 @@ const radius = 180;
 // 🎯 Adjust how far from the center each small circle sits
 const radiusAdjustments = {
   "Planning":       +30,   // slightly inward
-  "Design":         +5,   // just a touch outward to align with Testing
-  "Implementation": +30,   // farther out — to match Testing’s visual radius
+  "Design":         +0,   // just a touch outward to align with Testing
+  "Implementation": +10,   // farther out — to match Testing’s visual radius
   "Testing":        +40,   // your perfect reference
   "Deployment":     +42,   // balanced against Testing
   "Maintenance":    +40    // same curve balance as top-left
@@ -232,6 +232,7 @@ el.style.top  = `calc(50% + ${y}px)`;
 
 </body>
 </html>
+
 
 
 
