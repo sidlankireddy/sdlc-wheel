@@ -180,26 +180,28 @@ const phases = [
 ];
 
 const wheel = document.getElementById('wheel');
-const radius = 180;
-  // 🎯 Optional per-phase radius fine-tuning (positive = farther out, negative = closer in)
+const radius = 195;
+
+// 🎯 Individual radius fine-tuning (positive = farther out)
 const radiusAdjustments = {
-  "Planning": +1,
-  "Design": 0,
-  "Implementation": +1,
-  "Testing": +2,
-  "Deployment": +4,
-  "Maintenance": +6
+  "Planning": 0,
+  "Design": +2,
+  "Implementation": +4,
+  "Testing": +3,
+  "Deployment": +2,
+  "Maintenance": 0
 };
 
-// 🎯 Individual Y corrections per phase (positive = down, negative = up)
+// 🎯 Individual Y corrections (negative = move upward)
 const yAdjustments = {
   "Planning": 0,
-  "Design": -6,
-  "Implementation": -10,
-  "Testing": -8,
+  "Design": -5,
+  "Implementation": -12,
+  "Testing": -10,
   "Deployment": -8,
-  "Maintenance": -6
+  "Maintenance": -4
 };
+
 
 
 phases.forEach(p => {
@@ -207,7 +209,7 @@ phases.forEach(p => {
   el.className = 'phase-label';
   el.style.background = p.color;
 
- const rad = (p.angle - 90) * Math.PI / 180;
+const rad = (p.angle - 90) * Math.PI / 180;
 const phaseKey = p.name.split('<')[0]; // extract clean name like "Design"
 
 const r = radius + (radiusAdjustments[phaseKey] || 0);
@@ -216,10 +218,9 @@ const yOff = yAdjustments[phaseKey] || 0;
 const x = r * Math.cos(rad);
 const y = r * Math.sin(rad) + yOff;
 
+el.style.left = `calc(50% + ${x}px)`;
+el.style.top  = `calc(50% + ${y}px)`;
 
-
-  el.style.left = `calc(50% + ${x}px)`;
-  el.style.top = `calc(50% + ${y}px)`;
   el.innerHTML = `${p.name}<div class="tooltip">${p.tip}</div>`;
   el.onclick = () => window.open(p.link, '_blank');
 
@@ -229,6 +230,7 @@ const y = r * Math.sin(rad) + yOff;
 
 </body>
 </html>
+
 
 
 
