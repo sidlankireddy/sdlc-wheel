@@ -9,7 +9,7 @@
 :root {
   --wheel-size: 520px;
   --label-size: 85px;
-  --label-radius: 180px;
+  --label-radius: 178px;
   --font: "Segoe UI", Arial, sans-serif;
 }
 body {
@@ -19,24 +19,24 @@ body {
 }
 .topbar {
   background: linear-gradient(180deg,#0078D4 0%,#005A9E 100%);
-  color: #fff; font-weight: 600; padding: 10px 20px;
-  box-shadow: 0 2px 4px rgba(0,0,0,.1);
+  color:#fff;font-weight:600;padding:10px 20px;
+  box-shadow:0 2px 4px rgba(0,0,0,.1);
 }
 .container {
-  display: grid; grid-template-columns: 1fr 300px;
-  gap: 24px; max-width: 1200px; margin: 30px auto; padding: 0 20px;
+  display:grid;grid-template-columns:1fr 300px;
+  gap:24px;max-width:1200px;margin:30px auto;padding:0 20px;
 }
 .wheel-wrap {
-  display: flex; justify-content: center; align-items: center;
-  background: #fff; border-radius: 16px;
-  box-shadow: 0 6px 20px rgba(0,0,0,.05);
-  padding: 24px;
+  display:flex;justify-content:center;align-items:center;
+  background:#fff;border-radius:16px;
+  box-shadow:0 6px 20px rgba(0,0,0,.05);
+  padding:24px;
 }
 .wheel {
-  position: relative;
-  width: var(--wheel-size); height: var(--wheel-size);
-  border-radius: 50%;
-  background: conic-gradient(
+  position:relative;
+  width:var(--wheel-size);height:var(--wheel-size);
+  border-radius:50%;
+  background:conic-gradient(
     #4F8EF7 0deg 60deg,
     #F3B23A 60deg 120deg,
     #F97A3C 120deg 180deg,
@@ -46,64 +46,65 @@ body {
   );
 }
 .center {
-  position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
-  width: 180px; height: 180px; border-radius: 50%;
-  background: linear-gradient(145deg,#0096ff 0%,#0078d4 50%,#005a9e 100%);
-  color: #fff; text-align: center; font-weight: 600;
-  display: flex; flex-direction: column; justify-content: center;
-  box-shadow: 0 10px 25px rgba(0,0,0,.2); z-index: 2;
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  width:180px;height:180px;border-radius:50%;
+  background:linear-gradient(145deg,#0096ff 0%,#0078d4 50%,#005a9e 100%);
+  color:#fff;text-align:center;font-weight:600;
+  display:flex;flex-direction:column;justify-content:center;
+  box-shadow:0 10px 25px rgba(0,0,0,.2);z-index:2;
 }
-.center .title { font-size: 16px; }
-.center .subtitle { font-size: 11px; margin-top: 4px; opacity: .9; }
+.center .title{font-size:16px;}
+.center .subtitle{font-size:11px;margin-top:4px;opacity:.9;}
 
-.phase-label {
-  position: absolute; top: 50%; left: 50%;
-  width: var(--label-size); height: var(--label-size);
-  margin: calc(var(--label-size) / -2);
-  border-radius: 50%;
-  color: #fff; font-size: 13px; font-weight: 600; text-align: center;
-  display: flex; align-items: center; justify-content: center;
-  cursor: pointer;
-  border: 2px solid rgba(255,255,255,0.4);
-  box-shadow: inset 0 0 6px rgba(255,255,255,0.3);
-  z-index: 3;
-  transition: filter .25s ease;
+.phase-label{
+  position:absolute;top:50%;left:50%;
+  width:var(--label-size);height:var(--label-size);
+  margin:calc(var(--label-size)/-2);
+  border-radius:50%;
+  font-weight:600;font-size:13px;line-height:1.1;
+  color:#fff;text-align:center;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;
+  border:2px solid rgba(255,255,255,0.4);
+  box-shadow:0 3px 6px rgba(0,0,0,0.15),inset 0 0 6px rgba(255,255,255,0.2);
+  transition:filter .25s ease;
+  z-index:3;
 }
-.phase-label:hover { filter: brightness(1.15); }
+.phase-label:hover{filter:brightness(1.1);}
+.phase-label br+&{font-size:12px;}
 
-/* Tooltip styling */
-.tooltip {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  background: #fff;
-  color: #005A9E;
-  font-size: 11px;
-  padding: 6px 10px;
-  border-radius: 6px;
-  white-space: nowrap;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity .25s ease;
-  z-index: 99;
+/* Tooltip */
+.tooltip{
+  position:absolute;
+  left:50%;
+  transform:translateX(-50%);
+  background:#fff;
+  color:#005A9E;
+  font-size:11px;
+  padding:6px 10px;
+  border-radius:6px;
+  white-space:nowrap;
+  box-shadow:0 2px 6px rgba(0,0,0,0.15);
+  opacity:0;
+  pointer-events:none;
+  transition:opacity .25s ease;
+  z-index:99;
 }
-.phase-label:hover .tooltip { opacity: 1; }
+.phase-label:hover .tooltip{opacity:1;}
+.phase1 .tooltip,.phase2 .tooltip,.phase6 .tooltip{bottom:100%;transform:translate(-50%,-6px);}
+.phase3 .tooltip,.phase4 .tooltip,.phase5 .tooltip{top:100%;transform:translate(-50%,6px);}
 
-/* Placement of each phase (perfectly centered midpoints) */
-.phase1 { background:#4F8EF7; transform:translate(-50%,-50%) rotate(30deg) translateY(-180px) rotate(-30deg); }
-.phase2 { background:#F3B23A; transform:translate(-50%,-50%) rotate(90deg) translateY(-180px) rotate(-90deg); }
-.phase3 { background:#F97A3C; transform:translate(-50%,-50%) rotate(150deg) translateY(-180px) rotate(-150deg); }
-.phase4 { background:#FFD43B; transform:translate(-50%,-50%) rotate(210deg) translateY(-180px) rotate(-210deg); }
-.phase5 { background:#4DC981; transform:translate(-50%,-50%) rotate(270deg) translateY(-180px) rotate(-270deg); }
-.phase6 { background:#8C8CFF; transform:translate(-50%,-50%) rotate(330deg) translateY(-180px) rotate(-330deg); }
+/* precise centered placement */
+.phase1{background:#4F8EF7;transform:translate(-50%,-50%) rotate(30deg) translateY(-178px) rotate(-30deg);}
+.phase2{background:#F3B23A;transform:translate(-50%,-50%) rotate(90deg) translateY(-178px) rotate(-90deg);}
+.phase3{background:#F97A3C;transform:translate(-50%,-50%) rotate(150deg) translateY(-177px) rotate(-150deg);}
+.phase4{background:#FFD43B;transform:translate(-50%,-50%) rotate(210deg) translateY(-177px) rotate(-210deg);}
+.phase5{background:#4DC981;transform:translate(-50%,-50%) rotate(270deg) translateY(-178px) rotate(-270deg);}
+.phase6{background:#8C8CFF;transform:translate(-50%,-50%) rotate(330deg) translateY(-178px) rotate(-330deg);}
 
-/* Tooltip adaptive positions */
-.phase1 .tooltip, .phase2 .tooltip, .phase6 .tooltip { bottom: 90%; }
-.phase3 .tooltip, .phase4 .tooltip, .phase5 .tooltip { top: 90%; }
-
-.panel {
-  background:#fff;border-radius:12px;box-shadow:0 6px 20px rgba(0,0,0,.05);
+.panel{
+  background:#fff;border-radius:12px;
+  box-shadow:0 6px 20px rgba(0,0,0,.05);
   padding:20px;height:fit-content;
 }
 .panel h3{color:#004578;font-weight:600;margin-top:0}
