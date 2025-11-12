@@ -75,6 +75,7 @@ body {
   height:var(--label-size);
   border-radius:50%;
   display:flex;
+  flex-direction:column;
   align-items:center;
   justify-content:center;
   text-align:center;
@@ -84,10 +85,19 @@ body {
   cursor:pointer;
   border:2px solid rgba(255,255,255,0.4);
   box-shadow:0 3px 6px rgba(0,0,0,0.15),inset 0 0 6px rgba(255,255,255,0.2);
-  transition:box-shadow .25s ease;
+  transition:filter .25s ease;
 }
 .phase-label:hover {
-  box-shadow:0 0 0 6px rgba(255,255,255,0.3),0 6px 10px rgba(0,0,0,0.15);
+  filter:brightness(1.1);
+}
+
+/* Number inside each phase */
+.phase-number {
+  font-size:14px;
+  font-weight:700;
+  opacity:0.85;
+  margin-bottom:3px;
+  line-height:1;
 }
 
 /* Tooltip */
@@ -171,59 +181,56 @@ body {
 
 <script>
 const phases = [
-  {name:"1.Planning<br>&amp; Analysis", angle:15, color:"#4F8EF7", link:"https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Planning-Analysis", tip:"Plan requirements & business goals"},
-  {name:"2.Design", angle:85, color:"#F3B23A", link:"https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Design%20Accelerators/Forms/AllItems.aspx", tip:"Create wireframes & technical design"},
-  {name:"3.Implementation", angle:160, color:"#F97A3C", link:"https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Implementation%20Accelerators/Forms/AllItems.aspx", tip:"Develop and integrate components"},
-  {name:"4.Testing<br>&amp; Integration", angle:220, color:"#FFD43B", link:"https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Testing%20%20Integration/Forms/AllItems.aspx", tip:"Validate functionality & performance"},
-  {name:"5.Deployment", angle:285, color:"#4DC981", link:"https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Deployment%20%20Operations%20Accelerators/Forms/AllItems.aspx", tip:"Release to production environments"},
-  {name:"6.Maintenance", angle:325, color:"#8C8CFF", link:"https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Maintenance/Forms/AllItems.aspx", tip:"Monitor, optimize & enhance systems"}
+  {num:"1", name:"Planning<br>&amp; Analysis", angle:15,  color:"#4F8EF7", link:"https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Planning-Analysis", tip:"Plan requirements & business goals"},
+  {num:"2", name:"Design", angle:85,  color:"#F3B23A", link:"https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Design%20Accelerators/Forms/AllItems.aspx", tip:"Create wireframes & technical design"},
+  {num:"3", name:"Implementation", angle:160, color:"#F97A3C", link:"https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Implementation%20Accelerators/Forms/AllItems.aspx", tip:"Develop and integrate components"},
+  {num:"4", name:"Testing<br>&amp; Integration", angle:220, color:"#FFD43B", link:"https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Testing%20%20Integration/Forms/AllItems.aspx", tip:"Validate functionality & performance"},
+  {num:"5", name:"Deployment", angle:285, color:"#4DC981", link:"https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Deployment%20%20Operations%20Accelerators/Forms/AllItems.aspx", tip:"Release to production environments"},
+  {num:"6", name:"Maintenance", angle:325, color:"#8C8CFF", link:"https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Maintenance/Forms/AllItems.aspx", tip:"Monitor, optimize & enhance systems"}
 ];
 
 const wheel = document.getElementById('wheel');
 const radius = 180;
 
-// 🎯 Adjust how far from the center each small circle sits
+// distance adjustments per phase
 const radiusAdjustments = {
-  "Planning":       +30,   // slightly inward
-  "Design":         -15,   // just a touch outward to align with Testing
-  "Implementation": -10,   // farther out — to match Testing’s visual radius
-  "Testing":        +40,   // your perfect reference
-  "Deployment":     +65,   // balanced against Testing
-  "Maintenance":    +50    // same curve balance as top-left
+  "Planning": +30,
+  "Design": -15,
+  "Implementation": 0,
+  "Testing": +40,
+  "Deployment": +65,
+  "Maintenance": +40
 };
 
-// 🎯 Adjust vertical position (negative = move upward)
+// vertical fine-tuning
 const yAdjustments = {
-  "Planning":       -32,   // mild lift
-  "Design":         -30,   // minor lift to center in wedge
-  "Implementation": -35,   // stronger lift, bottom wedge
-  "Testing":        -50,   // perfect reference — kept same
-  "Deployment":     +10,   // same lift as Implementation to mirror
-  "Maintenance":    -25    // small correction up from current
+  "Planning": -32,
+  "Design": -30,
+  "Implementation": -25,
+  "Testing": -50,
+  "Deployment": +10,
+  "Maintenance": -34
 };
-
-
-
-
 
 phases.forEach(p => {
   const el = document.createElement('div');
   el.className = 'phase-label';
   el.style.background = p.color;
 
-const rad = (p.angle - 90) * Math.PI / 180;
-const phaseKey = p.name.split('<')[0]; // extract clean name like "Design"
+  const rad = (p.angle - 90) * Math.PI / 180;
+  const key = p.name.split('<')[0];
 
-const r = radius + (radiusAdjustments[phaseKey] || 0);
-const yOff = yAdjustments[phaseKey] || 0;
+  const r = radius + (radiusAdjustments[key] || 0);
+  const yOff = yAdjustments[key] || 0;
 
-const x = r * Math.cos(rad);
-const y = r * Math.sin(rad) + yOff;
+  const x = r * Math.cos(rad);
+  const y = r * Math.sin(rad) + yOff;
 
-el.style.left = `calc(50% + ${x}px)`;
-el.style.top  = `calc(50% + ${y}px)`;
+  el.style.left = `calc(50% + ${x}px)`;
+  el.style.top = `calc(50% + ${y}px)`;
 
-  el.innerHTML = `${p.name}<div class="tooltip">${p.tip}</div>`;
+  // include number + name
+  el.innerHTML = `<div class="phase-number">${p.num}</div>${p.name}<div class="tooltip">${p.tip}</div>`;
   el.onclick = () => window.open(p.link, '_blank');
 
   wheel.appendChild(el);
@@ -232,43 +239,3 @@ el.style.top  = `calc(50% + ${y}px)`;
 
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
