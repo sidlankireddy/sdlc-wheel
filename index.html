@@ -1,9 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>AI-SDLC | ICT India Hub</title>
+
+<!-- ===== Fluent UI CDN ===== -->
+<script type="module" src="https://unpkg.com/@fluentui/web-components"></script>
 
 <style>
   :root {
@@ -38,21 +41,52 @@
   .header-left {
     display: flex;
     align-items: center;
+    gap: 10px;
   }
 
   .header-left img {
-    height: 38px;
+    height: 42px;
     width: auto;
-    margin-right: 10px;
   }
 
   .header-left h1 {
-    font-size: 20px;
+    font-size: 22px;
     font-weight: 500;
     margin: 0;
   }
 
-  /* ===== Layout ===== */
+  .search-bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: #ffffff20;
+    padding: 4px 10px;
+    border-radius: 6px;
+  }
+
+  .search-bar input {
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 15px;
+    outline: none;
+    width: 180px;
+  }
+
+  /* ===== Breadcrumb ===== */
+  nav {
+    background: #ffffff;
+    padding: 10px 32px;
+    font-size: 14px;
+    color: #323130;
+    border-bottom: 1px solid #e1dfdd;
+  }
+
+  nav fluent-breadcrumb-item::part(control) {
+    color: var(--sp-blue);
+  }
+
+  /* ===== Main Layout ===== */
   main {
     display: flex;
     justify-content: center;
@@ -60,19 +94,28 @@
     flex: 1;
     padding: 40px 20px;
     gap: 40px;
+    flex-wrap: wrap;
+    opacity: 0;
+    animation: fadeIn 1.2s ease forwards;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
   }
 
   .wheel-section {
-    position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
   }
 
   .wheel-container {
-    width: 520px;
-    height: 520px;
+    width: 600px;
+    height: 600px;
     position: relative;
+    opacity: 0;
+    animation: fadeIn 1.2s ease 0.4s forwards;
   }
 
   svg {
@@ -89,7 +132,7 @@
 
   path:hover {
     transform: scale(1.05);
-    filter: drop-shadow(0 0 8px rgba(0,120,212,0.5));
+    filter: drop-shadow(0 0 10px rgba(0,120,212,0.6));
   }
 
   .center-circle {
@@ -99,8 +142,8 @@
   }
 
   text {
-    fill: #fff;
-    font-size: 14px;
+    fill: #ffffff;
+    font-size: 18px;
     font-weight: 600;
     text-anchor: middle;
     pointer-events: none;
@@ -109,17 +152,19 @@
   /* ===== Tooltip ===== */
   .tooltip {
     position: absolute;
-    background: #ffffffee;
+    background: #ffffff;
     color: #323130;
-    padding: 10px 14px;
+    padding: 14px 18px;
     border-radius: 8px;
-    font-size: 14px;
+    font-size: 16px;
     box-shadow: 0 4px 16px rgba(0,0,0,0.25);
     opacity: 0;
     transition: opacity 0.2s ease, transform 0.2s ease;
     pointer-events: none;
     transform: translateY(8px);
     border: 1px solid #e1dfdd;
+    max-width: 260px;
+    line-height: 1.4;
   }
 
   .tooltip.show {
@@ -127,17 +172,19 @@
     transform: translateY(0);
   }
 
-  /* ===== Side Panel ===== */
-  .side-panel {
+  /* ===== Panels & Dashboard ===== */
+  .side-panel, .summary-panel {
     background: white;
     border-radius: 10px;
     box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     padding: 20px 25px;
     max-width: 300px;
     height: fit-content;
+    opacity: 0;
+    animation: fadeIn 1s ease 0.6s forwards;
   }
 
-  .side-panel h2 {
+  .side-panel h2, .summary-panel h2 {
     font-size: 18px;
     color: var(--sp-blue);
     margin-top: 0;
@@ -181,6 +228,39 @@
     background: var(--sp-blue-dark);
   }
 
+  .dashboard {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-top: 40px;
+  }
+
+  .dashboard-card {
+    background: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+    padding: 16px 24px;
+    min-width: 200px;
+    text-align: center;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+  }
+
+  .dashboard-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  }
+
+  .dashboard-card h3 {
+    margin: 8px 0 4px;
+    color: var(--sp-blue-dark);
+  }
+
+  .dashboard-card p {
+    margin: 0;
+    color: #605e5c;
+  }
+
   footer {
     background: var(--sp-gray-bg);
     padding: 16px;
@@ -194,7 +274,7 @@
       flex-direction: column;
       align-items: center;
     }
-    .side-panel {
+    .side-panel, .summary-panel {
       max-width: 90%;
     }
   }
@@ -204,15 +284,26 @@
 <body>
 <header>
   <div class="header-left">
-    <img src="AI-SDLC-logo.png" alt="AI-SDLC Logo" onerror="this.src='https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/SiteAssets/AI-SDLC-logo.png';">
+    <img src="https://shiftup.sharepoint.com/:i:/r/sites/ICT-India-AI-SDLC-Hub/Media%20library/CPT%20AI%20SDLC%20SITE%20LOGO.png" alt="AI-SDLC Logo" />
     <h1>ICT India AI SDLC Hub</h1>
+  </div>
+  <div class="search-bar">
+    <fluent-icon name="search"></fluent-icon>
+    <input type="text" placeholder="Search AI-SDLC Hub..." />
   </div>
 </header>
 
+<nav>
+  <fluent-breadcrumb>
+    <fluent-breadcrumb-item href="#">Home</fluent-breadcrumb-item>
+    <fluent-breadcrumb-item href="#" current>SDLC Hub</fluent-breadcrumb-item>
+  </fluent-breadcrumb>
+</nav>
+
 <main>
-  <!-- ===== Side Panel ===== -->
+  <!-- Left Panel -->
   <div class="side-panel">
-    <h2>Quick Links</h2>
+    <h2><fluent-icon name="apps"></fluent-icon> Quick Links</h2>
     <ul>
       <li><a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/SitePages/About-AI-SDLC.aspx" target="_blank">About AI-SDLC</a></li>
       <li><a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Lists/Design%20Accelerators/AllItems.aspx" target="_blank">Design Accelerators</a></li>
@@ -222,65 +313,90 @@
     <a class="about-link" href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/SitePages/About-AI-SDLC.aspx" target="_blank">Learn More →</a>
   </div>
 
-  <!-- ===== Wheel Section ===== -->
+  <!-- Wheel Section -->
   <div class="wheel-section">
     <div class="wheel-container">
       <div id="tooltip" class="tooltip"></div>
       <svg viewBox="0 0 600 600">
         <defs>
-          <linearGradient id="blue" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stop-color="#0078d4"/>
-            <stop offset="100%" stop-color="#004578"/>
+          <linearGradient id="p1" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#0078d4" />
+            <stop offset="100%" stop-color="#004578" />
           </linearGradient>
-          <linearGradient id="green" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stop-color="#107c10"/>
-            <stop offset="100%" stop-color="#004b1c"/>
+          <linearGradient id="p2" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#107c10" />
+            <stop offset="100%" stop-color="#004b1c" />
           </linearGradient>
-          <linearGradient id="orange" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stop-color="#ffaa44"/>
-            <stop offset="100%" stop-color="#d47f00"/>
+          <linearGradient id="p3" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#ffaa44" />
+            <stop offset="100%" stop-color="#d47f00" />
           </linearGradient>
-          <linearGradient id="red" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stop-color="#d83b01"/>
-            <stop offset="100%" stop-color="#a4262c"/>
+          <linearGradient id="p4" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#d83b01" />
+            <stop offset="100%" stop-color="#a4262c" />
           </linearGradient>
         </defs>
 
         <a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Planning%20%20Analysis/Forms/AllItems.aspx" target="_blank">
-          <path d="M300,300 L300,80 A220,220 0 0,1 520,190 Z" fill="url(#blue)" data-tip="🧠 Planning & Analysis: Define objectives and feasibility."/>
-          <text x="400" y="120">1. Planning & Analysis</text>
+          <path d="M300,300 L300,70 A230,230 0 0,1 520,190 Z" fill="url(#p1)" data-tip="🧠 Planning & Analysis: Define objectives and feasibility." />
+          <text x="410" y="120">1. Planning & Analysis</text>
         </a>
 
         <a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Lists/Design%20Accelerators/AllItems.aspx" target="_blank">
-          <path d="M300,300 L520,190 A220,220 0 0,1 520,410 Z" fill="url(#green)" data-tip="🎨 Design: Create system architecture and UI models."/>
-          <text x="480" y="300">2. Design</text>
+          <path d="M300,300 L520,190 A230,230 0 0,1 520,410 Z" fill="url(#p2)" data-tip="🎨 Design: Create system architecture and UI models." />
+          <text x="490" y="300">2. Design</text>
         </a>
 
         <a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Implementation%20Accelerators/Forms/AllItems.aspx" target="_blank">
-          <path d="M300,300 L520,410 A220,220 0 0,1 300,520 Z" fill="url(#orange)" data-tip="⚙️ Implementation: Develop and integrate the solution."/>
-          <text x="400" y="480">3. Implementation</text>
+          <path d="M300,300 L520,410 A230,230 0 0,1 300,530 Z" fill="url(#p3)" data-tip="⚙️ Implementation: Develop and integrate the solution." />
+          <text x="400" y="490">3. Implementation</text>
         </a>
 
         <a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Testing%20%20Integration/Forms/AllItems.aspx" target="_blank">
-          <path d="M300,300 L300,520 A220,220 0 0,1 80,410 Z" fill="url(#red)" data-tip="🧪 Testing & Integration: Validate functionality."/>
-          <text x="200" y="480">4. Testing & Integration</text>
+          <path d="M300,300 L300,530 A230,230 0 0,1 80,410 Z" fill="url(#p4)" data-tip="🧪 Testing & Integration: Validate quality and functionality." />
+          <text x="200" y="490">4. Testing & Integration</text>
         </a>
 
         <a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Deployment%20%20Operations%20Accelerators/Forms/AllItems.aspx" target="_blank">
-          <path d="M300,300 L80,410 A220,220 0 0,1 80,190 Z" fill="url(#orange)" data-tip="🚀 Deployment: Launch and verify production readiness."/>
+          <path d="M300,300 L80,410 A230,230 0 0,1 80,190 Z" fill="url(#p3)" data-tip="🚀 Deployment: Launch and verify production readiness." />
           <text x="120" y="300">5. Deployment</text>
         </a>
 
         <a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Maintenance/Forms/AllItems.aspx" target="_blank">
-          <path d="M300,300 L80,190 A220,220 0 0,1 300,80 Z" fill="url(#red)" data-tip="🔧 Maintenance: Continuous support and enhancements."/>
+          <path d="M300,300 L80,190 A230,230 0 0,1 300,70 Z" fill="url(#p4)" data-tip="🔧 Maintenance: Continuous support and enhancement." />
           <text x="200" y="120">6. Maintenance</text>
         </a>
 
-        <circle class="center-circle" cx="300" cy="300" r="85"></circle>
+        <circle class="center-circle" cx="300" cy="300" r="90"></circle>
         <text x="300" y="295" font-size="22">SDLC</text>
-        <text x="300" y="320" font-size="14">Phases</text>
+        <text x="300" y="325" font-size="15">Phases</text>
       </svg>
     </div>
+
+    <!-- Dashboard -->
+    <div class="dashboard">
+      <div class="dashboard-card">
+        <fluent-icon name="library"></fluent-icon>
+        <h3>12 Accelerators</h3>
+        <p>Available across all phases</p>
+      </div>
+      <div class="dashboard-card">
+        <fluent-icon name="project"></fluent-icon>
+        <h3>8 Ongoing Projects</h3>
+        <p>In Cloud Migration streams</p>
+      </div>
+      <div class="dashboard-card">
+        <fluent-icon name="calendar"></fluent-icon>
+        <h3>Updated Nov 2025</h3>
+        <p>Last refresh status</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Right Panel -->
+  <div class="summary-panel">
+    <h2><fluent-icon name="info"></fluent-icon> Phase Summary</h2>
+    <p id="phase-summary">Hover over a phase to see key highlights.</p>
   </div>
 </main>
 
@@ -290,21 +406,29 @@
 
 <script>
 const tooltip = document.getElementById("tooltip");
+const summary = document.getElementById("phase-summary");
+
 document.querySelectorAll("path").forEach(slice => {
   slice.addEventListener("mousemove", e => {
     tooltip.innerText = slice.dataset.tip;
     tooltip.classList.add("show");
-    let left = e.pageX + 20;
-    let top = e.pageY - 40;
+
     const rect = tooltip.getBoundingClientRect();
-    if (left + rect.width > window.innerWidth - 20) left = e.pageX - rect.width - 20;
-    if (top < 10) top = e.pageY + 20;
+    let left = e.pageX + 20;
+    if (left + rect.width > window.innerWidth - 40) left = e.pageX - rect.width - 20;
+    let top = e.pageY - 50;
+    if (top < 20) top = e.pageY + 20;
     tooltip.style.left = left + "px";
     tooltip.style.top = top + "px";
+
+    summary.innerText = slice.dataset.tip.replace(/^[^:]+:\s*/, "");
   });
-  slice.addEventListener("mouseleave", () => tooltip.classList.remove("show"));
+
+  slice.addEventListener("mouseleave", () => {
+    tooltip.classList.remove("show");
+    summary.innerText = "Hover over a phase to see key highlights.";
+  });
 });
 </script>
-
 </body>
 </html>
