@@ -184,12 +184,12 @@ const radius = 195;
 
 // 🎯 Individual radius fine-tuning (positive = farther out)
 const radiusAdjustments = {
-  "Planning": 0,
-  "Design": -2,
-  "Implementation": +4,
-  "Testing": +3,
-  "Deployment": +2,
-  "Maintenance": 0
+  "Planning": -10,
+  "Design": -10,
+  "Implementation": -10,
+  "Testing": -10,
+  "Deployment": -10,
+  "Maintenance": -10
 };
 
 // 🎯 Individual Y corrections (negative = move upward)
@@ -230,6 +230,7 @@ el.style.top  = `calc(50% + ${y}px)`;
 
 </body>
 </html>
+
 
 
 
