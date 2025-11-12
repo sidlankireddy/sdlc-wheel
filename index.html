@@ -1,374 +1,264 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>AI-SDLC | ICT India Hub</title>
 
 <!-- Fluent UI Web Components -->
 <script type="module" src="https://unpkg.com/@fluentui/web-components"></script>
 
 <style>
-:root {
-  --sp-blue: #0078d4;
-  --sp-blue-dark: #004578;
-  --sp-gray-bg: #f3f2f1;
-  --sp-font: "Segoe UI", "Segoe UI Web (West European)", Arial, sans-serif;
+:root{
+  --sp-blue:#0078d4;
+  --sp-blue-dark:#004578;
+  --sp-gray-bg:#f3f2f1;
+  --sp-font:"Segoe UI","Segoe UI Web (West European)",Arial,sans-serif;
 }
 
-body {
-  margin: 0;
-  font-family: var(--sp-font);
-  background: linear-gradient(180deg, #f9f9f9 0%, #e8e8e8 100%);
-  color: #323130;
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-}
-
-/* Header */
-header {
-  background: linear-gradient(90deg, var(--sp-blue), #005a9e);
-  color: white;
-  padding: 12px 28px;
-  display: flex;
-  align-items: center;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-}
-.header-left {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-.header-left img {
-  height: 36px;
-  width: auto;
-}
-.header-left h1 {
-  font-size: 22px;
-  font-weight: 500;
-  margin: 0;
-}
+/* Base */
+html,body{height:100%;margin:0;font-family:var(--sp-font);background:linear-gradient(180deg,#f9f9f9 0%,#e8e8e8 100%);color:#323130}
+header{background:linear-gradient(90deg,var(--sp-blue),#005a9e);color:#fff;padding:12px 28px;display:flex;align-items:center;box-shadow:0 2px 8px rgba(0,0,0,.15)}
+.header-left{display:flex;align-items:center;gap:10px}
+.header-left img{height:36px;display:block}
+.header-left h1{margin:0;font-size:22px;font-weight:500}
 
 /* Breadcrumb */
-nav {
-  background: #ffffff;
-  padding: 10px 32px;
-  font-size: 14px;
-  border-bottom: 1px solid #e1dfdd;
-}
+nav{background:#fff;padding:10px 32px;border-bottom:1px solid #e1dfdd;font-size:14px}
 
 /* Layout */
-main {
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  flex: 1;
-  padding: 40px 20px;
-  gap: 40px;
-  flex-wrap: wrap;
-  animation: fadeIn 1.2s ease forwards;
-  opacity: 0;
-}
-@keyframes fadeIn {
-  from {opacity: 0; transform: translateY(10px);}
-  to {opacity: 1; transform: translateY(0);}
-}
+main{display:flex;justify-content:center;align-items:flex-start;gap:40px;padding:40px 20px;flex-wrap:wrap;min-height:calc(100vh - 160px)}
+.wheel-section{display:flex;flex-direction:column;align-items:center}
+.wheel-container{width:560px;height:560px;position:relative;z-index:1;overflow:visible}
 
-/* Wheel */
-.wheel-section {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-.wheel-container {
-  width: 560px;
-  height: 560px;
-  position: relative;
-  z-index: 1;
-  overflow: visible;
-  animation: fadeIn 1.2s ease 0.3s forwards;
-  opacity: 0;
-}
-svg { width: 100%; height: 100%; }
-path {
-  stroke: #fff;
-  stroke-width: 2px;
-  cursor: pointer;
-  transition: transform 0.25s ease, filter 0.25s ease;
-}
-path:hover { transform: scale(1.05); filter: drop-shadow(0 0 10px rgba(0,120,212,0.6)); }
-.center-circle { fill: var(--sp-blue); stroke: var(--sp-blue-dark); stroke-width: 3px; }
+/* SVG slice styles */
+svg{width:100%;height:100%}
+path{stroke:#fff;stroke-width:2px;cursor:pointer;transition:transform .25s ease,filter .25s ease}
+path:hover{transform:scale(1.05);filter:drop-shadow(0 0 10px rgba(0,120,212,.6))}
+.center-circle{fill:var(--sp-blue);stroke:var(--sp-blue-dark);stroke-width:3px}
 
-text {
-  fill: #ffffff;
-  font-size: 20px;
-  font-weight: 600;
-  text-anchor: middle;
-  pointer-events: none;
-  text-shadow: 0 1px 2px rgba(0,0,0,0.4);
-}
-
-/* Tooltip */
-.tooltip {
-  position: absolute;
-  background: #ffffff;
-  color: #323130;
-  padding: 14px 18px;
-  border-radius: 8px;
-  font-size: 16px;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.25);
-  opacity: 0;
-  transition: opacity 0.2s ease, transform 0.2s ease;
-  pointer-events: none;
-  border: 1px solid #e1dfdd;
-  max-width: 280px;
-  line-height: 1.4;
-  z-index: 9999; /* Always above all components */
-}
-.tooltip.show { opacity: 1; transform: translateY(0); }
+/* text in SVG */
+svg text{fill:#fff;font-size:20px;font-weight:600;text-anchor:middle;pointer-events:none;text-shadow:0 1px 2px rgba(0,0,0,.35)}
 
 /* Panels */
-.side-panel, .resources-panel {
-  background: white;
-  border-radius: 10px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-  padding: 20px 25px;
-  max-width: 300px;
-  animation: fadeIn 1.2s ease 0.6s forwards;
-  opacity: 0;
-}
-.side-panel h2, .resources-panel h2 {
-  font-size: 18px;
-  color: var(--sp-blue);
-  margin-top: 0;
-  text-transform: uppercase;
-}
-.side-panel ul, .resources-panel ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-.side-panel li, .resources-panel li { margin: 10px 0; }
-.side-panel a, .resources-panel a {
-  color: #0078d4;
-  text-decoration: none;
-  font-weight: 500;
-}
-.side-panel a:hover, .resources-panel a:hover { color: #004578; text-decoration: underline; }
+.side-panel,.resources-panel{background:#fff;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,.1);padding:20px 25px;max-width:300px}
+.side-panel h2,.resources-panel h2{margin:0 0 10px 0;color:var(--sp-blue);font-size:18px;text-transform:uppercase}
+.side-panel ul,.resources-panel ul{list-style:none;padding:0;margin:0}
+.side-panel li,.resources-panel li{margin:10px 0}
+.side-panel a,.resources-panel a{color:var(--sp-blue);text-decoration:none;font-weight:500}
+.side-panel a:hover,.resources-panel a:hover{text-decoration:underline;color:var(--sp-blue-dark)}
 
-/* Floating Chat Assistant */
-.chat-float {
-  position: fixed;
-  bottom: 24px;
-  right: 24px;
-  width: 340px;
-  background: #ffffff;
-  border: 1px solid #e1dfdd;
-  border-radius: 12px;
-  box-shadow: 0 4px 18px rgba(0,0,0,0.2);
-  z-index: 99999;
-  overflow: hidden;
-  animation: fadeIn 1s ease 0.3s forwards;
+/* Floating chat (bottom-right) */
+.chat-float{
+  position:fixed;right:24px;bottom:24px;width:340px;background:#fff;
+  border:1px solid #e1dfdd;border-radius:12px;box-shadow:0 6px 24px rgba(0,0,0,.18);
+  z-index:10000;overflow:hidden;transition:all .3s ease;
 }
-.chat-header {
-  background: var(--sp-blue);
-  color: white;
-  padding: 10px 16px;
-  font-weight: 600;
+.chat-header{
+  background:var(--sp-blue);color:#fff;padding:10px 14px;font-weight:600;
+  display:flex;align-items:center;justify-content:space-between;
 }
-.chat-body {
-  height: 220px;
-  padding: 10px;
-  overflow-y: auto;
-  font-size: 14px;
+.chat-header button{
+  background:none;border:none;color:white;font-size:18px;cursor:pointer;
+  padding:0;margin:0;line-height:1;
 }
-.chat-input {
-  display: flex;
-  border-top: 1px solid #ddd;
-}
-.chat-input input {
-  flex: 1;
-  border: none;
-  padding: 10px;
-  font-size: 14px;
-  outline: none;
-}
-.chat-input button {
-  background: var(--sp-blue);
-  color: white;
-  border: none;
-  padding: 10px 16px;
-  cursor: pointer;
-}
-.chat-input button:hover { background: var(--sp-blue-dark); }
+.chat-body{height:220px;padding:12px;overflow:auto;font-size:14px}
+.chat-input{display:flex;border-top:1px solid #eee}
+.chat-input input{flex:1;border:none;padding:10px;font-size:14px;outline:none}
+.chat-input button{background:var(--sp-blue);color:#fff;border:none;padding:10px 14px;cursor:pointer}
+.chat-input button:hover{background:var(--sp-blue-dark)}
 
-footer {
-  background: var(--sp-gray-bg);
-  padding: 16px;
-  text-align: center;
-  font-size: 13px;
-  color: #605e5c;
+/* Collapsed chat */
+.chat-float.minimized{
+  width:60px;height:60px;border-radius:50%;padding:0;border:none;
+  background:var(--sp-blue);
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 4px 18px rgba(0,0,0,.25);
+  cursor:pointer;
 }
-@media (max-width: 1200px) {
-  main { flex-direction: column; align-items: center; }
-  .side-panel, .resources-panel { max-width: 90%; }
+.chat-float.minimized .chat-header,
+.chat-float.minimized .chat-body,
+.chat-float.minimized .chat-input{display:none;}
+.chat-float.minimized::after{
+  content:"💬";font-size:28px;color:#fff;
+}
+
+/* Tooltip (global, fixed) */
+#global-tooltip{
+  position:fixed;left:0;top:0;transform:translate(0,0);
+  background:#fff;color:#222;padding:12px 14px;border-radius:8px;
+  box-shadow:0 8px 28px rgba(0,0,0,.25);border:1px solid #e1dfdd;
+  font-size:15px;line-height:1.4;pointer-events:none;
+  max-width:320px;z-index:20000;opacity:0;
+  transition:opacity .12s ease,transform .08s ease;white-space:normal;
+}
+#global-tooltip::after{
+  content:"";position:absolute;width:0;height:0;
+  border-left:8px solid transparent;border-right:8px solid transparent;border-top:8px solid #fff;
+  left:50%;transform:translateX(-50%);bottom:-7px;
+  filter:drop-shadow(0 2px 4px rgba(0,0,0,.08));
+}
+
+/* Footer */
+footer{padding:16px;text-align:center;background:var(--sp-gray-bg);color:#605e5c;font-size:13px}
+
+/* Responsive */
+@media(max-width:1200px){
+  main{flex-direction:column;align-items:center}
+  .side-panel,.resources-panel{max-width:90%}
+  .chat-float{right:12px;bottom:12px;width:300px}
 }
 </style>
 </head>
-
 <body>
-<header>
-  <div class="header-left">
-    <img src="https://shiftup.sharepoint.com/:i:/r/sites/ICT-India-AI-SDLC-Hub/Media%20library/CPT%20AI%20SDLC%20SITE%20LOGO.png" alt="AI-SDLC Logo" />
-    <h1>ICT India AI SDLC Hub</h1>
-  </div>
-</header>
+  <header>
+    <div class="header-left">
+      <img src="https://shiftup.sharepoint.com/:i:/r/sites/ICT-India-AI-SDLC-Hub/Media%20library/CPT%20AI%20SDLC%20SITE%20LOGO.png" alt="AI-SDLC Logo" />
+      <h1>ICT India AI SDLC Hub</h1>
+    </div>
+  </header>
 
-<nav>
-  <fluent-breadcrumb>
-    <fluent-breadcrumb-item href="#">Home</fluent-breadcrumb-item>
-    <fluent-breadcrumb-item current>SDLC Hub</fluent-breadcrumb-item>
-  </fluent-breadcrumb>
-</nav>
+  <nav>
+    <fluent-breadcrumb>
+      <fluent-breadcrumb-item href="#">Home</fluent-breadcrumb-item>
+      <fluent-breadcrumb-item current>SDLC Hub</fluent-breadcrumb-item>
+    </fluent-breadcrumb>
+  </nav>
 
-<main>
-  <!-- Left Panel -->
-  <div class="side-panel">
-    <h2>Quick Links</h2>
-    <ul>
-      <li><a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/SitePages/About-AI-SDLC.aspx" target="_blank">About AI-SDLC</a></li>
-      <li><a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Lists/Design%20Accelerators/AllItems.aspx" target="_blank">Design Accelerators</a></li>
-      <li><a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Implementation%20Accelerators/Forms/AllItems.aspx" target="_blank">Implementation Tools</a></li>
-      <li><a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Testing%20%20Integration/Forms/AllItems.aspx" target="_blank">Testing & Integration</a></li>
-    </ul>
-  </div>
+  <main>
+    <div class="side-panel">
+      <h2>Quick Links</h2>
+      <ul>
+        <li><a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/SitePages/About-AI-SDLC.aspx" target="_blank">About AI-SDLC</a></li>
+        <li><a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Lists/Design%20Accelerators/AllItems.aspx" target="_blank">Design Accelerators</a></li>
+        <li><a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Implementation%20Accelerators/Forms/AllItems.aspx" target="_blank">Implementation Tools</a></li>
+        <li><a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Testing%20%20Integration/Forms/AllItems.aspx" target="_blank">Testing & Integration</a></li>
+      </ul>
+    </div>
 
-  <!-- Wheel Section -->
-  <div class="wheel-section">
-    <div class="wheel-container">
-      <div id="tooltip" class="tooltip"></div>
-      <svg viewBox="0 0 600 600">
-        <defs>
-          <linearGradient id="p1" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stop-color="#0078d4"/>
-            <stop offset="100%" stop-color="#004578"/>
-          </linearGradient>
-          <linearGradient id="p2" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stop-color="#107c10"/>
-            <stop offset="100%" stop-color="#004b1c"/>
-          </linearGradient>
-          <linearGradient id="p3" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stop-color="#ffaa44"/>
-            <stop offset="100%" stop-color="#d47f00"/>
-          </linearGradient>
-          <linearGradient id="p4" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stop-color="#d83b01"/>
-            <stop offset="100%" stop-color="#a4262c"/>
-          </linearGradient>
-        </defs>
+    <div class="wheel-section">
+      <div class="wheel-container">
+        <svg viewBox="0 0 600 600">
+          <defs>
+            <linearGradient id="p1" x1="0" x2="1"><stop offset="0" stop-color="#0078d4"/><stop offset="1" stop-color="#004578"/></linearGradient>
+            <linearGradient id="p2" x1="0" x2="1"><stop offset="0" stop-color="#107c10"/><stop offset="1" stop-color="#004b1c"/></linearGradient>
+            <linearGradient id="p3" x1="0" x2="1"><stop offset="0" stop-color="#ffaa44"/><stop offset="1" stop-color="#d47f00"/></linearGradient>
+            <linearGradient id="p4" x1="0" x2="1"><stop offset="0" stop-color="#d83b01"/><stop offset="1" stop-color="#a4262c"/></linearGradient>
+          </defs>
 
-        <!-- Numbered and Centered Wheel -->
-        <a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Planning%20%20Analysis/Forms/AllItems.aspx" target="_blank">
-          <path d="M300,300 L300,70 A230,230 0 0,1 520,190 Z" fill="url(#p1)" data-tip="🧠 Planning & Analysis: Define objectives and feasibility."/>
-          <text x="380" y="180" text-anchor="middle">
-            <tspan x="380" dy="0">1. Planning &</tspan>
-            <tspan x="380" dy="22">Analysis</tspan>
-          </text>
-        </a>
-        <a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Lists/Design%20Accelerators/AllItems.aspx" target="_blank">
-          <path d="M300,300 L520,190 A230,230 0 0,1 520,410 Z" fill="url(#p2)" data-tip="🎨 Design: Create system architecture and UI models."/>
-          <text x="450" y="300">2. Design</text>
-        </a>
-        <a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Implementation%20Accelerators/Forms/AllItems.aspx" target="_blank">
-          <path d="M300,300 L520,410 A230,230 0 0,1 300,530 Z" fill="url(#p3)" data-tip="⚙️ Implementation: Develop and integrate the solution."/>
-          <text x="360" y="460">3. Implementation</text>
-        </a>
-        <a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Testing%20%20Integration/Forms/AllItems.aspx" target="_blank">
-          <path d="M300,300 L300,530 A230,230 0 0,1 80,410 Z" fill="url(#p4)" data-tip="🧪 Testing & Integration: Validate quality and functionality."/>
-          <text x="240" y="460" text-anchor="middle">
-            <tspan x="240" dy="0">4. Testing &</tspan>
-            <tspan x="240" dy="22">Integration</tspan>
-          </text>
-        </a>
-        <a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Deployment%20%20Operations%20Accelerators/Forms/AllItems.aspx" target="_blank">
-          <path d="M300,300 L80,410 A230,230 0 0,1 80,190 Z" fill="url(#p3)" data-tip="🚀 Deployment: Launch and verify readiness."/>
-          <text x="170" y="300">5. Deployment</text>
-        </a>
-        <a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Maintenance/Forms/AllItems.aspx" target="_blank">
-          <path d="M300,300 L80,190 A230,230 0 0,1 300,70 Z" fill="url(#p4)" data-tip="🔧 Maintenance: Continuous support and improvement."/>
-          <text x="220" y="180">6. Maintenance</text>
-        </a>
+          <a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Planning%20%20Analysis/Forms/AllItems.aspx" target="_blank">
+            <path d="M300,300 L300,70 A230,230 0 0,1 520,190 Z" fill="url(#p1)" data-tip="🧠 Planning & Analysis: Define objectives and feasibility."/>
+            <text x="380" y="180"><tspan x="380" dy="0">1. Planning &</tspan><tspan x="380" dy="22">Analysis</tspan></text>
+          </a>
+          <a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Lists/Design%20Accelerators/AllItems.aspx" target="_blank">
+            <path d="M300,300 L520,190 A230,230 0 0,1 520,410 Z" fill="url(#p2)" data-tip="🎨 Design: Create system architecture and UI models."/>
+            <text x="450" y="300">2. Design</text>
+          </a>
+          <a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Implementation%20Accelerators/Forms/AllItems.aspx" target="_blank">
+            <path d="M300,300 L520,410 A230,230 0 0,1 300,530 Z" fill="url(#p3)" data-tip="⚙️ Implementation: Develop and integrate the solution."/>
+            <text x="360" y="460">3. Implementation</text>
+          </a>
+          <a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Testing%20%20Integration/Forms/AllItems.aspx" target="_blank">
+            <path d="M300,300 L300,530 A230,230 0 0,1 80,410 Z" fill="url(#p4)" data-tip="🧪 Testing & Integration: Validate quality and functionality."/>
+            <text x="240" y="460"><tspan x="240" dy="0">4. Testing &</tspan><tspan x="240" dy="22">Integration</tspan></text>
+          </a>
+          <a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Deployment%20%20Operations%20Accelerators/Forms/AllItems.aspx" target="_blank">
+            <path d="M300,300 L80,410 A230,230 0 0,1 80,190 Z" fill="url(#p3)" data-tip="🚀 Deployment: Launch and verify readiness."/>
+            <text x="170" y="300">5. Deployment</text>
+          </a>
+          <a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Maintenance/Forms/AllItems.aspx" target="_blank">
+            <path d="M300,300 L80,190 A230,230 0 0,1 300,70 Z" fill="url(#p4)" data-tip="🔧 Maintenance: Continuous support and improvement."/>
+            <text x="220" y="180">6. Maintenance</text>
+          </a>
 
-        <!-- Center Circle -->
-        <circle cx="300" cy="300" r="90" fill="#0078d4" stroke="#004578" stroke-width="3"></circle>
-        <text x="300" y="295" text-anchor="middle" font-size="22" fill="#fff">SDLC</text>
-        <text x="300" y="320" text-anchor="middle" font-size="16" fill="#fff">Phases</text>
-      </svg>
+          <circle cx="300" cy="300" r="90" class="center-circle"></circle>
+          <text x="300" y="295" font-size="22" fill="#fff">SDLC</text>
+          <text x="300" y="320" font-size="16" fill="#fff">Phases</text>
+        </svg>
+      </div>
+    </div>
+
+    <div class="resources-panel">
+      <h2>Resources Hub</h2>
+      <ul>
+        <li><a href="#">SDLC Governance Model</a></li>
+        <li><a href="#">Solution Accelerator Catalog</a></li>
+        <li><a href="#">Best Practices Guide</a></li>
+        <li><a href="#">Security & Compliance Docs</a></li>
+      </ul>
+    </div>
+  </main>
+
+  <!-- Floating chat -->
+  <div class="chat-float" id="chatBox">
+    <div class="chat-header">
+      AI-SDLC Assistant
+      <button id="minBtn" title="Minimize">−</button>
+    </div>
+    <div class="chat-body" id="chat-body">
+      <p><strong>Assistant:</strong> Hi 👋, I can help you explore SDLC resources. Try asking “Where can I find design templates?”</p>
+    </div>
+    <div class="chat-input">
+      <input id="chatInput" placeholder="Type your question..." />
+      <button onclick="sendMsg()">Ask</button>
     </div>
   </div>
 
-  <!-- Right Panel -->
-  <div class="resources-panel">
-    <h2>Resources Hub</h2>
-    <ul>
-      <li><a href="#">SDLC Governance Model</a></li>
-      <li><a href="#">Solution Accelerator Catalog</a></li>
-      <li><a href="#">Best Practices Guide</a></li>
-      <li><a href="#">Security & Compliance Docs</a></li>
-    </ul>
-  </div>
-</main>
-
-<!-- Floating Chat Assistant -->
-<div class="chat-float">
-  <div class="chat-header">AI-SDLC Assistant</div>
-  <div class="chat-body" id="chat-body">
-    <p><strong>Assistant:</strong> Hi 👋, I can help you explore SDLC resources. Try asking “Where can I find design templates?”</p>
-  </div>
-  <div class="chat-input">
-    <input id="chatInput" placeholder="Type your question..." />
-    <button onclick="sendMsg()">Ask</button>
-  </div>
-</div>
-
-<footer>
-  © 2025 ICT India – AI-SDLC Hub | Powered by SharePoint & Azure Static Web Apps
-</footer>
+  <footer>© 2025 ICT India – AI-SDLC Hub | Powered by SharePoint & Azure Static Web Apps</footer>
 
 <script>
-const tooltip = document.getElementById("tooltip");
-document.querySelectorAll("path").forEach(slice => {
-  slice.addEventListener("mousemove", e => {
-    tooltip.innerText = slice.dataset.tip;
-    tooltip.classList.add("show");
-    const rect = tooltip.getBoundingClientRect();
-    let left = e.pageX + 20;
-    if (left + rect.width > window.innerWidth - 40) left = e.pageX - rect.width - 20;
-    let top = e.pageY - 50;
-    if (top < 20) top = e.pageY + 20;
-    tooltip.style.left = left + "px";
-    tooltip.style.top = top + "px";
+// Tooltip logic
+(function(){
+  const tooltip=document.createElement('div');
+  tooltip.id='global-tooltip';
+  document.body.appendChild(tooltip);
+  function showTip(html,x,y){
+    tooltip.innerHTML=html;tooltip.style.opacity='1';
+    const pad=12;
+    requestAnimationFrame(()=>{
+      const r=tooltip.getBoundingClientRect();
+      let left=x+18;if(left+r.width>window.innerWidth-pad)left=x-r.width-18;
+      if(left<pad)left=pad;
+      let top=y-r.height-18;if(top<12)top=y+18;
+      tooltip.style.left=left+'px';tooltip.style.top=top+'px';
+    });
+  }
+  function hideTip(){tooltip.style.opacity='0';}
+  document.querySelectorAll('svg path[data-tip]').forEach(s=>{
+    s.addEventListener('mousemove',e=>showTip(s.dataset.tip,e.clientX,e.clientY));
+    s.addEventListener('mouseleave',hideTip);
   });
-  slice.addEventListener("mouseleave", () => tooltip.classList.remove("show"));
-});
+  window.addEventListener('scroll',hideTip);
+})();
 
-// Simple Assistant
-function sendMsg() {
-  const body = document.getElementById("chat-body");
-  const input = document.getElementById("chatInput");
-  if (!input.value.trim()) return;
-  const userQ = document.createElement("p");
-  userQ.innerHTML = "<strong>You:</strong> " + input.value;
-  body.appendChild(userQ);
-  const reply = document.createElement("p");
-  reply.innerHTML = "<strong>Assistant:</strong> Let me guide you – check the ‘Resources Hub’ or related phase for details.";
-  setTimeout(() => {
+// Chat assistant
+function sendMsg(){
+  const body=document.getElementById('chat-body');
+  const input=document.getElementById('chatInput');
+  const txt=input.value.trim();if(!txt)return;
+  const you=document.createElement('p');you.innerHTML='<strong>You:</strong> '+txt;
+  body.appendChild(you);
+  setTimeout(()=>{
+    const reply=document.createElement('p');
+    reply.innerHTML='<strong>Assistant:</strong> Let me help — check the Resources Hub or phase-specific library.';
     body.appendChild(reply);
-    body.scrollTop = body.scrollHeight;
-  }, 700);
-  input.value = "";
+    body.scrollTop=body.scrollHeight;
+  },600);
+  input.value='';
 }
+document.getElementById('chatInput').addEventListener('keypress',e=>{if(e.key==='Enter')sendMsg();});
+
+// Minimize/Expand chat
+const chat=document.getElementById('chatBox');
+const minBtn=document.getElementById('minBtn');
+minBtn.addEventListener('click',()=>{
+  chat.classList.add('minimized');
+});
+chat.addEventListener('click',()=>{
+  if(chat.classList.contains('minimized')){
+    chat.classList.remove('minimized');
+  }
+});
 </script>
 </body>
 </html>
