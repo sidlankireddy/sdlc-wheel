@@ -59,7 +59,7 @@ body {
   position:absolute;
   top:50%; left:50%;
   transform:translate(-50%,-50%);
-  width:200px; height:200px;
+  width:190px; height:190px;
   border-radius:50%;
   background:linear-gradient(145deg,#0096ff 0%,#0078d4 50%,#005a9e 100%);
   color:#fff; text-align:center; font-weight:600;
@@ -171,7 +171,7 @@ body {
 </div>
 
 <script>
-// ✅ Exact polar coordinate placement for perfect centering
+// ✅ Perfect polar coordinate placement — corrected radius & upward offset
 const phases = [
   {name:"Planning<br>&amp; Analysis", angle:30, color:"#4F8EF7", link:"https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Planning-Analysis", tip:"Plan requirements & business goals"},
   {name:"Design", angle:90, color:"#F3B23A", link:"https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Design%20Accelerators/Forms/AllItems.aspx", tip:"Create wireframes & technical design"},
@@ -182,15 +182,17 @@ const phases = [
 ];
 
 const wheel = document.getElementById('wheel');
-const radius = 560 / 2 - 100; // perfectly balanced from center
+const radius = 182; // adjusted for visual wedge center
+const yCorrection = -3; // move all circles slightly upward for perfect balance
+
 phases.forEach(p => {
   const el = document.createElement('div');
   el.className = 'phase-label';
   el.style.background = p.color;
 
-  const angleRad = (p.angle - 90) * Math.PI / 180; // rotate top reference
+  const angleRad = (p.angle - 90) * Math.PI / 180; // top reference
   const x = radius * Math.cos(angleRad);
-  const y = radius * Math.sin(angleRad);
+  const y = radius * Math.sin(angleRad) + yCorrection;
 
   el.style.left = `calc(50% + ${x}px)`;
   el.style.top = `calc(50% + ${y}px)`;
