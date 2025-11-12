@@ -171,17 +171,17 @@ body {
 
 <script>
 const phases = [
-  {name:"Planning<br>&amp; Analysis", angle:30, color:"#4F8EF7", link:"https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Planning-Analysis", tip:"Plan requirements & business goals"},
-  {name:"Design", angle:90, color:"#F3B23A", link:"https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Design%20Accelerators/Forms/AllItems.aspx", tip:"Create wireframes & technical design"},
+  {name:"Planning<br>&amp; Analysis", angle:20, color:"#4F8EF7", link:"https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Planning-Analysis", tip:"Plan requirements & business goals"},
+  {name:"Design", angle:85, color:"#F3B23A", link:"https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Design%20Accelerators/Forms/AllItems.aspx", tip:"Create wireframes & technical design"},
   {name:"Implementation", angle:150, color:"#F97A3C", link:"https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Implementation%20Accelerators/Forms/AllItems.aspx", tip:"Develop and integrate components"},
-  {name:"Testing<br>&amp; Integration", angle:210, color:"#FFD43B", link:"https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Testing%20%20Integration/Forms/AllItems.aspx", tip:"Validate functionality & performance"},
-  {name:"Deployment", angle:270, color:"#4DC981", link:"https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Deployment%20%20Operations%20Accelerators/Forms/AllItems.aspx", tip:"Release to production environments"},
+  {name:"Testing<br>&amp; Integration", angle:220, color:"#FFD43B", link:"https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Testing%20%20Integration/Forms/AllItems.aspx", tip:"Validate functionality & performance"},
+  {name:"Deployment", angle:285, color:"#4DC981", link:"https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Deployment%20%20Operations%20Accelerators/Forms/AllItems.aspx", tip:"Release to production environments"},
   {name:"Maintenance", angle:330, color:"#8C8CFF", link:"https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Maintenance/Forms/AllItems.aspx", tip:"Monitor, optimize & enhance systems"}
 ];
 
 const wheel = document.getElementById('wheel');
 const radius = 195;
-const yCorrection = -6;
+const yCorrection = -3;
 
 phases.forEach(p => {
   const el = document.createElement('div');
@@ -203,3 +203,4 @@ phases.forEach(p => {
 
 </body>
 </html>
+
