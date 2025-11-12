@@ -182,25 +182,26 @@ const phases = [
 const wheel = document.getElementById('wheel');
 const radius = 180;
 
-// per-phase radial offsets (positive = farther from center)
+// 🎯 Adjust how far from the center each small circle sits
 const radiusAdjustments = {
-  "Planning":       +38,  // upper-right
-  "Design":         +40,  // right
-  "Implementation": +42,  // lower-right
-  "Testing":        +42,  // lower-left
-  "Deployment":     +40,  // left
-  "Maintenance":    +40   // top-left (your reference)
+  "Planning":       +38,   // slightly inward
+  "Design":         +42,   // just a touch outward to align with Testing
+  "Implementation": +44,   // farther out — to match Testing’s visual radius
+  "Testing":        +40,   // your perfect reference
+  "Deployment":     +42,   // balanced against Testing
+  "Maintenance":    +40    // same curve balance as top-left
 };
 
-// per-phase vertical corrections (negative = move upward)
+// 🎯 Adjust vertical position (negative = move upward)
 const yAdjustments = {
-  "Planning":       -36,  // top-right: mild upward correction
-  "Design":         -30,  // right: slightly up to match visual line
-  "Implementation": -56,  // bottom-right: lift more to align arc
-  "Testing":        -50,  // bottom-left: similar lift
-  "Deployment":     -44,  // left: small lift
-  "Maintenance":    -50   // top-left: your reference
+  "Planning":       -32,   // mild lift
+  "Design":         -36,   // minor lift to center in wedge
+  "Implementation": -46,   // stronger lift, bottom wedge
+  "Testing":        -50,   // perfect reference — kept same
+  "Deployment":     -46,   // same lift as Implementation to mirror
+  "Maintenance":    -44    // small correction up from current
 };
+
 
 
 
@@ -231,6 +232,7 @@ el.style.top  = `calc(50% + ${y}px)`;
 
 </body>
 </html>
+
 
 
 
