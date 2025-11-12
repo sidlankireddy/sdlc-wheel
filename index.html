@@ -7,8 +7,8 @@
 <style>
 :root {
   --wheel-size: 520px;
-  --label-size: 70px;
-  --label-radius: 190px;
+  --label-size: 75px;
+  --label-radius: 175px; /* fixed inward */
   --font: "Segoe UI", Arial, sans-serif;
 }
 body {
@@ -46,6 +46,7 @@ body {
   animation: settle 1s ease-out;
 }
 @keyframes settle { from{transform:rotate(10deg)scale(.98)} to{transform:rotate(0)scale(1)} }
+
 .center {
   position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
   width: 180px; height: 180px; border-radius: 50%;
@@ -60,17 +61,22 @@ body {
 .phase-label {
   position: absolute; top: 50%; left: 50%;
   width: var(--label-size); height: var(--label-size);
-  margin: -35px;
+  margin: calc(var(--label-size) / -2);
   border-radius: 50%;
-  color: #fff; font-size: 12px; font-weight: 600; text-align: center;
+  font-size: 13px; font-weight: 600; text-align: center;
   display: flex; align-items: center; justify-content: center;
-  cursor: pointer; transition: transform .25s, filter .25s, box-shadow .25s;
+  cursor: pointer;
+  color: #fff;
+  background-clip: padding-box;
+  border: 2px solid rgba(255,255,255,0.4);
+  box-shadow: inset 0 0 6px rgba(255,255,255,0.3);
+  transition: transform .25s, filter .25s, box-shadow .25s;
   z-index: 3;
 }
 .phase-label:hover {
-  transform: scale(1.1);
-  filter: brightness(1.25);
-  box-shadow: 0 0 20px rgba(0,0,0,.25);
+  transform: scale(1.08);
+  filter: brightness(1.15);
+  box-shadow: 0 0 18px rgba(0,0,0,0.25);
 }
 
 /* Tooltip styling */
@@ -92,13 +98,13 @@ body {
 }
 .phase-label:hover .tooltip { opacity: 1; }
 
-/* Phase positioning - aligned midpoints */
-.phase1 { background:#4F8EF7; transform:translate(-50%,-50%) rotate(30deg) translateY(-190px) rotate(-30deg); }
-.phase2 { background:#F3B23A; transform:translate(-50%,-50%) rotate(90deg) translateY(-190px) rotate(-90deg); }
-.phase3 { background:#F97A3C; transform:translate(-50%,-50%) rotate(150deg) translateY(-190px) rotate(-150deg); }
-.phase4 { background:#FFD43B; color:#222; transform:translate(-50%,-50%) rotate(210deg) translateY(-190px) rotate(-210deg); }
-.phase5 { background:#4DC981; transform:translate(-50%,-50%) rotate(270deg) translateY(-190px) rotate(-270deg); }
-.phase6 { background:#8C8CFF; transform:translate(-50%,-50%) rotate(330deg) translateY(-190px) rotate(-330deg); }
+/* aligned midpoints inside circle */
+.phase1 { background:#4F8EF7; transform:translate(-50%,-50%) rotate(30deg) translateY(-175px) rotate(-30deg); }
+.phase2 { background:#F3B23A; transform:translate(-50%,-50%) rotate(90deg) translateY(-175px) rotate(-90deg); }
+.phase3 { background:#F97A3C; transform:translate(-50%,-50%) rotate(150deg) translateY(-175px) rotate(-150deg); }
+.phase4 { background:#FFD43B; color:#222; transform:translate(-50%,-50%) rotate(210deg) translateY(-175px) rotate(-210deg); }
+.phase5 { background:#4DC981; transform:translate(-50%,-50%) rotate(270deg) translateY(-175px) rotate(-270deg); }
+.phase6 { background:#8C8CFF; transform:translate(-50%,-50%) rotate(330deg) translateY(-175px) rotate(-330deg); }
 
 .panel {
   background:#fff;border-radius:12px;box-shadow:0 6px 20px rgba(0,0,0,.05);
@@ -125,32 +131,27 @@ body {
         <div class="subtitle">Hover a phase — click to open library</div>
       </div>
 
-      <!-- Phase Labels with Tooltips -->
+      <!-- Phase Labels -->
       <div class="phase-label phase1" onclick="window.open('https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Planning-Analysis','_blank')">
         Planning<br>&amp; Analysis
         <div class="tooltip">Plan requirements & business goals</div>
       </div>
-
       <div class="phase-label phase2" onclick="window.open('https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Design%20Accelerators/Forms/AllItems.aspx','_blank')">
         Design
         <div class="tooltip">Create wireframes & technical design</div>
       </div>
-
       <div class="phase-label phase3" onclick="window.open('https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Implementation%20Accelerators/Forms/AllItems.aspx','_blank')">
         Implementation
         <div class="tooltip">Develop and integrate components</div>
       </div>
-
       <div class="phase-label phase4" onclick="window.open('https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Testing%20%20Integration/Forms/AllItems.aspx','_blank')">
         Testing<br>&amp; Integration
         <div class="tooltip">Validate functionality & performance</div>
       </div>
-
       <div class="phase-label phase5" onclick="window.open('https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Deployment%20%20Operations%20Accelerators/Forms/AllItems.aspx','_blank')">
         Deployment
         <div class="tooltip">Release to production environments</div>
       </div>
-
       <div class="phase-label phase6" onclick="window.open('https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Maintenance/Forms/AllItems.aspx','_blank')">
         Maintenance
         <div class="tooltip">Monitor, optimize & enhance systems</div>
