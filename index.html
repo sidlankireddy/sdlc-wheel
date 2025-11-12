@@ -19,7 +19,7 @@
 body {
   margin: 0;
   font-family: var(--sp-font);
-  background: linear-gradient(180deg, var(--sp-gray-bg) 0%, #e1e1e1 100%);
+  background: linear-gradient(180deg, #f9f9f9 0%, #e8e8e8 100%);
   color: #323130;
   display: flex;
   flex-direction: column;
@@ -28,7 +28,7 @@ body {
 
 /* Header */
 header {
-  background: var(--sp-blue);
+  background: linear-gradient(90deg, var(--sp-blue), #005a9e);
   color: white;
   padding: 12px 28px;
   display: flex;
@@ -42,7 +42,7 @@ header {
   gap: 10px;
 }
 .header-left img {
-  height: 42px;
+  height: 36px;
   width: auto;
 }
 .header-left h1 {
@@ -65,6 +65,10 @@ header {
   font-size: 15px;
   outline: none;
   width: 180px;
+}
+.search-bar:hover, .search-bar:focus-within {
+  background: #ffffff40;
+  transition: background 0.2s ease;
 }
 
 /* Breadcrumb */
@@ -99,8 +103,8 @@ main {
   align-items: center;
 }
 .wheel-container {
-  width: 600px;
-  height: 600px;
+  width: 560px;
+  height: 560px;
   position: relative;
   animation: fadeIn 1.2s ease 0.3s forwards;
   opacity: 0;
@@ -116,12 +120,12 @@ path:hover { transform: scale(1.05); filter: drop-shadow(0 0 10px rgba(0,120,212
 .center-circle { fill: var(--sp-blue); stroke: var(--sp-blue-dark); stroke-width: 3px; }
 
 text {
-  fill: #f9f9f9cc;
+  fill: #ffffff;
   font-size: 20px;
   font-weight: 600;
   text-anchor: middle;
   pointer-events: none;
-  white-space: pre-line;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.4);
 }
 
 /* Tooltip */
@@ -156,9 +160,8 @@ text {
   font-size: 18px;
   color: var(--sp-blue);
   margin-top: 0;
+  text-transform: uppercase;
 }
-
-/* Links */
 .side-panel ul, .resources-panel ul {
   list-style: none;
   padding: 0;
@@ -174,12 +177,13 @@ text {
 
 /* AI Assistant */
 .ai-widget {
-  margin-top: 30px;
+  margin-top: 25px;
   background: #f9fafb;
   border: 1px solid #e1dfdd;
   border-radius: 10px;
   padding: 16px;
   box-shadow: 0 1px 6px rgba(0,0,0,0.1);
+  margin-bottom: 20px;
 }
 .ai-widget h3 {
   color: var(--sp-blue-dark);
@@ -205,8 +209,10 @@ text {
 .ai-input input {
   flex-grow: 1;
   padding: 8px;
-  border: 1px solid #ccc;
+  border: 1px solid #c8c6c4;
   border-radius: 6px;
+  height: 34px;
+  font-size: 14px;
 }
 .ai-input button {
   background: var(--sp-blue);
@@ -225,7 +231,7 @@ footer {
   font-size: 13px;
   color: #605e5c;
 }
-@media (max-width: 900px) {
+@media (max-width: 1200px) {
   main { flex-direction: column; align-items: center; }
   .side-panel, .resources-panel { max-width: 90%; }
 }
@@ -254,7 +260,7 @@ footer {
 <main>
   <!-- Left Panel -->
   <div class="side-panel">
-    <h2><fluent-icon name="apps"></fluent-icon> Quick Links</h2>
+    <h2>Quick Links</h2>
     <ul>
       <li><a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/SitePages/About-AI-SDLC.aspx" target="_blank">About AI-SDLC</a></li>
       <li><a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Lists/Design%20Accelerators/AllItems.aspx" target="_blank">Design Accelerators</a></li>
@@ -263,7 +269,7 @@ footer {
     </ul>
   </div>
 
-  <!-- Wheel -->
+  <!-- Wheel Section -->
   <div class="wheel-section">
     <div class="wheel-container">
       <div id="tooltip" class="tooltip"></div>
@@ -287,10 +293,10 @@ footer {
           </linearGradient>
         </defs>
 
-        <!-- Slices -->
+        <!-- Slices with Corrected Labels -->
         <a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Planning%20%20Analysis/Forms/AllItems.aspx" target="_blank">
           <path d="M300,300 L300,70 A230,230 0 0,1 520,190 Z" fill="url(#p1)" data-tip="🧠 Planning & Analysis: Define objectives and feasibility."/>
-          <text x="410" y="120">Planning &amp;{'\n'}Analysis</text>
+          <text x="410" y="120"><tspan x="410" dy="0">Planning &</tspan><tspan x="410" dy="22">Analysis</tspan></text>
         </a>
         <a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Lists/Design%20Accelerators/AllItems.aspx" target="_blank">
           <path d="M300,300 L520,190 A230,230 0 0,1 520,410 Z" fill="url(#p2)" data-tip="🎨 Design: Create system architecture and UI models."/>
@@ -302,7 +308,7 @@ footer {
         </a>
         <a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Testing%20%20Integration/Forms/AllItems.aspx" target="_blank">
           <path d="M300,300 L300,530 A230,230 0 0,1 80,410 Z" fill="url(#p4)" data-tip="🧪 Testing & Integration: Validate quality and functionality."/>
-          <text x="200" y="490">Testing &amp;{'\n'}Integration</text>
+          <text x="200" y="490"><tspan x="200" dy="0">Testing &</tspan><tspan x="200" dy="22">Integration</tspan></text>
         </a>
         <a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Deployment%20%20Operations%20Accelerators/Forms/AllItems.aspx" target="_blank">
           <path d="M300,300 L80,410 A230,230 0 0,1 80,190 Z" fill="url(#p3)" data-tip="🚀 Deployment: Launch and verify readiness."/>
@@ -321,7 +327,7 @@ footer {
 
   <!-- Right Panel -->
   <div class="resources-panel">
-    <h2><fluent-icon name="library"></fluent-icon> Resources Hub</h2>
+    <h2>Resources Hub</h2>
     <ul>
       <li><a href="#">SDLC Governance Model</a></li>
       <li><a href="#">Solution Accelerator Catalog</a></li>
@@ -330,7 +336,7 @@ footer {
     </ul>
 
     <div class="ai-widget">
-      <h3><fluent-icon name="bot"></fluent-icon> AI-SDLC Assistant</h3>
+      <h3>AI-SDLC Assistant</h3>
       <div class="ai-chat" id="ai-chat">
         <div class="chat-bubble assistant"><strong>Assistant:</strong> Hi 👋, I can help you explore SDLC resources. Try asking, “Where can I find design templates?”</div>
       </div>
@@ -340,7 +346,7 @@ footer {
       </div>
     </div>
 
-    <h2><fluent-icon name="contact"></fluent-icon> Contact</h2>
+    <h2>Contact</h2>
     <p>AI-SDLC CoE Team<br><a href="mailto:ictindia@stellantis.com">ictindia@stellantis.com</a></p>
   </div>
 </main>
@@ -351,7 +357,6 @@ footer {
 
 <!-- ============= JAVASCRIPT ============= -->
 <script>
-/* TOOLTIP */
 const tooltip = document.getElementById("tooltip");
 document.querySelectorAll("path").forEach(slice => {
   slice.addEventListener("mousemove", e => {
@@ -368,9 +373,12 @@ document.querySelectorAll("path").forEach(slice => {
   slice.addEventListener("mouseleave", () => tooltip.classList.remove("show"));
 });
 
-/* AI Assistant */
+/* =======================
+   AI-SDLC Assistant Logic
+   ======================= */
 const chat = document.getElementById("ai-chat");
 const input = document.getElementById("userInput");
+
 function createBubble(text, sender) {
   const bubble = document.createElement("div");
   bubble.classList.add("chat-bubble", sender);
@@ -379,6 +387,7 @@ function createBubble(text, sender) {
   chat.scrollTop = chat.scrollHeight;
   return bubble;
 }
+
 function typeText(text, bubble, speed = 25) {
   return new Promise(resolve => {
     let i = 0;
@@ -393,40 +402,8 @@ function typeText(text, bubble, speed = 25) {
     type();
   });
 }
+
 function getReply(msg) {
   const query = msg.toLowerCase();
   if (query.includes("design")) return `🎨 Explore <a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Lists/Design%20Accelerators/AllItems.aspx" target="_blank">Design Accelerators</a>.`;
-  if (query.includes("implementation") || query.includes("develop")) return `⚙️ Visit <a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Implementation%20Accelerators/Forms/AllItems.aspx" target="_blank">Implementation Accelerators</a>.`;
-  if (query.includes("testing") || query.includes("integration")) return `🧪 Check <a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Testing%20%20Integration/Forms/AllItems.aspx" target="_blank">Testing & Integration</a>.`;
-  if (query.includes("deployment") || query.includes("launch")) return `🚀 See <a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Deployment%20%20Operations%20Accelerators/Forms/AllItems.aspx" target="_blank">Deployment Resources</a>.`;
-  if (query.includes("maintenance") || query.includes("support")) return `🔧 Visit <a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Maintenance/Forms/AllItems.aspx" target="_blank">Maintenance Hub</a>.`;
-  if (query.includes("planning") || query.includes("analysis")) return `🧠 Explore <a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Planning%20%20Analysis/Forms/AllItems.aspx" target="_blank">Planning Resources</a>.`;
-  if (query.includes("accelerator")) return `⚡ Access <a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Lists/Design%20Accelerators/AllItems.aspx" target="_blank">SDLC Accelerator Catalog</a>.`;
-  if (query.includes("contact") || query.includes("email")) return `📬 Reach <a href="mailto:ictindia@stellantis.com">ictindia@stellantis.com</a>`;
-  if (query.includes("help") || query.includes("hello") || query.includes("hi")) return `👋 Ask me: “Show testing accelerators” or “Where are design templates?”`;
-  return `🤖 I'm still learning. Try asking about Design, Testing, or Deployment.`;
-}
-async function sendMessage() {
-  const msg = input.value.trim();
-  if (!msg) return;
-  createBubble(`<strong>You:</strong> ${msg}`, "user");
-  input.value = "";
-  await new Promise(r => setTimeout(r, 700));
-  const replyBubble = createBubble("<strong>Assistant:</strong> ", "assistant");
-  const replyText = getReply(msg);
-  await typeText(`<strong>Assistant:</strong> ${replyText}`, replyBubble, 25);
-}
-input.addEventListener("keypress", e => { if (e.key === "Enter") sendMessage(); });
-
-/* Chat bubble styling */
-const style = document.createElement("style");
-style.textContent = `
-.chat-bubble { max-width: 90%; margin: 6px 0; padding: 10px 14px; border-radius: 10px; line-height: 1.4; font-size: 14px; box-shadow: 0 1px 4px rgba(0,0,0,0.1); word-break: break-word; }
-.chat-bubble.user { background: #e1dfdd; align-self: flex-end; border-top-right-radius: 0; }
-.chat-bubble.assistant { background: #0078d4; color: white; border-top-left-radius: 0; }
-.chat-bubble a { color: #fff; text-decoration: underline; }
-`;
-document.head.appendChild(style);
-</script>
-</body>
-</html>
+  if (query.includes("implementation") || query.includes("develop")) return `⚙️ Visit <a href="https://shiftup.sharepoint.com/sites/ICT-India
