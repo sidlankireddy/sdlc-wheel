@@ -3,110 +3,186 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>AI-SDLC | Circular Flow (Final)</title>
+<title>AI-SDLC Journey Wheel — ICT India Hub</title>
 
-<!-- Fluent web components (icons, breadcrumb if needed) -->
+<!-- Fluent Web Components (icons if needed) -->
 <script type="module" src="https://unpkg.com/@fluentui/web-components"></script>
 
 <style>
   :root{
-    --sp-blue: #0078d4;
-    --sp-blue-dark:#004578;
-    --bg: #f6f8fa;
-    --panel: #ffffff;
-    --muted: #6b6b6b;
-    --accent: #005a9e;
-    --font: "Segoe UI","Segoe UI Web (West European)",Arial, sans-serif;
+    --accent:#0078d4;
+    --accent-dark:#005aa0;
+    --panel:#fff;
+    --muted:#6b6b6b;
+    --font: "Segoe UI", "Segoe UI Web (West European)", Arial, sans-serif;
   }
-  html,body{height:100%;margin:0;background:radial-gradient(circle at 20% 10%, #ffffff 0%, #eef2f6 40%, #f3f6f9 100%);font-family:var(--font);color:#212121}
-  header{background:linear-gradient(90deg,var(--sp-blue),#0563c1);padding:12px 20px;color:#fff;display:flex;align-items:center;gap:12px;box-shadow:0 2px 10px rgba(0,0,0,.08)}
-  header img{height:36px}
-  header h1{margin:0;font-size:20px;font-weight:600}
-  nav{background:var(--panel);padding:10px 20px;border-bottom:1px solid #e6e6e6}
 
-  main{display:flex;gap:28px;align-items:flex-start;justify-content:center;padding:34px 28px;flex-wrap:wrap}
+  html,body{
+    height:100%;
+    margin:0;
+    font-family:var(--font);
+    background:linear-gradient(180deg,#fbfdff,#eef3f8);
+    color:#222;
+  }
 
-  /* small left/right panels */
-  .panel{background:var(--panel);border-radius:10px;padding:18px 20px;box-shadow:0 8px 28px rgba(16,24,40,.06);max-width:300px}
-  .panel h2{margin:0 0 12px 0;color:var(--accent);text-transform:uppercase;font-size:14px;letter-spacing:.8px}
+  /* Header */
+  header{
+    display:flex;align-items:center;gap:12px;padding:12px 20px;background:linear-gradient(90deg,var(--accent),var(--accent-dark));color:#fff;box-shadow:0 2px 6px rgba(0,0,0,0.08)
+  }
+  header img { height:36px; }
+  header h1 { margin:0;font-size:20px;font-weight:600 }
 
-  /* FLOW container */
-  .flow-wrap{position:relative;width:760px;max-width:94vw;height:760px;display:block;margin:auto;align-self:center}
-  .flow-bg{position:absolute;inset:0;border-radius:18px;background:linear-gradient(180deg, rgba(255,255,255,0.8), rgba(250,252,255,0.9));box-shadow:0 14px 40px rgba(2,6,23,0.06);pointer-events:none}
-  /* center card */
-  .center-card{
+  nav { background:var(--panel); padding:10px 20px; border-bottom:1px solid #e6e6e6 }
+
+  main{
+    display:flex;
+    gap:28px;
+    align-items:flex-start;
+    justify-content:center;
+    padding:28px;
+    flex-wrap:wrap;
+  }
+
+  .panel{
+    background:var(--panel);
+    border-radius:10px;
+    padding:18px;
+    box-shadow:0 10px 30px rgba(16,24,40,0.06);
+    max-width:300px;
+  }
+  .panel h2{margin:0 0 12px 0;color:var(--accent);text-transform:uppercase;font-size:14px}
+
+  /* Flow / wheel area */
+  .wheel-stage{
+    position:relative;
+    width:820px;
+    height:820px;
+    max-width:92vw;
+    background:transparent;
+    border-radius:12px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow:visible;
+  }
+
+  /* Decorative card behind wheel so it looks like an image in page */
+  .wheel-card{
+    position:absolute;inset:0;border-radius:12px;padding:18px;
+    pointer-events:none; /* let hotspots capture pointer */
+    display:flex;align-items:center;justify-content:center;
+  }
+
+  /* The "image-like" artwork: inline svg art */
+  #wheel-art{
+    width:760px;height:760px;
+    pointer-events:none; /* don't block hotspot clicks */
+    border-radius:600px;
+    box-shadow:0 30px 80px rgba(6,22,60,0.08);
+    background:linear-gradient(180deg, rgba(255,255,255,0.95), rgba(250,252,255,0.98));
+  }
+
+  /* Center tile (dynamic) sits above the image */
+  .center-tile{
     position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
-    width:220px;height:220px;border-radius:50%;
-    background:linear-gradient(160deg,#0e84d9,#005aa0);display:flex;flex-direction:column;align-items:center;justify-content:center;color:white;
-    box-shadow:0 18px 46px rgba(4,22,63,0.22);z-index:40;transition:all .24s ease;
+    width:240px;height:240px;border-radius:50%;
+    background:linear-gradient(160deg,var(--accent),var(--accent-dark));
+    color:white;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    box-shadow:0 18px 46px rgba(4,22,63,0.22);z-index:30;pointer-events:auto;
+    transition:transform .22s ease, box-shadow .22s ease;
   }
-  .center-card h3{margin:0;font-size:20px;font-weight:700}
-  .center-card p{margin:6px 0 0 0;font-size:13px;color:rgba(255,255,255,.93);opacity:.95}
+  .center-tile h3{margin:0;font-size:20px;font-weight:700}
+  .center-tile p{margin:8px 12px 0 12px;font-size:13px;text-align:center;opacity:0.95}
 
-  /* chat floating: keep below tooltip */
-  .chat{
-    position:fixed;right:18px;bottom:18px;width:360px;background:#fff;border-radius:12px;box-shadow:0 14px 44px rgba(2,6,23,.12);z-index:120;
-    overflow:hidden;display:flex;flex-direction:column;font-size:14px
+  /* Hotspots (HTML buttons) — overlayed on the image in absolute positions */
+  .hotspot{
+    position:absolute;
+    width:110px;height:110px;border-radius:50%;
+    background:var(--accent);color:#fff;display:flex;flex-direction:column;
+    align-items:center;justify-content:center;text-align:center;font-weight:700;
+    border:4px solid rgba(255,255,255,0.15);
+    cursor:pointer;z-index:32;transition:transform .22s ease,box-shadow .22s ease,background .18s;
+    box-shadow:0 8px 20px rgba(4,22,63,0.12);
   }
-  .chat .head{background:var(--sp-blue);color:#fff;padding:10px 12px;font-weight:600;display:flex;justify-content:space-between;align-items:center}
-  .chat .body{padding:12px;height:220px;overflow:auto}
-  .chat .input{display:flex;gap:8px;padding:12px;border-top:1px solid #eee}
-  .chat .input input{flex:1;padding:10px;border-radius:6px;border:1px solid #e6e6e6}
-  .chat .input button{padding:10px 12px;background:var(--sp-blue);color:#fff;border:none;border-radius:6px;cursor:pointer}
+  .hotspot span { display:block;font-size:13px;font-weight:600;opacity:0.95 }
+  .hotspot small { display:block;font-size:11px;opacity:0.9;margin-top:4px;font-weight:500 }
 
-  /* tooltip: very high z-index and fixed positioning */
-  #global-tooltip{
-    position:fixed;left:0;top:0;opacity:0;pointer-events:none;transition:opacity .12s ease,transform .08s ease;
-    background:#fff;padding:12px 14px;border-radius:8px;box-shadow:0 16px 40px rgba(2,6,23,.18);border:1px solid #e9f0f8;
-    z-index:99999;max-width:320px;font-size:14px;color:#111;
+  .hotspot:focus{outline:none;transform:translateY(-6px) scale(1.06);box-shadow:0 16px 40px rgba(4,22,63,0.22)}
+  .hotspot:hover{transform:translateY(-6px) scale(1.06);box-shadow:0 18px 46px rgba(4,22,63,0.28);background:var(--accent-dark)}
+
+  /* positions around the wheel (percentages tuned for this artwork)
+     You can tweak these values if you adjust the art image.
+  */
+  /* 1 - Top-right */
+  .hotspot.h1{ left:72%; top:18%; transform:translate(-50%,-50%); }
+  /* 2 - Right-lower */
+  .hotspot.h2{ left:78%; top:42%; transform:translate(-50%,-50%); }
+  /* 3 - Bottom */
+  .hotspot.h3{ left:50%; top:82%; transform:translate(-50%,-50%); }
+  /* 4 - Bottom-left */
+  .hotspot.h4{ left:22%; top:70%; transform:translate(-50%,-50%); }
+  /* 5 - Left-upper */
+  .hotspot.h5{ left:14%; top:44%; transform:translate(-50%,-50%); }
+  /* 6 - Top-left */
+  .hotspot.h6{ left:24%; top:18%; transform:translate(-50%,-50%); }
+
+  /* tooltip fixed (always on top) */
+  #tooltip{
+    position:fixed;left:0;top:0;opacity:0;pointer-events:none;
+    background:#fff;color:#111;padding:12px 14px;border-radius:10px;max-width:300px;
+    box-shadow:0 18px 50px rgba(2,6,23,0.18);border:1px solid #e9f3fb;z-index:99999;
+    transition:opacity .12s ease, transform .06s ease;
   }
-  #global-tooltip::after{content:"";position:absolute;bottom:-7px;left:50%;transform:translateX(-50%);border-left:7px solid transparent;border-right:7px solid transparent;border-top:7px solid #fff;filter:drop-shadow(0 3px 8px rgba(0,0,0,.06))}
+  #tooltip::after{content:"";position:absolute;bottom:-8px;left:50%;transform:translateX(-50%);border-left:8px solid transparent;border-right:8px solid transparent;border-top:8px solid #fff;filter:drop-shadow(0 4px 12px rgba(0,0,0,0.06))}
 
-  /* SVG ring sizing */
-  svg.ring-svg{width:100%;height:100%;display:block;z-index:30}
-  /* slice hover visual - handled via CSS + JS */
-  .slice{cursor:pointer;transition:transform .22s cubic-bezier(.2,.88,.2,1),filter .18s;}
-  .slice:hover{transform:translateY(-6px);filter:drop-shadow(0 10px 28px rgba(0,76,145,0.18));}
-
-  /* label style - drawn as SVG text but we style here */
-  .label-main{font-weight:700;fill:#fff;stroke:rgba(0,0,0,0.15);stroke-width:.6}
-  .label-sub{font-weight:600;fill:#dff0ff;font-size:12px}
-
-  /* focus outline for keyboard */
-  .slice:focus{outline:none;filter:drop-shadow(0 12px 30px rgba(0,80,160,0.18));transform:translateY(-6px);}
-
-  /* responsive */
-  @media (max-width:1100px){
-    .flow-wrap{width:92vw;height:92vw}
-    .center-card{width:180px;height:180px}
-    .chat{width:300px}
+  /* assistant chat */
+  .assistant{
+    position:fixed;right:18px;bottom:18px;width:360px;background:#fff;border-radius:12px;box-shadow:0 18px 44px rgba(2,6,23,0.12);z-index:120;
+    overflow:hidden;font-size:14px;
   }
-  @media (max-width:700px){
-    main{padding:16px;flex-direction:column;align-items:center}
-    .flow-wrap{width:94vw;height:94vw}
+  .assistant .head{background:var(--accent);color:#fff;padding:10px 12px;font-weight:700;display:flex;justify-content:space-between;align-items:center}
+  .assistant .body{padding:12px;height:220px;overflow:auto}
+  .assistant .input{display:flex;gap:8px;padding:12px;border-top:1px solid #f0f0f0}
+  .assistant .input input{flex:1;padding:10px;border:1px solid #e6e6e6;border-radius:6px}
+  .assistant .input button{padding:10px 12px;background:var(--accent);color:#fff;border:none;border-radius:6px;cursor:pointer}
+  .assistant.min{width:64px;height:64px;border-radius:50%;display:flex;align-items:center;justify-content:center}
+
+  footer{padding:14px;text-align:center;color:var(--muted);font-size:13px}
+
+  /* responsive adjustments */
+  @media(max-width:1000px){
+    .wheel-stage{width:92vw;height:92vw}
+    #wheel-art{width:86vw;height:86vw}
+    .hotspot{width:86px;height:86px}
+    .center-tile{width:200px;height:200px}
+    .assistant{width:300px}
+  }
+  @media(max-width:640px){
+    main{padding:12px}
     .panel{max-width:92vw}
-    .chat{right:12px;bottom:12px}
+    .assistant{right:10px;bottom:10px;width:270px}
   }
 </style>
 </head>
 <body>
 
 <header>
-  <img src="https://shiftup.sharepoint.com/:i:/r/sites/ICT-India-AI-SDLC-Hub/Media%20library/CPT%20AI%20SDLC%20SITE%20LOGO.png" alt="AI-SDLC" />
+  <img src="https://shiftup.sharepoint.com/:i:/r/sites/ICT-India-AI-SDLC-Hub/Media%20library/CPT%20AI%20SDLC%20SITE%20LOGO.png" alt="AI-SDLC logo" />
   <h1>ICT India AI SDLC Hub</h1>
 </header>
 
 <nav>
   <fluent-breadcrumb>
     <fluent-breadcrumb-item href="#">Home</fluent-breadcrumb-item>
-    <fluent-breadcrumb-item current>SDLC Flow</fluent-breadcrumb-item>
+    <fluent-breadcrumb-item current>SDLC Journey</fluent-breadcrumb-item>
   </fluent-breadcrumb>
 </nav>
 
 <main>
+  <!-- left quick links -->
   <aside class="panel" aria-labelledby="ql">
     <h2 id="ql">Quick Links</h2>
-    <ul style="padding-left:0;margin:0;color:var(--accent);line-height:1.9">
+    <ul style="padding-left:0;margin:0;line-height:1.9;color:var(--accent)">
       <li><a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/SitePages/About-AI-SDLC.aspx" target="_blank">About AI-SDLC</a></li>
       <li><a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Lists/Design%20Accelerators/AllItems.aspx" target="_blank">Design Accelerators</a></li>
       <li><a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Implementation%20Accelerators/Forms/AllItems.aspx" target="_blank">Implementation Tools</a></li>
@@ -114,186 +190,143 @@
     </ul>
   </aside>
 
-  <!-- FLOW -->
-  <section class="flow-wrap" aria-label="SDLC circular flow">
-    <div class="flow-bg" aria-hidden="true"></div>
+  <!-- wheel / image art with hotspots -->
+  <section class="wheel-stage" aria-label="SDLC journey">
+    <div class="wheel-card">
+      <!-- Inline SVG artwork: looks like an image (rich, brandable). Replace/replace this whole svg with your designer's PNG if you prefer -->
+      <svg id="wheel-art" viewBox="0 0 760 760" role="img" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+        <!-- background soft radial -->
+        <defs>
+          <radialGradient id="bg" cx="30%" cy="20%">
+            <stop offset="0%" stop-color="#ffffff"/>
+            <stop offset="60%" stop-color="#f8fbfd"/>
+            <stop offset="100%" stop-color="#eef6fb"/>
+          </radialGradient>
+          <linearGradient id="segA" x1="0" x2="1"><stop offset="0" stop-color="#0e78d6"/><stop offset="1" stop-color="#005aa0"/></linearGradient>
+          <linearGradient id="segB" x1="0" x2="1"><stop offset="0" stop-color="#0f8b3b"/><stop offset="1" stop-color="#03642a"/></linearGradient>
+          <linearGradient id="segC" x1="0" x2="1"><stop offset="0" stop-color="#f3a83f"/><stop offset="1" stop-color="#d47f00"/></linearGradient>
+          <linearGradient id="segD" x1="0" x2="1"><stop offset="0" stop-color="#d6451e"/><stop offset="1" stop-color="#a22010"/></linearGradient>
+          <filter id="softShadow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="10" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        </defs>
 
-    <!-- center dynamic card -->
-    <div class="center-card" id="centerCard" aria-live="polite" role="region" aria-label="Phase details">
-      <h3 id="centerTitle">AI-SDLC Wheel</h3>
-      <p id="centerSub">Hover a phase to preview details</p>
+        <!-- outer decorative ring -->
+        <g opacity="0.14">
+          <circle cx="380" cy="380" r="320" fill="none" stroke="#cfe9ff" stroke-width="34"/>
+        </g>
+
+        <!-- large subtle segments to give image-like richness (soft fills, not exact slices) -->
+        <g opacity="0.98">
+          <path d="M380 380 L380 60 A320 320 0 0 1 700 240 L380 380 Z" fill="url(#segA)" opacity="0.95" filter="url(#softShadow)"/>
+          <path d="M380 380 L700 240 A320 320 0 0 1 700 520 L380 380 Z" fill="url(#segB)" opacity="0.95" filter="url(#softShadow)"/>
+          <path d="M380 380 L700 520 A320 320 0 0 1 380 700 L380 380 Z" fill="url(#segC)" opacity="0.95" filter="url(#softShadow)"/>
+          <path d="M380 380 L380 700 A320 320 0 0 1 60 520 L380 380 Z" fill="url(#segD)" opacity="0.95" filter="url(#softShadow)"/>
+          <path d="M380 380 L60 520 A320 320 0 0 1 60 240 L380 380 Z" fill="url(#segC)" opacity="0.95" filter="url(#softShadow)"/>
+          <path d="M380 380 L60 240 A320 320 0 0 1 380 60 L380 380 Z" fill="url(#segD)" opacity="0.95" filter="url(#softShadow)"/>
+        </g>
+
+        <!-- decorative inner ring -->
+        <circle cx="380" cy="380" r="220" fill="none" stroke="#ffffff" stroke-opacity="0.12" stroke-width="12"/>
+
+        <!-- directional arcs / arrows (subtle) -->
+        <g fill="none" stroke="#ffffff" stroke-opacity="0.12" stroke-width="2">
+          <path d="M620 190 A260 260 0 0 1 679 380" marker-end="url(#m1)" />
+          <path d="M680 420 A260 260 0 0 1 620 570" marker-end="url(#m1)" />
+        </g>
+
+        <!-- center decorative highlight -->
+        <circle cx="380" cy="380" r="92" fill="#ffffff" opacity="0.06"/>
+      </svg>
     </div>
 
-    <!-- SVG ring: slices and labels -->
-    <svg class="ring-svg" viewBox="0 0 800 800" role="img" aria-label="SDLC circular flow diagram">
-      <defs>
-        <linearGradient id="g1" x1="0" x2="1"><stop offset="0" stop-color="#0e78d6"/><stop offset="1" stop-color="#005aa0"/></linearGradient>
-        <linearGradient id="g2" x1="0" x2="1"><stop offset="0" stop-color="#0e8a3b"/><stop offset="1" stop-color="#03642a"/></linearGradient>
-        <linearGradient id="g3" x1="0" x2="1"><stop offset="0" stop-color="#f6a623"/><stop offset="1" stop-color="#d47f00"/></linearGradient>
-        <linearGradient id="g4" x1="0" x2="1"><stop offset="0" stop-color="#d6451e"/><stop offset="1" stop-color="#a22010"/></linearGradient>
-        <filter id="softGlow" x="-50%" y="-50%" width="200%" height="200%">
-          <feGaussianBlur stdDeviation="6" result="b"/>
-          <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
-        </filter>
-        <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto">
-          <path d="M 0 0 L 10 5 L 0 10 z" fill="#fff" opacity="0.6"></path>
-        </marker>
-      </defs>
+    <!-- center tile (updates) -->
+    <div class="center-tile" id="center">
+      <h3 id="centerTitle">AI-SDLC Wheel</h3>
+      <p id="centerSub">Hover the phases to preview details and open resources.</p>
+      <!-- optional CTA -->
+      <a id="centerOpen" href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/SitePages/About-AI-SDLC.aspx" target="_blank" style="display:none;margin-top:10px;padding:8px 12px;background:rgba(255,255,255,0.14);border-radius:8px;color:#fff;font-weight:600;text-decoration:none">Open</a>
+    </div>
 
-      <!-- outer faint ring path for the visual circle - sits behind slices -->
-      <g transform="translate(0,0)" aria-hidden="true">
-        <circle cx="400" cy="400" r="300" fill="none" stroke="rgba(0,112,188,0.08)" stroke-width="32"></circle>
-      </g>
+    <!-- clickable hotspots that overlay the art. Modify coordinates with CSS classes above if you update art -->
+    <button class="hotspot h1" aria-label="Planning & Analysis" data-title="1. Planning & Analysis" data-desc="Define objectives, stakeholders, scope and feasibility." data-url="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Planning%20%20Analysis/Forms/AllItems.aspx">
+      1 <span>Planning</span>
+      <small>Analysis</small>
+    </button>
 
-      <!-- SLICES (6 sectors) - each is an arc path
-           Using radius 300, center at (400,400). The arcs are drawn to visually show segments
-           We will use transparent fills for ring look, but clickable areas are the slices.
-      -->
-      <g id="slicesGroup" transform="">
-        <!-- slice 1: 0° to 60° (top-right) -->
-        <path id="slice1" class="slice" tabindex="0"
-          d="M400 400 L400 100 A300 300 0 0 1 646.4 153.6 L400 400 Z"
-          fill="url(#g1)" data-title="1. Planning & Analysis" data-desc="Define objectives, stakeholders, feasibility and scope."
-          data-url="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Planning%20%20Analysis/Forms/AllItems.aspx"></path>
+    <button class="hotspot h2" aria-label="Design" data-title="2. Design" data-desc="Architecture, UI/UX, design accelerators and templates." data-url="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Lists/Design%20Accelerators/AllItems.aspx">
+      2 <span>Design</span>
+      <small>Accelerators</small>
+    </button>
 
-        <!-- slice 2: 60° to 120° (right-lower) -->
-        <path id="slice2" class="slice" tabindex="0"
-          d="M400 400 L646.4 153.6 A300 300 0 0 1 646.4 646.4 L400 400 Z"
-          fill="url(#g2)" data-title="2. Design" data-desc="Create architecture, UI/UX models, design accelerators."
-          data-url="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Lists/Design%20Accelerators/AllItems.aspx"></path>
+    <button class="hotspot h3" aria-label="Implementation" data-title="3. Implementation" data-desc="Develop, integrate, CICD, and release engineering." data-url="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Implementation%20Accelerators/Forms/AllItems.aspx">
+      3 <span>Implementation</span>
+      <small></small>
+    </button>
 
-        <!-- slice 3: 120° to 180° (bottom-right) -->
-        <path id="slice3" class="slice" tabindex="0"
-          d="M400 400 L646.4 646.4 A300 300 0 0 1 400 700 L400 400 Z"
-          fill="url(#g3)" data-title="3. Implementation" data-desc="Develop, integrate and build the solution."
-          data-url="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Implementation%20Accelerators/Forms/AllItems.aspx"></path>
+    <button class="hotspot h4" aria-label="Testing & Integration" data-title="4. Testing & Integration" data-desc="Automation, QA, system and integration testing." data-url="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Testing%20%20Integration/Forms/AllItems.aspx">
+      4 <span>Testing</span>
+      <small>Integration</small>
+    </button>
 
-        <!-- slice 4: 180° to 240° (bottom-left) -->
-        <path id="slice4" class="slice" tabindex="0"
-          d="M400 400 L400 700 A300 300 0 0 1 153.6 646.4 L400 400 Z"
-          fill="url(#g4)" data-title="4. Testing & Integration" data-desc="QA, automation, system integration testing."
-          data-url="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Testing%20%20Integration/Forms/AllItems.aspx"></path>
+    <button class="hotspot h5" aria-label="Deployment" data-title="5. Deployment" data-desc="Release management, infra, monitoring and rollback." data-url="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Deployment%20%20Operations%20Accelerators/Forms/AllItems.aspx">
+      5 <span>Deployment</span>
+      <small></small>
+    </button>
 
-        <!-- slice 5: 240° to 300° (left-upper) -->
-        <path id="slice5" class="slice" tabindex="0"
-          d="M400 400 L153.6 646.4 A300 300 0 0 1 153.6 153.6 L400 400 Z"
-          fill="url(#g3)" data-title="5. Deployment" data-desc="Release, deployment pipelines, monitoring."
-          data-url="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Deployment%20%20Operations%20Accelerators/Forms/AllItems.aspx"></path>
+    <button class="hotspot h6" aria-label="Maintenance" data-title="6. Maintenance" data-desc="Support, SLA, enhancements and retrospectives." data-url="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Maintenance/Forms/AllItems.aspx">
+      6 <span>Maintenance</span>
+      <small></small>
+    </button>
 
-        <!-- slice 6: 300° to 360° (top-left) -->
-        <path id="slice6" class="slice" tabindex="0"
-          d="M400 400 L153.6 153.6 A300 300 0 0 1 400 100 L400 400 Z"
-          fill="url(#g4)" data-title="6. Maintenance" data-desc="Support, enhancements and continuous improvement."
-          data-url="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Maintenance/Forms/AllItems.aspx"></path>
-      </g>
-
-      <!-- subtle flow arrow ring (light, behind slices to avoid obscuring labels) -->
-      <g aria-hidden="true" opacity="0.16" fill="none" stroke="#fff" stroke-width="2" >
-        <path d="M400 98 A300 300 0 0 1 697 400" marker-end="url(#arrow)"></path>
-        <path d="M697 400 A300 300 0 0 1 400 702" marker-end="url(#arrow)"></path>
-        <path d="M400 702 A300 300 0 0 1 103 400" marker-end="url(#arrow)"></path>
-        <path d="M103 400 A300 300 0 0 1 400 98" marker-end="url(#arrow)"></path>
-      </g>
-
-      <!-- OUTSIDE LABELS - placed around using polar positions for readability
-           Labels are placed outside radius (approx r=370)
-      -->
-      <g font-family="Segoe UI, Arial" font-size="16" fill="#fff" text-anchor="middle" >
-        <!-- 1: angle ~ 30deg -->
-        <g transform="translate(400,400)">
-          <g transform="translate(320,-150)">
-            <text class="label-main">1. Planning</text>
-            <text class="label-sub" y="18" style="font-size:12px">Analysis</text>
-          </g>
-        </g>
-
-        <!-- 2: angle ~ 90deg -->
-        <g transform="translate(400,400)">
-          <g transform="translate(360,40)">
-            <text class="label-main">2. Design</text>
-            <text class="label-sub" y="18" style="font-size:12px">Accelerators</text>
-          </g>
-        </g>
-
-        <!-- 3: angle ~ 150deg -->
-        <g transform="translate(400,400)">
-          <g transform="translate(140,240)">
-            <text class="label-main">3. Implementation</text>
-          </g>
-        </g>
-
-        <!-- 4: angle ~ 210deg -->
-        <g transform="translate(400,400)">
-          <g transform="translate(80,140)">
-            <text class="label-main">4. Testing</text>
-            <text class="label-sub" y="18" style="font-size:12px">Integration</text>
-          </g>
-        </g>
-
-        <!-- 5: angle ~ 250deg -->
-        <g transform="translate(400,400)">
-          <g transform="translate(120,-20)">
-            <text class="label-main">5. Deployment</text>
-          </g>
-        </g>
-
-        <!-- 6: angle ~ 320deg -->
-        <g transform="translate(400,400)">
-          <g transform="translate(300,-60)">
-            <text class="label-main">6. Maintenance</text>
-          </g>
-        </g>
-      </g>
-
-    </svg>
   </section>
 
-  <aside class="panel" aria-labelledby="rh">
-    <h2 id="rh">Resources Hub</h2>
-    <ul style="padding-left:0;margin:0;color:var(--accent);line-height:1.9">
+  <!-- right resources & assistant preview -->
+  <aside class="panel" aria-labelledby="resources">
+    <h2 id="resources">Resources Hub</h2>
+    <ul style="padding-left:0;margin:0;line-height:1.9;color:var(--accent)">
       <li><a href="#" target="_blank">SDLC Governance Model</a></li>
       <li><a href="#" target="_blank">Solution Accelerator Catalog</a></li>
       <li><a href="#" target="_blank">Best Practices Guide</a></li>
       <li><a href="#" target="_blank">Security & Compliance Docs</a></li>
     </ul>
+
+    <div style="margin-top:18px;">
+      <h3 style="margin:6px 0 8px 0;color:var(--accent)">AI-SDLC Assistant</h3>
+      <div style="background:#f7fbff;border-radius:8px;padding:10px;border:1px solid #eef8ff;color:#0b2b4a">
+        <strong>Assistant:</strong> Hi 👋 — try “Show design templates” or click a phase to open its library.
+      </div>
+    </div>
   </aside>
 </main>
 
-<!-- global tooltip -->
-<div id="global-tooltip" role="status" aria-live="polite"></div>
+<!-- Tooltip (fixed & topmost) -->
+<div id="tooltip" role="status" aria-live="polite"></div>
 
-<!-- chat assistant (docked) -->
-<div class="chat" id="chat">
-  <div class="head">
-    AI-SDLC Assistant
-    <button id="chatMin" aria-label="Minimize" style="background:none;border:none;color:#fff;font-size:20px;cursor:pointer">−</button>
-  </div>
-  <div class="body" id="chatBody">
-    <p style="margin:0"><strong>Assistant:</strong> Hi — I can help you find SDLC resources. Try: "Show design templates".</p>
-  </div>
-  <div class="input">
-    <input id="chatInput" placeholder="Type a question..." aria-label="Ask AI-SDLC Assistant">
-    <button id="chatSend">Ask</button>
-  </div>
+<!-- Floating assistant chat -->
+<div class="assistant" id="assistant">
+  <div class="head">AI-SDLC Assistant <button id="minChat" aria-label="Minimize" style="background:none;border:none;color:#fff;font-size:18px;cursor:pointer">−</button></div>
+  <div class="body" id="chatBody"><p style="margin:0"><strong>Assistant:</strong> Hi — I can help you find SDLC resources. Try: "Show design templates".</p></div>
+  <div class="input"><input id="chatInput" placeholder="Ask the assistant..."><button id="sendBtn">Ask</button></div>
 </div>
 
-<footer style="text-align:center;padding:12px 10px;color:var(--muted);font-size:13px">
-  © 2025 ICT India — AI-SDLC Hub
-</footer>
+<footer>© 2025 ICT India — AI-SDLC Hub</footer>
 
 <script>
-/* Utilities to place tooltip and show/hide */
-const tooltip = document.getElementById('global-tooltip');
-function showTooltip(text, x, y){
+/* -------------------------
+   Tooltip and center-tile logic
+   ------------------------- */
+const tooltip = document.getElementById('tooltip');
+const centerTitle = document.getElementById('centerTitle');
+const centerSub = document.getElementById('centerSub');
+const centerOpen = document.getElementById('centerOpen');
+
+function showTip(text, x, y){
   tooltip.textContent = text;
   tooltip.style.opacity = '1';
-  // clamp inside viewport
-  const pad = 14;
-  const maxW = window.innerWidth - pad;
   requestAnimationFrame(()=>{
     const r = tooltip.getBoundingClientRect();
-    let left = x + 18;
-    if (left + r.width > maxW) left = x - r.width - 18;
+    const pad = 10;
+    let left = x + 14;
+    if (left + r.width > window.innerWidth - pad) left = x - r.width - 14;
     if (left < pad) left = pad;
     let top = y - r.height - 18;
     if (top < 12) top = y + 18;
@@ -301,106 +334,107 @@ function showTooltip(text, x, y){
     tooltip.style.top = top + 'px';
   });
 }
-function hideTooltip(){ tooltip.style.opacity = '0'; }
+function hideTip(){ tooltip.style.opacity = '0'; }
 
-/* Center card updates and mouse interactions for slices */
-const centerTitle = document.getElementById('centerTitle') || document.querySelector('#centerCard h3');
-const centerSub = document.getElementById('centerSub') || document.querySelector('#centerCard p');
+/* bind hotspots */
+document.querySelectorAll('.hotspot').forEach((btn)=>{
+  const title = btn.dataset.title || '';
+  const desc = btn.dataset.desc || '';
+  const url = btn.dataset.url || '';
 
-const slices = Array.from(document.querySelectorAll('path.slice'));
-slices.forEach(s=>{
-  s.addEventListener('mouseenter', (e)=>{
-    const t = s.getAttribute('data-title') || '';
-    const d = s.getAttribute('data-desc') || '';
-    centerTitle.textContent = t;
-    centerSub.textContent = d;
-    showTooltip(d, e.clientX, e.clientY);
-    // subtle highlight (increase brightness)
-    s.style.filter = 'brightness(1.06) drop-shadow(0 10px 28px rgba(0,76,145,0.18))';
-    s.style.transform = 'translateY(-6px)';
+  btn.addEventListener('mouseenter', (e)=>{
+    centerTitle.textContent = title;
+    centerSub.textContent = desc;
+    centerOpen.style.display = url ? 'inline-block' : 'none';
+    centerOpen.href = url || '#';
+    showTip(desc, e.clientX, e.clientY);
+    btn.classList.add('active');
   });
-  s.addEventListener('mousemove', (e)=> showTooltip(s.getAttribute('data-desc')||'', e.clientX, e.clientY));
-  s.addEventListener('mouseleave', ()=>{
+  btn.addEventListener('mousemove', (e)=> showTip(btn.dataset.desc || '', e.clientX, e.clientY) );
+  btn.addEventListener('mouseleave', ()=>{
     centerTitle.textContent = 'AI-SDLC Wheel';
-    centerSub.textContent = 'Hover a phase to preview details';
-    hideTooltip();
-    s.style.filter = '';
-    s.style.transform = '';
+    centerSub.textContent = 'Hover the phases to preview details and open resources.';
+    centerOpen.style.display = 'none';
+    hideTip();
+    btn.classList.remove('active');
   });
 
-  s.addEventListener('click', ()=>{
-    const url = s.getAttribute('data-url');
-    if(url) window.open(url,'_blank');
+  // click behavior
+  btn.addEventListener('click', ()=> {
+    if (url) window.open(url, '_blank');
   });
 
-  // keyboard: focus + Enter to open
-  s.addEventListener('focus', (e)=>{
-    const t = s.getAttribute('data-title') || '';
-    const d = s.getAttribute('data-desc') || '';
-    centerTitle.textContent = t;
-    centerSub.textContent = d;
-  });
-  s.addEventListener('keydown', (e)=>{
-    if(e.key === 'Enter') {
-      const url = s.getAttribute('data-url');
-      if(url) window.open(url,'_blank');
+  // keyboard support
+  btn.setAttribute('tabindex', '0');
+  btn.addEventListener('keydown', (e)=>{
+    if (e.key === 'Enter') {
+      if (url) window.open(url, '_blank');
     }
-    if(e.key === 'Escape') { s.blur(); hideTooltip(); }
   });
 });
 
-/* Chat minimize behavior */
-const chatBox = document.getElementById('chat');
-document.getElementById('chatMin').addEventListener('click', (ev)=>{
-  ev.stopPropagation();
-  chatBox.classList.toggle('minimized');
-  if(chatBox.classList.contains('minimized')){
-    chatBox.style.width = '64px';
-    chatBox.style.height = '64px';
-    chatBox.style.borderRadius = '50%';
-    // hide internal areas by CSS? we maintain minimalism
-  }else{
-    chatBox.style.width = '';
-    chatBox.style.height = '';
-    chatBox.style.borderRadius = '12px';
+/* hide tooltip on scroll/resize */
+window.addEventListener('scroll', hideTip, {passive:true});
+window.addEventListener('resize', hideTip);
+
+/* -------------------------
+   Chat behavior (basic)
+   ------------------------- */
+const assistant = document.getElementById('assistant');
+const minChat = document.getElementById('minChat');
+const chatBody = document.getElementById('chatBody');
+const sendBtn = document.getElementById('sendBtn');
+const chatInput = document.getElementById('chatInput');
+
+minChat.addEventListener('click', (e)=>{
+  e.stopPropagation();
+  assistant.classList.toggle('min');
+  if(assistant.classList.contains('min')){
+    assistant.style.width = '64px';
+    assistant.style.height = '64px';
+    assistant.style.borderRadius = '50%';
+    // minimal: don't collapse content nodes in this simple version
+  } else {
+    assistant.style.width = '';
+    assistant.style.height = '';
+    assistant.style.borderRadius = '12px';
   }
 });
-chatBox.addEventListener('click', (e)=>{
-  if(chatBox.classList.contains('minimized')) {
-    chatBox.classList.remove('minimized');
-    chatBox.style.width = '';
-    chatBox.style.height = '';
-    chatBox.style.borderRadius = '12px';
+
+assistant.addEventListener('click', ()=>{
+  if (assistant.classList.contains('min')){
+    assistant.classList.remove('min');
+    assistant.style.width = '';
+    assistant.style.height = '';
+    assistant.style.borderRadius = '12px';
   }
 });
 
-/* Chat send */
-document.getElementById('chatSend').addEventListener('click', ()=>{
-  const input = document.getElementById('chatInput');
-  const text = input.value.trim();
-  if(!text) return;
-  const body = document.getElementById('chatBody');
-  const p = document.createElement('p'); p.style.margin = '8px 0'; p.innerHTML = `<strong>You:</strong> ${escapeHtml(text)}`;
-  body.appendChild(p);
-  input.value = '';
-  setTimeout(()=> {
-    const r = document.createElement('p'); r.style.margin = '8px 0'; r.innerHTML = `<strong>Assistant:</strong> I suggest checking the resources panel or open the phase directly.`;
-    body.appendChild(r);
-    body.scrollTop = body.scrollHeight;
-  }, 600);
+sendBtn.addEventListener('click', ()=>{
+  const txt = chatInput.value.trim();
+  if(!txt) return;
+  const p = document.createElement('p');
+  p.style.margin='8px 0';
+  p.innerHTML = `<strong>You:</strong> ${escapeHtml(txt)}`;
+  chatBody.appendChild(p);
+  chatInput.value='';
+  setTimeout(()=>{
+    const r = document.createElement('p');
+    r.style.margin='8px 0';
+    r.innerHTML = `<strong>Assistant:</strong> Try opening the phase libraries using the wheel or ask "Where are design templates?"`;
+    chatBody.appendChild(r);
+    chatBody.scrollTop = chatBody.scrollHeight;
+  },650);
 });
 
-/* small helper */
-function escapeHtml(s){ return s.replace(/[&<>]/g, c=> ({'&':'&amp;','<':'&lt;','>':'&gt;'}[c])); }
+function escapeHtml(s){ return s.replace(/[&<>]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[c])); }
 
-/* ensure tooltip hides on scroll/resize */
-window.addEventListener('scroll', hideTooltip, {passive:true});
-window.addEventListener('resize', hideTooltip);
-
-/* small keyboard accessibility hint: tab order */
-document.addEventListener('DOMContentLoaded', ()=>{
-  // ensure slices are in tab order
-  slices.forEach((s,i)=> s.setAttribute('tabindex', '0'));
+/* Accessibility: focus outline on keyboard tab for hotspots */
+document.addEventListener('keydown', (e)=>{
+  if(e.key === 'Tab') {
+    // small enhancement: ensure tooltip gets hidden when pressing tab between things
+    hideTip();
+  }
 });
 </script>
 </body>
