@@ -1,219 +1,99 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>AI-SDLC Flow | ICT India Hub</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>AI-SDLC | Circular Flow (Final)</title>
 
-<!-- Fluent UI Web Components -->
+<!-- Fluent web components (icons, breadcrumb if needed) -->
 <script type="module" src="https://unpkg.com/@fluentui/web-components"></script>
 
 <style>
-:root {
-  --sp-blue: #0078d4;
-  --sp-blue-dark: #004578;
-  --bg: #f7f8fa;
-  --panel: #ffffff;
-  --muted: #6b6b6b;
-  --font: "Segoe UI", Arial, sans-serif;
-}
+  :root{
+    --sp-blue: #0078d4;
+    --sp-blue-dark:#004578;
+    --bg: #f6f8fa;
+    --panel: #ffffff;
+    --muted: #6b6b6b;
+    --accent: #005a9e;
+    --font: "Segoe UI","Segoe UI Web (West European)",Arial, sans-serif;
+  }
+  html,body{height:100%;margin:0;background:radial-gradient(circle at 20% 10%, #ffffff 0%, #eef2f6 40%, #f3f6f9 100%);font-family:var(--font);color:#212121}
+  header{background:linear-gradient(90deg,var(--sp-blue),#0563c1);padding:12px 20px;color:#fff;display:flex;align-items:center;gap:12px;box-shadow:0 2px 10px rgba(0,0,0,.08)}
+  header img{height:36px}
+  header h1{margin:0;font-size:20px;font-weight:600}
+  nav{background:var(--panel);padding:10px 20px;border-bottom:1px solid #e6e6e6}
 
-html, body {
-  height: 100%;
-  margin: 0;
-  font-family: var(--font);
-  background: radial-gradient(circle at top center,#fafdff,#e9edf3);
-  color: #222;
-  overflow-x: hidden;
-}
+  main{display:flex;gap:28px;align-items:flex-start;justify-content:center;padding:34px 28px;flex-wrap:wrap}
 
-header {
-  background: linear-gradient(90deg,var(--sp-blue),#005a9e);
-  color: white;
-  padding: 12px 22px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.12);
-}
-header img { height: 38px; }
-header h1 { font-size: 20px; margin: 0; font-weight: 600; }
+  /* small left/right panels */
+  .panel{background:var(--panel);border-radius:10px;padding:18px 20px;box-shadow:0 8px 28px rgba(16,24,40,.06);max-width:300px}
+  .panel h2{margin:0 0 12px 0;color:var(--accent);text-transform:uppercase;font-size:14px;letter-spacing:.8px}
 
-nav {
-  background: var(--panel);
-  padding: 10px 22px;
-  border-bottom: 1px solid #e6e6e6;
-}
+  /* FLOW container */
+  .flow-wrap{position:relative;width:760px;max-width:94vw;height:760px;display:block;margin:auto;align-self:center}
+  .flow-bg{position:absolute;inset:0;border-radius:18px;background:linear-gradient(180deg, rgba(255,255,255,0.8), rgba(250,252,255,0.9));box-shadow:0 14px 40px rgba(2,6,23,0.06);pointer-events:none}
+  /* center card */
+  .center-card{
+    position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+    width:220px;height:220px;border-radius:50%;
+    background:linear-gradient(160deg,#0e84d9,#005aa0);display:flex;flex-direction:column;align-items:center;justify-content:center;color:white;
+    box-shadow:0 18px 46px rgba(4,22,63,0.22);z-index:40;transition:all .24s ease;
+  }
+  .center-card h3{margin:0;font-size:20px;font-weight:700}
+  .center-card p{margin:6px 0 0 0;font-size:13px;color:rgba(255,255,255,.93);opacity:.95}
 
-main {
-  display: flex;
-  gap: 28px;
-  align-items: flex-start;
-  justify-content: center;
-  padding: 36px;
-  flex-wrap: wrap;
-}
+  /* chat floating: keep below tooltip */
+  .chat{
+    position:fixed;right:18px;bottom:18px;width:360px;background:#fff;border-radius:12px;box-shadow:0 14px 44px rgba(2,6,23,.12);z-index:120;
+    overflow:hidden;display:flex;flex-direction:column;font-size:14px
+  }
+  .chat .head{background:var(--sp-blue);color:#fff;padding:10px 12px;font-weight:600;display:flex;justify-content:space-between;align-items:center}
+  .chat .body{padding:12px;height:220px;overflow:auto}
+  .chat .input{display:flex;gap:8px;padding:12px;border-top:1px solid #eee}
+  .chat .input input{flex:1;padding:10px;border-radius:6px;border:1px solid #e6e6e6}
+  .chat .input button{padding:10px 12px;background:var(--sp-blue);color:#fff;border:none;border-radius:6px;cursor:pointer}
 
-.panel {
-  background: var(--panel);
-  border-radius: 10px;
-  padding: 18px 20px;
-  box-shadow: 0 6px 22px rgba(16,24,40,0.06);
-  max-width: 300px;
-}
-.panel h2 {
-  margin: 0 0 10px 0;
-  color: var(--sp-blue);
-  font-size: 16px;
-  text-transform: uppercase;
-  letter-spacing: 0.6px;
-}
+  /* tooltip: very high z-index and fixed positioning */
+  #global-tooltip{
+    position:fixed;left:0;top:0;opacity:0;pointer-events:none;transition:opacity .12s ease,transform .08s ease;
+    background:#fff;padding:12px 14px;border-radius:8px;box-shadow:0 16px 40px rgba(2,6,23,.18);border:1px solid #e9f0f8;
+    z-index:99999;max-width:320px;font-size:14px;color:#111;
+  }
+  #global-tooltip::after{content:"";position:absolute;bottom:-7px;left:50%;transform:translateX(-50%);border-left:7px solid transparent;border-right:7px solid transparent;border-top:7px solid #fff;filter:drop-shadow(0 3px 8px rgba(0,0,0,.06))}
 
-/* ========================== Ring Flow ============================= */
-.flow-container {
-  position: relative;
-  width: 650px;
-  height: 650px;
-  max-width: 95vw;
-  margin: auto;
-}
+  /* SVG ring sizing */
+  svg.ring-svg{width:100%;height:100%;display:block;z-index:30}
+  /* slice hover visual - handled via CSS + JS */
+  .slice{cursor:pointer;transition:transform .22s cubic-bezier(.2,.88,.2,1),filter .18s;}
+  .slice:hover{transform:translateY(-6px);filter:drop-shadow(0 10px 28px rgba(0,76,145,0.18));}
 
-.ring {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  border: 12px solid rgba(0,120,212,0.15);
-  box-shadow: inset 0 0 40px rgba(0,0,0,0.06);
-  animation: pulse 12s infinite linear;
-}
+  /* label style - drawn as SVG text but we style here */
+  .label-main{font-weight:700;fill:#fff;stroke:rgba(0,0,0,0.15);stroke-width:.6}
+  .label-sub{font-weight:600;fill:#dff0ff;font-size:12px}
 
-@keyframes pulse {
-  0%,100% { box-shadow: 0 0 40px rgba(0,120,212,0.08); }
-  50% { box-shadow: 0 0 60px rgba(0,120,212,0.18); }
-}
+  /* focus outline for keyboard */
+  .slice:focus{outline:none;filter:drop-shadow(0 12px 30px rgba(0,80,160,0.18));transform:translateY(-6px);}
 
-.node {
-  position: absolute;
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-  background: var(--sp-blue);
-  color: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  text-align: center;
-  cursor: pointer;
-  transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
-  font-weight: 600;
-  font-size: 15px;
-}
-.node span {
-  font-size: 12px;
-  font-weight: 500;
-  opacity: 0.9;
-}
-
-.node:hover {
-  transform: scale(1.1);
-  box-shadow: 0 8px 20px rgba(0,120,212,0.4);
-  background: var(--sp-blue-dark);
-}
-
-/* Node positioning around the circle */
-.node:nth-child(2) { top: -20px; left: 50%; transform: translate(-50%,0); }
-.node:nth-child(3) { top: 120px; right: -20px; }
-.node:nth-child(4) { bottom: 120px; right: -20px; }
-.node:nth-child(5) { bottom: -20px; left: 50%; transform: translate(-50%,0); }
-.node:nth-child(6) { bottom: 120px; left: -20px; }
-.node:nth-child(7) { top: 120px; left: -20px; }
-
-/* Center tile */
-.center-tile {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 220px;
-  height: 220px;
-  background: linear-gradient(145deg,#0078d4,#004578);
-  border-radius: 50%;
-  transform: translate(-50%,-50%);
-  box-shadow: 0 8px 32px rgba(0,0,0,0.2);
-  color: white;
-  text-align: center;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  transition: all 0.3s ease;
-}
-.center-tile h3 { margin: 0; font-size: 20px; font-weight: 700; }
-.center-tile p { margin: 6px 0 0 0; font-size: 13px; opacity: 0.9; }
-
-/* Tooltip */
-.tooltip {
-  position: fixed;
-  opacity: 0;
-  pointer-events: none;
-  background: #fff;
-  color: #111;
-  padding: 12px 14px;
-  border-radius: 8px;
-  box-shadow: 0 10px 30px rgba(15,23,42,0.15);
-  border: 1px solid #eef1f4;
-  font-size: 14px;
-  z-index: 9999;
-  max-width: 280px;
-  transition: opacity 0.15s ease;
-}
-
-/* Floating chat assistant */
-.chat-float {
-  position: fixed;
-  right: 20px;
-  bottom: 20px;
-  width: 340px;
-  z-index: 15000;
-  border-radius: 12px;
-  background: #fff;
-  box-shadow: 0 10px 40px rgba(2,6,23,0.12);
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  transition: transform 0.22s ease;
-}
-.chat-header {
-  background: var(--sp-blue);
-  color: white;
-  padding: 10px 14px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  font-weight: 600;
-}
-.chat-body { padding: 12px; height: 220px; overflow: auto; font-size: 14px; color: #222; }
-.chat-input { display: flex; gap: 8px; padding: 12px; border-top: 1px solid #f0f0f0; }
-.chat-input input { flex: 1; padding: 10px; border: 1px solid #e6e6e6; border-radius: 6px; outline: none; }
-.chat-input button { background: var(--sp-blue); color: #fff; border: none; padding: 10px 12px; border-radius: 6px; cursor: pointer; }
-.chat-float.min { width: 56px; height: 56px; border-radius: 50%; display: flex; align-items: center; justify-content: center; overflow: visible; }
-.chat-float.min .chat-header, .chat-float.min .chat-body, .chat-float.min .chat-input { display: none; }
-.chat-float.min::after { content: "💬"; font-size: 22px; color: white; }
-
-footer {
-  text-align: center;
-  padding: 14px 10px;
-  color: var(--muted);
-  font-size: 13px;
-}
+  /* responsive */
+  @media (max-width:1100px){
+    .flow-wrap{width:92vw;height:92vw}
+    .center-card{width:180px;height:180px}
+    .chat{width:300px}
+  }
+  @media (max-width:700px){
+    main{padding:16px;flex-direction:column;align-items:center}
+    .flow-wrap{width:94vw;height:94vw}
+    .panel{max-width:92vw}
+    .chat{right:12px;bottom:12px}
+  }
 </style>
 </head>
 <body>
 
 <header>
-  <img src="https://shiftup.sharepoint.com/:i:/r/sites/ICT-India-AI-SDLC-Hub/Media%20library/CPT%20AI%20SDLC%20SITE%20LOGO.png" alt="AI-SDLC">
-  <h1>ICT India AI-SDLC Hub</h1>
+  <img src="https://shiftup.sharepoint.com/:i:/r/sites/ICT-India-AI-SDLC-Hub/Media%20library/CPT%20AI%20SDLC%20SITE%20LOGO.png" alt="AI-SDLC" />
+  <h1>ICT India AI SDLC Hub</h1>
 </header>
 
 <nav>
@@ -224,99 +104,304 @@ footer {
 </nav>
 
 <main>
-  <aside class="panel">
-    <h2>Quick Links</h2>
-    <ul style="list-style:none;padding:0;line-height:1.9">
-      <li><a href="#">About AI-SDLC</a></li>
-      <li><a href="#">Design Accelerators</a></li>
-      <li><a href="#">Implementation Tools</a></li>
-      <li><a href="#">Testing & Integration</a></li>
+  <aside class="panel" aria-labelledby="ql">
+    <h2 id="ql">Quick Links</h2>
+    <ul style="padding-left:0;margin:0;color:var(--accent);line-height:1.9">
+      <li><a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/SitePages/About-AI-SDLC.aspx" target="_blank">About AI-SDLC</a></li>
+      <li><a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Lists/Design%20Accelerators/AllItems.aspx" target="_blank">Design Accelerators</a></li>
+      <li><a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Implementation%20Accelerators/Forms/AllItems.aspx" target="_blank">Implementation Tools</a></li>
+      <li><a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Testing%20%20Integration/Forms/AllItems.aspx" target="_blank">Testing & Integration</a></li>
     </ul>
   </aside>
 
-  <section class="flow-container">
-    <div class="ring"></div>
-    <div class="center-tile" id="centerTile">
-      <h3>AI-SDLC Wheel</h3>
-      <p>Explore lifecycle phases</p>
+  <!-- FLOW -->
+  <section class="flow-wrap" aria-label="SDLC circular flow">
+    <div class="flow-bg" aria-hidden="true"></div>
+
+    <!-- center dynamic card -->
+    <div class="center-card" id="centerCard" aria-live="polite" role="region" aria-label="Phase details">
+      <h3 id="centerTitle">AI-SDLC Wheel</h3>
+      <p id="centerSub">Hover a phase to preview details</p>
     </div>
 
-    <div class="node" data-tip="Define objectives, analyze feasibility." data-phase="1. Planning & Analysis" style="--clr:#0078d4;" onclick="window.open('https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Planning%20%20Analysis/Forms/AllItems.aspx','_blank')">1<br><span>Planning</span></div>
-    <div class="node" data-tip="Create architecture, UX, UI mockups." data-phase="2. Design" onclick="window.open('https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Lists/Design%20Accelerators/AllItems.aspx','_blank')">2<br><span>Design</span></div>
-    <div class="node" data-tip="Develop, integrate and build solution." data-phase="3. Implementation" onclick="window.open('https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Implementation%20Accelerators/Forms/AllItems.aspx','_blank')">3<br><span>Implementation</span></div>
-    <div class="node" data-tip="Test and validate solution end-to-end." data-phase="4. Testing & Integration" onclick="window.open('https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Testing%20%20Integration/Forms/AllItems.aspx','_blank')">4<br><span>Testing</span></div>
-    <div class="node" data-tip="Deploy, monitor and verify releases." data-phase="5. Deployment" onclick="window.open('https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Deployment%20%20Operations%20Accelerators/Forms/AllItems.aspx','_blank')">5<br><span>Deployment</span></div>
-    <div class="node" data-tip="Maintain, support, and continuously improve." data-phase="6. Maintenance" onclick="window.open('https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Maintenance/Forms/AllItems.aspx','_blank')">6<br><span>Maintenance</span></div>
+    <!-- SVG ring: slices and labels -->
+    <svg class="ring-svg" viewBox="0 0 800 800" role="img" aria-label="SDLC circular flow diagram">
+      <defs>
+        <linearGradient id="g1" x1="0" x2="1"><stop offset="0" stop-color="#0e78d6"/><stop offset="1" stop-color="#005aa0"/></linearGradient>
+        <linearGradient id="g2" x1="0" x2="1"><stop offset="0" stop-color="#0e8a3b"/><stop offset="1" stop-color="#03642a"/></linearGradient>
+        <linearGradient id="g3" x1="0" x2="1"><stop offset="0" stop-color="#f6a623"/><stop offset="1" stop-color="#d47f00"/></linearGradient>
+        <linearGradient id="g4" x1="0" x2="1"><stop offset="0" stop-color="#d6451e"/><stop offset="1" stop-color="#a22010"/></linearGradient>
+        <filter id="softGlow" x="-50%" y="-50%" width="200%" height="200%">
+          <feGaussianBlur stdDeviation="6" result="b"/>
+          <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+        <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="#fff" opacity="0.6"></path>
+        </marker>
+      </defs>
+
+      <!-- outer faint ring path for the visual circle - sits behind slices -->
+      <g transform="translate(0,0)" aria-hidden="true">
+        <circle cx="400" cy="400" r="300" fill="none" stroke="rgba(0,112,188,0.08)" stroke-width="32"></circle>
+      </g>
+
+      <!-- SLICES (6 sectors) - each is an arc path
+           Using radius 300, center at (400,400). The arcs are drawn to visually show segments
+           We will use transparent fills for ring look, but clickable areas are the slices.
+      -->
+      <g id="slicesGroup" transform="">
+        <!-- slice 1: 0° to 60° (top-right) -->
+        <path id="slice1" class="slice" tabindex="0"
+          d="M400 400 L400 100 A300 300 0 0 1 646.4 153.6 L400 400 Z"
+          fill="url(#g1)" data-title="1. Planning & Analysis" data-desc="Define objectives, stakeholders, feasibility and scope."
+          data-url="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Planning%20%20Analysis/Forms/AllItems.aspx"></path>
+
+        <!-- slice 2: 60° to 120° (right-lower) -->
+        <path id="slice2" class="slice" tabindex="0"
+          d="M400 400 L646.4 153.6 A300 300 0 0 1 646.4 646.4 L400 400 Z"
+          fill="url(#g2)" data-title="2. Design" data-desc="Create architecture, UI/UX models, design accelerators."
+          data-url="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Lists/Design%20Accelerators/AllItems.aspx"></path>
+
+        <!-- slice 3: 120° to 180° (bottom-right) -->
+        <path id="slice3" class="slice" tabindex="0"
+          d="M400 400 L646.4 646.4 A300 300 0 0 1 400 700 L400 400 Z"
+          fill="url(#g3)" data-title="3. Implementation" data-desc="Develop, integrate and build the solution."
+          data-url="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Implementation%20Accelerators/Forms/AllItems.aspx"></path>
+
+        <!-- slice 4: 180° to 240° (bottom-left) -->
+        <path id="slice4" class="slice" tabindex="0"
+          d="M400 400 L400 700 A300 300 0 0 1 153.6 646.4 L400 400 Z"
+          fill="url(#g4)" data-title="4. Testing & Integration" data-desc="QA, automation, system integration testing."
+          data-url="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Testing%20%20Integration/Forms/AllItems.aspx"></path>
+
+        <!-- slice 5: 240° to 300° (left-upper) -->
+        <path id="slice5" class="slice" tabindex="0"
+          d="M400 400 L153.6 646.4 A300 300 0 0 1 153.6 153.6 L400 400 Z"
+          fill="url(#g3)" data-title="5. Deployment" data-desc="Release, deployment pipelines, monitoring."
+          data-url="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Deployment%20%20Operations%20Accelerators/Forms/AllItems.aspx"></path>
+
+        <!-- slice 6: 300° to 360° (top-left) -->
+        <path id="slice6" class="slice" tabindex="0"
+          d="M400 400 L153.6 153.6 A300 300 0 0 1 400 100 L400 400 Z"
+          fill="url(#g4)" data-title="6. Maintenance" data-desc="Support, enhancements and continuous improvement."
+          data-url="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Maintenance/Forms/AllItems.aspx"></path>
+      </g>
+
+      <!-- subtle flow arrow ring (light, behind slices to avoid obscuring labels) -->
+      <g aria-hidden="true" opacity="0.16" fill="none" stroke="#fff" stroke-width="2" >
+        <path d="M400 98 A300 300 0 0 1 697 400" marker-end="url(#arrow)"></path>
+        <path d="M697 400 A300 300 0 0 1 400 702" marker-end="url(#arrow)"></path>
+        <path d="M400 702 A300 300 0 0 1 103 400" marker-end="url(#arrow)"></path>
+        <path d="M103 400 A300 300 0 0 1 400 98" marker-end="url(#arrow)"></path>
+      </g>
+
+      <!-- OUTSIDE LABELS - placed around using polar positions for readability
+           Labels are placed outside radius (approx r=370)
+      -->
+      <g font-family="Segoe UI, Arial" font-size="16" fill="#fff" text-anchor="middle" >
+        <!-- 1: angle ~ 30deg -->
+        <g transform="translate(400,400)">
+          <g transform="translate(320,-150)">
+            <text class="label-main">1. Planning</text>
+            <text class="label-sub" y="18" style="font-size:12px">Analysis</text>
+          </g>
+        </g>
+
+        <!-- 2: angle ~ 90deg -->
+        <g transform="translate(400,400)">
+          <g transform="translate(360,40)">
+            <text class="label-main">2. Design</text>
+            <text class="label-sub" y="18" style="font-size:12px">Accelerators</text>
+          </g>
+        </g>
+
+        <!-- 3: angle ~ 150deg -->
+        <g transform="translate(400,400)">
+          <g transform="translate(140,240)">
+            <text class="label-main">3. Implementation</text>
+          </g>
+        </g>
+
+        <!-- 4: angle ~ 210deg -->
+        <g transform="translate(400,400)">
+          <g transform="translate(80,140)">
+            <text class="label-main">4. Testing</text>
+            <text class="label-sub" y="18" style="font-size:12px">Integration</text>
+          </g>
+        </g>
+
+        <!-- 5: angle ~ 250deg -->
+        <g transform="translate(400,400)">
+          <g transform="translate(120,-20)">
+            <text class="label-main">5. Deployment</text>
+          </g>
+        </g>
+
+        <!-- 6: angle ~ 320deg -->
+        <g transform="translate(400,400)">
+          <g transform="translate(300,-60)">
+            <text class="label-main">6. Maintenance</text>
+          </g>
+        </g>
+      </g>
+
+    </svg>
   </section>
 
-  <aside class="panel">
-    <h2>Resources Hub</h2>
-    <ul style="list-style:none;padding:0;line-height:1.9">
-      <li><a href="#">SDLC Governance Model</a></li>
-      <li><a href="#">Solution Accelerator Catalog</a></li>
-      <li><a href="#">Best Practices Guide</a></li>
-      <li><a href="#">Security & Compliance Docs</a></li>
+  <aside class="panel" aria-labelledby="rh">
+    <h2 id="rh">Resources Hub</h2>
+    <ul style="padding-left:0;margin:0;color:var(--accent);line-height:1.9">
+      <li><a href="#" target="_blank">SDLC Governance Model</a></li>
+      <li><a href="#" target="_blank">Solution Accelerator Catalog</a></li>
+      <li><a href="#" target="_blank">Best Practices Guide</a></li>
+      <li><a href="#" target="_blank">Security & Compliance Docs</a></li>
     </ul>
   </aside>
 </main>
 
-<div class="tooltip" id="tooltip"></div>
+<!-- global tooltip -->
+<div id="global-tooltip" role="status" aria-live="polite"></div>
 
-<!-- Floating Chat -->
-<div class="chat-float" id="chatFloat">
-  <div class="chat-header">
+<!-- chat assistant (docked) -->
+<div class="chat" id="chat">
+  <div class="head">
     AI-SDLC Assistant
-    <button id="minBtn" style="background:none;border:none;color:white;font-size:20px;cursor:pointer">−</button>
+    <button id="chatMin" aria-label="Minimize" style="background:none;border:none;color:#fff;font-size:20px;cursor:pointer">−</button>
   </div>
-  <div class="chat-body" id="chatBody">
-    <p><strong>Assistant:</strong> Hi 👋 I can help you find SDLC resources. Try: "Show design templates".</p>
+  <div class="body" id="chatBody">
+    <p style="margin:0"><strong>Assistant:</strong> Hi — I can help you find SDLC resources. Try: "Show design templates".</p>
   </div>
-  <div class="chat-input">
-    <input id="chatInput" placeholder="Ask me something...">
+  <div class="input">
+    <input id="chatInput" placeholder="Type a question..." aria-label="Ask AI-SDLC Assistant">
     <button id="chatSend">Ask</button>
   </div>
 </div>
 
-<footer>© 2025 ICT India – AI-SDLC Hub</footer>
+<footer style="text-align:center;padding:12px 10px;color:var(--muted);font-size:13px">
+  © 2025 ICT India — AI-SDLC Hub
+</footer>
 
 <script>
-const tooltip = document.getElementById('tooltip');
-const centerTile = document.getElementById('centerTile');
+/* Utilities to place tooltip and show/hide */
+const tooltip = document.getElementById('global-tooltip');
+function showTooltip(text, x, y){
+  tooltip.textContent = text;
+  tooltip.style.opacity = '1';
+  // clamp inside viewport
+  const pad = 14;
+  const maxW = window.innerWidth - pad;
+  requestAnimationFrame(()=>{
+    const r = tooltip.getBoundingClientRect();
+    let left = x + 18;
+    if (left + r.width > maxW) left = x - r.width - 18;
+    if (left < pad) left = pad;
+    let top = y - r.height - 18;
+    if (top < 12) top = y + 18;
+    tooltip.style.left = left + 'px';
+    tooltip.style.top = top + 'px';
+  });
+}
+function hideTooltip(){ tooltip.style.opacity = '0'; }
 
-document.querySelectorAll('.node').forEach(n=>{
-  n.addEventListener('mouseenter', e=>{
-    const msg = n.dataset.phase;
-    const tipText = n.dataset.tip;
-    centerTile.querySelector('h3').textContent = msg;
-    centerTile.querySelector('p').textContent = tipText;
-    tooltip.textContent = tipText;
-    tooltip.style.opacity='1';
+/* Center card updates and mouse interactions for slices */
+const centerTitle = document.getElementById('centerTitle') || document.querySelector('#centerCard h3');
+const centerSub = document.getElementById('centerSub') || document.querySelector('#centerCard p');
+
+const slices = Array.from(document.querySelectorAll('path.slice'));
+slices.forEach(s=>{
+  s.addEventListener('mouseenter', (e)=>{
+    const t = s.getAttribute('data-title') || '';
+    const d = s.getAttribute('data-desc') || '';
+    centerTitle.textContent = t;
+    centerSub.textContent = d;
+    showTooltip(d, e.clientX, e.clientY);
+    // subtle highlight (increase brightness)
+    s.style.filter = 'brightness(1.06) drop-shadow(0 10px 28px rgba(0,76,145,0.18))';
+    s.style.transform = 'translateY(-6px)';
   });
-  n.addEventListener('mousemove', e=>{
-    tooltip.style.left=(e.clientX+18)+'px';
-    tooltip.style.top=(e.clientY-30)+'px';
+  s.addEventListener('mousemove', (e)=> showTooltip(s.getAttribute('data-desc')||'', e.clientX, e.clientY));
+  s.addEventListener('mouseleave', ()=>{
+    centerTitle.textContent = 'AI-SDLC Wheel';
+    centerSub.textContent = 'Hover a phase to preview details';
+    hideTooltip();
+    s.style.filter = '';
+    s.style.transform = '';
   });
-  n.addEventListener('mouseleave', ()=>{
-    centerTile.querySelector('h3').textContent = 'AI-SDLC Wheel';
-    centerTile.querySelector('p').textContent = 'Explore lifecycle phases';
-    tooltip.style.opacity='0';
+
+  s.addEventListener('click', ()=>{
+    const url = s.getAttribute('data-url');
+    if(url) window.open(url,'_blank');
+  });
+
+  // keyboard: focus + Enter to open
+  s.addEventListener('focus', (e)=>{
+    const t = s.getAttribute('data-title') || '';
+    const d = s.getAttribute('data-desc') || '';
+    centerTitle.textContent = t;
+    centerSub.textContent = d;
+  });
+  s.addEventListener('keydown', (e)=>{
+    if(e.key === 'Enter') {
+      const url = s.getAttribute('data-url');
+      if(url) window.open(url,'_blank');
+    }
+    if(e.key === 'Escape') { s.blur(); hideTooltip(); }
   });
 });
 
-/* Chat behavior */
-const chat = document.getElementById('chatFloat');
-document.getElementById('minBtn').onclick = ()=>chat.classList.toggle('min');
-chat.addEventListener('click',()=>{if(chat.classList.contains('min'))chat.classList.remove('min');});
-document.getElementById('chatSend').onclick = ()=>{
-  const input=document.getElementById('chatInput');
-  const text=input.value.trim();
-  if(!text)return;
-  const body=document.getElementById('chatBody');
-  body.innerHTML+=`<p><strong>You:</strong> ${text}</p>`;
-  input.value='';
-  setTimeout(()=>body.innerHTML+=`<p><strong>Assistant:</strong> Try checking the Governance Model section.</p>`,600);
-  body.scrollTop=body.scrollHeight;
-};
+/* Chat minimize behavior */
+const chatBox = document.getElementById('chat');
+document.getElementById('chatMin').addEventListener('click', (ev)=>{
+  ev.stopPropagation();
+  chatBox.classList.toggle('minimized');
+  if(chatBox.classList.contains('minimized')){
+    chatBox.style.width = '64px';
+    chatBox.style.height = '64px';
+    chatBox.style.borderRadius = '50%';
+    // hide internal areas by CSS? we maintain minimalism
+  }else{
+    chatBox.style.width = '';
+    chatBox.style.height = '';
+    chatBox.style.borderRadius = '12px';
+  }
+});
+chatBox.addEventListener('click', (e)=>{
+  if(chatBox.classList.contains('minimized')) {
+    chatBox.classList.remove('minimized');
+    chatBox.style.width = '';
+    chatBox.style.height = '';
+    chatBox.style.borderRadius = '12px';
+  }
+});
+
+/* Chat send */
+document.getElementById('chatSend').addEventListener('click', ()=>{
+  const input = document.getElementById('chatInput');
+  const text = input.value.trim();
+  if(!text) return;
+  const body = document.getElementById('chatBody');
+  const p = document.createElement('p'); p.style.margin = '8px 0'; p.innerHTML = `<strong>You:</strong> ${escapeHtml(text)}`;
+  body.appendChild(p);
+  input.value = '';
+  setTimeout(()=> {
+    const r = document.createElement('p'); r.style.margin = '8px 0'; r.innerHTML = `<strong>Assistant:</strong> I suggest checking the resources panel or open the phase directly.`;
+    body.appendChild(r);
+    body.scrollTop = body.scrollHeight;
+  }, 600);
+});
+
+/* small helper */
+function escapeHtml(s){ return s.replace(/[&<>]/g, c=> ({'&':'&amp;','<':'&lt;','>':'&gt;'}[c])); }
+
+/* ensure tooltip hides on scroll/resize */
+window.addEventListener('scroll', hideTooltip, {passive:true});
+window.addEventListener('resize', hideTooltip);
+
+/* small keyboard accessibility hint: tab order */
+document.addEventListener('DOMContentLoaded', ()=>{
+  // ensure slices are in tab order
+  slices.forEach((s,i)=> s.setAttribute('tabindex', '0'));
+});
 </script>
 </body>
 </html>
