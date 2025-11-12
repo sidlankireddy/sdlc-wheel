@@ -171,7 +171,7 @@ body {
 
 <script>
 const phases = [
-  {name:"Planning<br>&amp; Analysis", angle:20, color:"#4F8EF7", link:"https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Planning-Analysis", tip:"Plan requirements & business goals"},
+  {name:"Planning<br>&amp; Analysis", angle:15, color:"#4F8EF7", link:"https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Planning-Analysis", tip:"Plan requirements & business goals"},
   {name:"Design", angle:85, color:"#F3B23A", link:"https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Design%20Accelerators/Forms/AllItems.aspx", tip:"Create wireframes & technical design"},
   {name:"Implementation", angle:150, color:"#F97A3C", link:"https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Implementation%20Accelerators/Forms/AllItems.aspx", tip:"Develop and integrate components"},
   {name:"Testing<br>&amp; Integration", angle:220, color:"#FFD43B", link:"https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Testing%20%20Integration/Forms/AllItems.aspx", tip:"Validate functionality & performance"},
@@ -181,7 +181,17 @@ const phases = [
 
 const wheel = document.getElementById('wheel');
 const radius = 195;
-const yCorrection = -3;
+
+// 🎯 Individual Y corrections per phase (positive = down, negative = up)
+const yAdjustments = {
+  "Planning": 0,
+  "Design": -6,
+  "Implementation": -10,
+  "Testing": -8,
+  "Deployment": -8,
+  "Maintenance": -6
+};
+
 
 phases.forEach(p => {
   const el = document.createElement('div');
@@ -190,7 +200,8 @@ phases.forEach(p => {
 
   const rad = (p.angle - 90) * Math.PI / 180;
   const x = radius * Math.cos(rad);
-  const y = radius * Math.sin(rad) + yCorrection;
+  const y = radius * Math.sin(rad) + (yAdjustments[p.name.split('<')[0]] || 0);
+
 
   el.style.left = `calc(50% + ${x}px)`;
   el.style.top = `calc(50% + ${y}px)`;
@@ -203,4 +214,5 @@ phases.forEach(p => {
 
 </body>
 </html>
+
 
