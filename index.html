@@ -9,46 +9,84 @@
 <script type="module" src="https://unpkg.com/@fluentui/web-components"></script>
 
 <style>
-:root{
+:root {
   --sp-blue:#0078d4;
   --sp-blue-dark:#004578;
   --sp-gray-bg:#f3f2f1;
   --sp-font:"Segoe UI","Segoe UI Web (West European)",Arial,sans-serif;
 }
 
-/* Base */
-html,body{height:100%;margin:0;font-family:var(--sp-font);background:linear-gradient(180deg,#f9f9f9 0%,#e8e8e8 100%);color:#323130}
-header{background:linear-gradient(90deg,var(--sp-blue),#005a9e);color:#fff;padding:12px 28px;display:flex;align-items:center;box-shadow:0 2px 8px rgba(0,0,0,.15)}
+html,body{
+  height:100%;
+  margin:0;
+  font-family:var(--sp-font);
+  background:linear-gradient(180deg,#f9f9f9 0%,#e8e8e8 100%);
+  color:#323130;
+}
+header{
+  background:linear-gradient(90deg,var(--sp-blue),#005a9e);
+  color:#fff;
+  padding:12px 28px;
+  display:flex;
+  align-items:center;
+  box-shadow:0 2px 8px rgba(0,0,0,.15);
+}
 .header-left{display:flex;align-items:center;gap:10px}
-.header-left img{height:36px;display:block}
+.header-left img{height:36px}
 .header-left h1{margin:0;font-size:22px;font-weight:500}
 
-/* Breadcrumb */
-nav{background:#fff;padding:10px 32px;border-bottom:1px solid #e1dfdd;font-size:14px}
+nav{
+  background:#fff;
+  padding:10px 32px;
+  border-bottom:1px solid #e1dfdd;
+  font-size:14px;
+}
 
-/* Layout */
-main{display:flex;justify-content:center;align-items:flex-start;gap:40px;padding:40px 20px;flex-wrap:wrap;min-height:calc(100vh - 160px)}
+main{
+  display:flex;
+  justify-content:center;
+  align-items:flex-start;
+  gap:40px;
+  padding:40px 20px;
+  flex-wrap:wrap;
+  min-height:calc(100vh - 160px);
+}
+
 .wheel-section{display:flex;flex-direction:column;align-items:center}
 .wheel-container{width:560px;height:560px;position:relative;z-index:1;overflow:visible}
 
-/* SVG slice styles */
 svg{width:100%;height:100%}
-path{stroke:#fff;stroke-width:2px;cursor:pointer;transition:transform .25s ease,filter .25s ease}
+path{
+  stroke:#fff;stroke-width:2px;cursor:pointer;
+  transition:transform .25s ease,filter .25s ease;
+}
 path:hover{transform:scale(1.05);filter:drop-shadow(0 0 10px rgba(0,120,212,.6))}
 .center-circle{fill:var(--sp-blue);stroke:var(--sp-blue-dark);stroke-width:3px}
 
-/* text in SVG */
-svg text{fill:#fff;font-size:20px;font-weight:600;text-anchor:middle;pointer-events:none;text-shadow:0 1px 2px rgba(0,0,0,.35)}
+svg text{
+  fill:#fff;
+  font-size:22px;
+  font-weight:600;
+  text-anchor:middle;
+  pointer-events:none;
+  text-shadow:0 1px 2px rgba(0,0,0,.35);
+}
 
-/* Panels */
-.side-panel,.resources-panel{background:#fff;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,.1);padding:20px 25px;max-width:300px}
-.side-panel h2,.resources-panel h2{margin:0 0 10px 0;color:var(--sp-blue);font-size:18px;text-transform:uppercase}
+.side-panel,.resources-panel{
+  background:#fff;border-radius:10px;
+  box-shadow:0 2px 8px rgba(0,0,0,.1);
+  padding:20px 25px;max-width:300px;
+}
+.side-panel h2,.resources-panel h2{
+  margin:0 0 10px 0;color:var(--sp-blue);
+  font-size:18px;text-transform:uppercase;
+}
 .side-panel ul,.resources-panel ul{list-style:none;padding:0;margin:0}
 .side-panel li,.resources-panel li{margin:10px 0}
 .side-panel a,.resources-panel a{color:var(--sp-blue);text-decoration:none;font-weight:500}
 .side-panel a:hover,.resources-panel a:hover{text-decoration:underline;color:var(--sp-blue-dark)}
 
-/* Floating chat (bottom-right) */
+/* Floating chat */
 .chat-float{
   position:fixed;right:24px;bottom:24px;width:340px;background:#fff;
   border:1px solid #e1dfdd;border-radius:12px;box-shadow:0 6px 24px rgba(0,0,0,.18);
@@ -68,7 +106,7 @@ svg text{fill:#fff;font-size:20px;font-weight:600;text-anchor:middle;pointer-eve
 .chat-input button{background:var(--sp-blue);color:#fff;border:none;padding:10px 14px;cursor:pointer}
 .chat-input button:hover{background:var(--sp-blue-dark)}
 
-/* Collapsed chat */
+/* Minimized Chat */
 .chat-float.minimized{
   width:60px;height:60px;border-radius:50%;padding:0;border:none;
   background:var(--sp-blue);
@@ -83,14 +121,14 @@ svg text{fill:#fff;font-size:20px;font-weight:600;text-anchor:middle;pointer-eve
   content:"💬";font-size:28px;color:#fff;
 }
 
-/* Tooltip (global, fixed) */
+/* Tooltip */
 #global-tooltip{
-  position:fixed;left:0;top:0;transform:translate(0,0);
+  position:fixed;left:0;top:0;
   background:#fff;color:#222;padding:12px 14px;border-radius:8px;
   box-shadow:0 8px 28px rgba(0,0,0,.25);border:1px solid #e1dfdd;
   font-size:15px;line-height:1.4;pointer-events:none;
   max-width:320px;z-index:20000;opacity:0;
-  transition:opacity .12s ease,transform .08s ease;white-space:normal;
+  transition:opacity .12s ease,transform .08s ease;
 }
 #global-tooltip::after{
   content:"";position:absolute;width:0;height:0;
@@ -99,10 +137,8 @@ svg text{fill:#fff;font-size:20px;font-weight:600;text-anchor:middle;pointer-eve
   filter:drop-shadow(0 2px 4px rgba(0,0,0,.08));
 }
 
-/* Footer */
 footer{padding:16px;text-align:center;background:var(--sp-gray-bg);color:#605e5c;font-size:13px}
 
-/* Responsive */
 @media(max-width:1200px){
   main{flex-direction:column;align-items:center}
   .side-panel,.resources-panel{max-width:90%}
@@ -110,10 +146,11 @@ footer{padding:16px;text-align:center;background:var(--sp-gray-bg);color:#605e5c
 }
 </style>
 </head>
+
 <body>
   <header>
     <div class="header-left">
-      <img src="https://shiftup.sharepoint.com/:i:/r/sites/ICT-India-AI-SDLC-Hub/Media%20library/CPT%20AI%20SDLC%20SITE%20LOGO.png" alt="AI-SDLC Logo" />
+      <img src="https://shiftup.sharepoint.com/:i:/r/sites/ICT-India-AI-SDLC-Hub/Media%20library/CPT%20AI%20SDLC%20SITE%20LOGO.png" alt="AI-SDLC Logo"/>
       <h1>ICT India AI SDLC Hub</h1>
     </div>
   </header>
@@ -146,26 +183,37 @@ footer{padding:16px;text-align:center;background:var(--sp-gray-bg);color:#605e5c
             <linearGradient id="p4" x1="0" x2="1"><stop offset="0" stop-color="#d83b01"/><stop offset="1" stop-color="#a4262c"/></linearGradient>
           </defs>
 
+          <!-- 1. Planning -->
           <a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Planning%20%20Analysis/Forms/AllItems.aspx" target="_blank">
             <path d="M300,300 L300,70 A230,230 0 0,1 520,190 Z" fill="url(#p1)" data-tip="🧠 Planning & Analysis: Define objectives and feasibility."/>
-            <text x="380" y="180"><tspan x="380" dy="0">1. Planning &</tspan><tspan x="380" dy="22">Analysis</tspan></text>
+            <text x="380" y="180"><tspan x="380" dy="0">1. Planning &</tspan><tspan x="380" dy="24">Analysis</tspan></text>
           </a>
+
+          <!-- 2. Design -->
           <a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Lists/Design%20Accelerators/AllItems.aspx" target="_blank">
             <path d="M300,300 L520,190 A230,230 0 0,1 520,410 Z" fill="url(#p2)" data-tip="🎨 Design: Create system architecture and UI models."/>
             <text x="450" y="300">2. Design</text>
           </a>
+
+          <!-- 3. Implementation -->
           <a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Implementation%20Accelerators/Forms/AllItems.aspx" target="_blank">
             <path d="M300,300 L520,410 A230,230 0 0,1 300,530 Z" fill="url(#p3)" data-tip="⚙️ Implementation: Develop and integrate the solution."/>
-            <text x="360" y="460">3. Implementation</text>
+            <text x="360" y="440">3. Implementation</text>
           </a>
+
+          <!-- 4. Testing -->
           <a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Testing%20%20Integration/Forms/AllItems.aspx" target="_blank">
             <path d="M300,300 L300,530 A230,230 0 0,1 80,410 Z" fill="url(#p4)" data-tip="🧪 Testing & Integration: Validate quality and functionality."/>
-            <text x="240" y="460"><tspan x="240" dy="0">4. Testing &</tspan><tspan x="240" dy="22">Integration</tspan></text>
+            <text x="240" y="440"><tspan x="240" dy="0">4. Testing &</tspan><tspan x="240" dy="24">Integration</tspan></text>
           </a>
+
+          <!-- 5. Deployment -->
           <a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Deployment%20%20Operations%20Accelerators/Forms/AllItems.aspx" target="_blank">
             <path d="M300,300 L80,410 A230,230 0 0,1 80,190 Z" fill="url(#p3)" data-tip="🚀 Deployment: Launch and verify readiness."/>
-            <text x="170" y="300">5. Deployment</text>
+            <text x="185" y="300">5. Deployment</text>
           </a>
+
+          <!-- 6. Maintenance -->
           <a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Maintenance/Forms/AllItems.aspx" target="_blank">
             <path d="M300,300 L80,190 A230,230 0 0,1 300,70 Z" fill="url(#p4)" data-tip="🔧 Maintenance: Continuous support and improvement."/>
             <text x="220" y="180">6. Maintenance</text>
@@ -189,7 +237,7 @@ footer{padding:16px;text-align:center;background:var(--sp-gray-bg);color:#605e5c
     </div>
   </main>
 
-  <!-- Floating chat -->
+  <!-- Chat Widget -->
   <div class="chat-float" id="chatBox">
     <div class="chat-header">
       AI-SDLC Assistant
@@ -207,7 +255,6 @@ footer{padding:16px;text-align:center;background:var(--sp-gray-bg);color:#605e5c
   <footer>© 2025 ICT India – AI-SDLC Hub | Powered by SharePoint & Azure Static Web Apps</footer>
 
 <script>
-// Tooltip logic
 (function(){
   const tooltip=document.createElement('div');
   tooltip.id='global-tooltip';
@@ -228,10 +275,8 @@ footer{padding:16px;text-align:center;background:var(--sp-gray-bg);color:#605e5c
     s.addEventListener('mousemove',e=>showTip(s.dataset.tip,e.clientX,e.clientY));
     s.addEventListener('mouseleave',hideTip);
   });
-  window.addEventListener('scroll',hideTip);
 })();
 
-// Chat assistant
 function sendMsg(){
   const body=document.getElementById('chat-body');
   const input=document.getElementById('chatInput');
@@ -240,7 +285,7 @@ function sendMsg(){
   body.appendChild(you);
   setTimeout(()=>{
     const reply=document.createElement('p');
-    reply.innerHTML='<strong>Assistant:</strong> Let me help — check the Resources Hub or phase-specific library.';
+    reply.innerHTML='<strong>Assistant:</strong> Let me help — check the Resources Hub or the relevant SDLC phase library.';
     body.appendChild(reply);
     body.scrollTop=body.scrollHeight;
   },600);
@@ -248,17 +293,9 @@ function sendMsg(){
 }
 document.getElementById('chatInput').addEventListener('keypress',e=>{if(e.key==='Enter')sendMsg();});
 
-// Minimize/Expand chat
 const chat=document.getElementById('chatBox');
-const minBtn=document.getElementById('minBtn');
-minBtn.addEventListener('click',()=>{
-  chat.classList.add('minimized');
-});
-chat.addEventListener('click',()=>{
-  if(chat.classList.contains('minimized')){
-    chat.classList.remove('minimized');
-  }
-});
+document.getElementById('minBtn').addEventListener('click',()=>chat.classList.add('minimized'));
+chat.addEventListener('click',()=>{if(chat.classList.contains('minimized'))chat.classList.remove('minimized');});
 </script>
 </body>
 </html>
