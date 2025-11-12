@@ -185,7 +185,7 @@ const radius = 180;
 // 🎯 Adjust how far from the center each small circle sits
 const radiusAdjustments = {
   "Planning":       +30,   // slightly inward
-  "Design":         -5,   // just a touch outward to align with Testing
+  "Design":         -15,   // just a touch outward to align with Testing
   "Implementation": 0,   // farther out — to match Testing’s visual radius
   "Testing":        +40,   // your perfect reference
   "Deployment":     +65,   // balanced against Testing
@@ -198,7 +198,7 @@ const yAdjustments = {
   "Design":         -30,   // minor lift to center in wedge
   "Implementation": -25,   // stronger lift, bottom wedge
   "Testing":        -50,   // perfect reference — kept same
-  "Deployment":     +5,   // same lift as Implementation to mirror
+  "Deployment":     +10,   // same lift as Implementation to mirror
   "Maintenance":    -34    // small correction up from current
 };
 
@@ -232,6 +232,7 @@ el.style.top  = `calc(50% + ${y}px)`;
 
 </body>
 </html>
+
 
 
 
