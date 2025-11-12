@@ -4,7 +4,6 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>ICT-India AI-SDLC Hub</title>
-
 <style>
 :root {
   --wheel-size: 520px;
@@ -12,37 +11,31 @@
   --label-radius: 190px;
   --font: "Segoe UI", Arial, sans-serif;
 }
-body{
-  margin:0;
-  font-family:var(--font);
-  background:radial-gradient(circle at center,#fff 0%,#eaf1f9 100%);
+body {
+  margin: 0;
+  font-family: var(--font);
+  background: radial-gradient(circle at center,#fff 0%,#eaf1f9 100%);
 }
-.topbar{
-  background:linear-gradient(180deg,#0078D4 0%,#005A9E 100%);
-  color:#fff;
-  font-weight:600;
-  padding:10px 20px;
-  box-shadow:0 2px 4px rgba(0,0,0,.1);
+.topbar {
+  background: linear-gradient(180deg,#0078D4 0%,#005A9E 100%);
+  color: #fff; font-weight: 600; padding: 10px 20px;
+  box-shadow: 0 2px 4px rgba(0,0,0,.1);
 }
-.container{
-  display:grid;
-  grid-template-columns:1fr 300px;
-  gap:24px;
-  max-width:1200px;
-  margin:30px auto;
-  padding:0 20px;
+.container {
+  display: grid; grid-template-columns: 1fr 300px;
+  gap: 24px; max-width: 1200px; margin: 30px auto; padding: 0 20px;
 }
-.wheel-wrap{
-  display:flex;justify-content:center;align-items:center;
-  background:#fff;border-radius:16px;
-  box-shadow:0 6px 20px rgba(0,0,0,.05);
-  padding:24px;
+.wheel-wrap {
+  display: flex; justify-content: center; align-items: center;
+  background: #fff; border-radius: 16px;
+  box-shadow: 0 6px 20px rgba(0,0,0,.05);
+  padding: 24px;
 }
-.wheel{
-  position:relative;
-  width:var(--wheel-size);height:var(--wheel-size);
-  border-radius:50%;
-  background:conic-gradient(
+.wheel {
+  position: relative;
+  width: var(--wheel-size); height: var(--wheel-size);
+  border-radius: 50%;
+  background: conic-gradient(
     #4F8EF7 0deg 60deg,
     #F3B23A 60deg 120deg,
     #F97A3C 120deg 180deg,
@@ -50,41 +43,64 @@ body{
     #4DC981 240deg 300deg,
     #8C8CFF 300deg 360deg
   );
-  animation:settle 1s ease-out;
+  animation: settle 1s ease-out;
 }
-@keyframes settle{from{transform:rotate(10deg)scale(.98)}to{transform:rotate(0)scale(1)}}
-.center{
-  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
-  width:180px;height:180px;border-radius:50%;
-  background:radial-gradient(circle at 30% 30%,#1FA8F5,#0078D4 70%,#005A9E);
-  color:#fff;text-align:center;font-weight:600;
-  display:flex;flex-direction:column;justify-content:center;
-  box-shadow:0 10px 25px rgba(0,0,0,.2);z-index:2;
+@keyframes settle { from{transform:rotate(10deg)scale(.98)} to{transform:rotate(0)scale(1)} }
+.center {
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+  width: 180px; height: 180px; border-radius: 50%;
+  background: linear-gradient(145deg,#0096ff 0%,#0078d4 50%,#005a9e 100%);
+  color: #fff; text-align: center; font-weight: 600;
+  display: flex; flex-direction: column; justify-content: center;
+  box-shadow: 0 10px 25px rgba(0,0,0,.2); z-index: 2;
 }
-.center .title{font-size:16px}
-.center .subtitle{font-size:11px;margin-top:4px;opacity:.9}
-.phase-label{
-  position:absolute;top:50%;left:50%;
-  width:var(--label-size);height:var(--label-size);
-  margin:-35px;
-  border-radius:50%;
-  color:#fff;font-size:12px;font-weight:600;text-align:center;
-  display:flex;align-items:center;justify-content:center;
-  cursor:pointer;
-  transition:transform .25s,filter .25s,box-shadow .25s;
-  z-index:3;
-}
-.phase-label:hover{transform:scale(1.1);filter:brightness(1.25);box-shadow:0 0 20px rgba(0,0,0,.25)}
+.center .title { font-size: 16px; }
+.center .subtitle { font-size: 11px; margin-top: 4px; opacity: .9; }
 
-/* aligned midpoints at 30°, 90°, 150°, etc */
-.phase1{background:#4F8EF7;transform:translate(-50%,-50%) rotate(30deg) translateY(-190px) rotate(-30deg);}
-.phase2{background:#F3B23A;transform:translate(-50%,-50%) rotate(90deg) translateY(-190px) rotate(-90deg);}
-.phase3{background:#F97A3C;transform:translate(-50%,-50%) rotate(150deg) translateY(-190px) rotate(-150deg);}
-.phase4{background:#FFD43B;color:#222;transform:translate(-50%,-50%) rotate(210deg) translateY(-190px) rotate(-210deg);}
-.phase5{background:#4DC981;transform:translate(-50%,-50%) rotate(270deg) translateY(-190px) rotate(-270deg);}
-.phase6{background:#8C8CFF;transform:translate(-50%,-50%) rotate(330deg) translateY(-190px) rotate(-330deg);}
+.phase-label {
+  position: absolute; top: 50%; left: 50%;
+  width: var(--label-size); height: var(--label-size);
+  margin: -35px;
+  border-radius: 50%;
+  color: #fff; font-size: 12px; font-weight: 600; text-align: center;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; transition: transform .25s, filter .25s, box-shadow .25s;
+  z-index: 3;
+}
+.phase-label:hover {
+  transform: scale(1.1);
+  filter: brightness(1.25);
+  box-shadow: 0 0 20px rgba(0,0,0,.25);
+}
 
-.panel{
+/* Tooltip styling */
+.tooltip {
+  position: absolute;
+  bottom: 90%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #fff;
+  color: #005A9E;
+  font-size: 11px;
+  padding: 6px 10px;
+  border-radius: 6px;
+  white-space: nowrap;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .25s ease;
+}
+.phase-label:hover .tooltip { opacity: 1; }
+
+/* Phase positioning - aligned midpoints */
+.phase1 { background:#4F8EF7; transform:translate(-50%,-50%) rotate(30deg) translateY(-190px) rotate(-30deg); }
+.phase2 { background:#F3B23A; transform:translate(-50%,-50%) rotate(90deg) translateY(-190px) rotate(-90deg); }
+.phase3 { background:#F97A3C; transform:translate(-50%,-50%) rotate(150deg) translateY(-190px) rotate(-150deg); }
+.phase4 { background:#FFD43B; color:#222; transform:translate(-50%,-50%) rotate(210deg) translateY(-190px) rotate(-210deg); }
+.phase5 { background:#4DC981; transform:translate(-50%,-50%) rotate(270deg) translateY(-190px) rotate(-270deg); }
+.phase6 { background:#8C8CFF; transform:translate(-50%,-50%) rotate(330deg) translateY(-190px) rotate(-330deg); }
+
+.panel {
   background:#fff;border-radius:12px;box-shadow:0 6px 20px rgba(0,0,0,.05);
   padding:20px;height:fit-content;
 }
@@ -108,14 +124,40 @@ body{
         <div class="title">AI-SDLC Wheel</div>
         <div class="subtitle">Hover a phase — click to open library</div>
       </div>
-      <div class="phase-label phase1" onclick="window.open('https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Planning-Analysis','_blank')">Planning<br>&amp; Analysis</div>
-      <div class="phase-label phase2" onclick="window.open('https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Design%20Accelerators/Forms/AllItems.aspx','_blank')">Design</div>
-      <div class="phase-label phase3" onclick="window.open('https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Implementation%20Accelerators/Forms/AllItems.aspx','_blank')">Implementation</div>
-      <div class="phase-label phase4" onclick="window.open('https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Testing%20%20Integration/Forms/AllItems.aspx','_blank')">Testing<br>&amp; Integration</div>
-      <div class="phase-label phase5" onclick="window.open('https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Deployment%20%20Operations%20Accelerators/Forms/AllItems.aspx','_blank')">Deployment</div>
-      <div class="phase-label phase6" onclick="window.open('https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Maintenance/Forms/AllItems.aspx','_blank')">Maintenance</div>
+
+      <!-- Phase Labels with Tooltips -->
+      <div class="phase-label phase1" onclick="window.open('https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Planning-Analysis','_blank')">
+        Planning<br>&amp; Analysis
+        <div class="tooltip">Plan requirements & business goals</div>
+      </div>
+
+      <div class="phase-label phase2" onclick="window.open('https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Design%20Accelerators/Forms/AllItems.aspx','_blank')">
+        Design
+        <div class="tooltip">Create wireframes & technical design</div>
+      </div>
+
+      <div class="phase-label phase3" onclick="window.open('https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Implementation%20Accelerators/Forms/AllItems.aspx','_blank')">
+        Implementation
+        <div class="tooltip">Develop and integrate components</div>
+      </div>
+
+      <div class="phase-label phase4" onclick="window.open('https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Testing%20%20Integration/Forms/AllItems.aspx','_blank')">
+        Testing<br>&amp; Integration
+        <div class="tooltip">Validate functionality & performance</div>
+      </div>
+
+      <div class="phase-label phase5" onclick="window.open('https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Deployment%20%20Operations%20Accelerators/Forms/AllItems.aspx','_blank')">
+        Deployment
+        <div class="tooltip">Release to production environments</div>
+      </div>
+
+      <div class="phase-label phase6" onclick="window.open('https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Maintenance/Forms/AllItems.aspx','_blank')">
+        Maintenance
+        <div class="tooltip">Monitor, optimize & enhance systems</div>
+      </div>
     </div>
   </div>
+
   <div class="panel">
     <h3>Quick Links</h3>
     <a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Planning-Analysis" target="_blank">Planning & Analysis</a>
