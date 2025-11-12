@@ -1,378 +1,322 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>AI-SDLC | ICT India Hub</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI-SDLC Flow | ICT India Hub</title>
 
-<!-- Fluent UI Web Components (icons & breadcrumb) -->
+<!-- Fluent UI Web Components -->
 <script type="module" src="https://unpkg.com/@fluentui/web-components"></script>
 
 <style>
-  :root{
-    --sp-blue:#0078d4;
-    --sp-blue-dark:#004578;
-    --bg:#f7f8fa;
-    --panel:#ffffff;
-    --muted:#6b6b6b;
-    --accent:#005a9e;
-    --font: "Segoe UI", "Segoe UI Web (West European)", Arial, sans-serif;
-  }
+:root {
+  --sp-blue: #0078d4;
+  --sp-blue-dark: #004578;
+  --bg: #f7f8fa;
+  --panel: #ffffff;
+  --muted: #6b6b6b;
+  --font: "Segoe UI", Arial, sans-serif;
+}
 
-  html,body{height:100%;margin:0;font-family:var(--font);background:radial-gradient(circle at top center,#fbfcfd,#eef1f5);color:#222}
-  /* Header */
-  header{background:linear-gradient(90deg,var(--sp-blue),#005a9e);color:white;padding:12px 22px;display:flex;align-items:center;gap:12px;box-shadow:0 2px 8px rgba(0,0,0,0.12)}
-  header img{height:36px}
-  header h1{font-size:20px;margin:0;font-weight:600}
-  nav{background:var(--panel);padding:10px 22px;border-bottom:1px solid #e6e6e6}
+html, body {
+  height: 100%;
+  margin: 0;
+  font-family: var(--font);
+  background: radial-gradient(circle at top center,#fafdff,#e9edf3);
+  color: #222;
+  overflow-x: hidden;
+}
 
-  /* Page layout */
-  main{display:flex;gap:28px;align-items:flex-start;justify-content:center;padding:36px;flex-wrap:wrap}
-  .panel{background:var(--panel);border-radius:10px;padding:18px 20px;box-shadow:0 6px 22px rgba(16,24,40,0.06);max-width:300px}
-  .panel h2{margin:0 0 10px 0;color:var(--sp-blue);font-size:16px;text-transform:uppercase;letter-spacing:0.6px}
+header {
+  background: linear-gradient(90deg,var(--sp-blue),#005a9e);
+  color: white;
+  padding: 12px 22px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+}
+header img { height: 38px; }
+header h1 { font-size: 20px; margin: 0; font-weight: 600; }
 
-  /* Wheel area */
-  .wheel-wrap{width:680px;max-width:92vw;display:flex;align-items:center;justify-content:center;position:relative}
-  /* subtle background card behind wheel */
-  .wheel-card{width:100%;background:linear-gradient(180deg, rgba(255,255,255,0.9), rgba(250,250,250,0.9));border-radius:16px;padding:36px 18px;box-shadow:0 8px 24px rgba(15,23,42,0.06)}
-  .wheel-area{width:620px;height:620px;margin:0 auto;position:relative;display:flex;align-items:center;justify-content:center}
+nav {
+  background: var(--panel);
+  padding: 10px 22px;
+  border-bottom: 1px solid #e6e6e6;
+}
 
-  /* SVG style */
-  svg{width:100%;height:100%;display:block}
-  /* keep text crisp in Edge */
-  svg text{font-family:var(--font);text-rendering:geometricPrecision}
+main {
+  display: flex;
+  gap: 28px;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 36px;
+  flex-wrap: wrap;
+}
 
-  /* interactive slice hover */
-  .slice { transition: transform .28s cubic-bezier(.2,.9,.2,1), filter .18s ease; cursor:pointer; }
-  .slice:hover { transform: translateY(-6px) scale(1.02); filter:drop-shadow(0 8px 18px rgba(0,0,0,0.12)); }
+.panel {
+  background: var(--panel);
+  border-radius: 10px;
+  padding: 18px 20px;
+  box-shadow: 0 6px 22px rgba(16,24,40,0.06);
+  max-width: 300px;
+}
+.panel h2 {
+  margin: 0 0 10px 0;
+  color: var(--sp-blue);
+  font-size: 16px;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+}
 
-  /* label badges (outside wheel) */
-  .label-badge {
-    pointer-events: none;
-    fill: white;
-    font-weight:700;
-    font-size:18px;
-    text-anchor:middle;
-    text-shadow:0 6px 18px rgba(0,0,0,0.18);
-  }
-  .label-sub { font-size:13px; font-weight:500; fill: #e8f4ff; }
+/* ========================== Ring Flow ============================= */
+.flow-container {
+  position: relative;
+  width: 650px;
+  height: 650px;
+  max-width: 95vw;
+  margin: auto;
+}
 
-  /* center hub */
-  .center-hub {
-    transition: transform .28s ease, filter .28s ease;
-    transform-origin:center;
-  }
-  .center-hub:hover{ transform: scale(1.03); filter: drop-shadow(0 8px 30px rgba(0,0,0,0.20)); }
+.ring {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  border: 12px solid rgba(0,120,212,0.15);
+  box-shadow: inset 0 0 40px rgba(0,0,0,0.06);
+  animation: pulse 12s infinite linear;
+}
 
-  /* tooltip (global fixed) */
-  #global-tooltip {
-    position:fixed; left:0; top:0; opacity:0; pointer-events:none;
-    background:#fff; color:#111; padding:12px 14px; border-radius:8px;
-    box-shadow:0 10px 40px rgba(15,23,42,0.14); border:1px solid #eef1f4;
-    font-size:14px; z-index:30000; max-width:320px; line-height:1.4;
-    transition:opacity .12s ease, transform .06s ease;
-  }
-  #global-tooltip::after{
-    content:""; position:absolute; bottom:-7px; left:50%; transform:translateX(-50%);
-    border-left:7px solid transparent; border-right:7px solid transparent; border-top:7px solid #fff;
-    filter: drop-shadow(0 2px 6px rgba(0,0,0,0.06));
-  }
+@keyframes pulse {
+  0%,100% { box-shadow: 0 0 40px rgba(0,120,212,0.08); }
+  50% { box-shadow: 0 0 60px rgba(0,120,212,0.18); }
+}
 
-  /* floating assistant */
-  .chat-float {
-    position:fixed; right:20px; bottom:20px; width:340px; z-index:15000;
-    border-radius:12px; background:#fff; box-shadow:0 10px 40px rgba(2,6,23,0.12); overflow:hidden;
-    display:flex; flex-direction:column; transition: transform .22s ease;
-  }
-  .chat-header { background:var(--sp-blue); color:white; padding:10px 14px; display:flex; align-items:center; justify-content:space-between; font-weight:600 }
-  .chat-body{ padding:12px; height:220px; overflow:auto; font-size:14px; color:#222 }
-  .chat-input{ display:flex; gap:8px; padding:12px; border-top:1px solid #f0f0f0 }
-  .chat-input input{flex:1;padding:10px;border:1px solid #e6e6e6;border-radius:6px;outline:none}
-  .chat-input button{background:var(--sp-blue);color:#fff;border:none;padding:10px 12px;border-radius:6px;cursor:pointer}
-  .chat-float.min{ width:56px; height:56px; border-radius:50%; padding:0; overflow:visible; display:flex; align-items:center; justify-content:center }
-  .chat-float.min .chat-header, .chat-float.min .chat-body, .chat-float.min .chat-input { display:none }
-  .chat-float.min::after { content:"💬"; font-size:22px; color:white }
+.node {
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: var(--sp-blue);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+  font-weight: 600;
+  font-size: 15px;
+}
+.node span {
+  font-size: 12px;
+  font-weight: 500;
+  opacity: 0.9;
+}
 
-  footer { text-align:center; padding:14px 10px; color:var(--muted); font-size:13px }
+.node:hover {
+  transform: scale(1.1);
+  box-shadow: 0 8px 20px rgba(0,120,212,0.4);
+  background: var(--sp-blue-dark);
+}
 
-  /* responsive */
-  @media (max-width:960px){
-    .wheel-area{width:92vw;height:92vw}
-    main{padding:16px}
-    .panel{max-width:92vw}
-    .chat-float{right:12px;bottom:12px}
-  }
+/* Node positioning around the circle */
+.node:nth-child(2) { top: -20px; left: 50%; transform: translate(-50%,0); }
+.node:nth-child(3) { top: 120px; right: -20px; }
+.node:nth-child(4) { bottom: 120px; right: -20px; }
+.node:nth-child(5) { bottom: -20px; left: 50%; transform: translate(-50%,0); }
+.node:nth-child(6) { bottom: 120px; left: -20px; }
+.node:nth-child(7) { top: 120px; left: -20px; }
+
+/* Center tile */
+.center-tile {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 220px;
+  height: 220px;
+  background: linear-gradient(145deg,#0078d4,#004578);
+  border-radius: 50%;
+  transform: translate(-50%,-50%);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+  color: white;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  transition: all 0.3s ease;
+}
+.center-tile h3 { margin: 0; font-size: 20px; font-weight: 700; }
+.center-tile p { margin: 6px 0 0 0; font-size: 13px; opacity: 0.9; }
+
+/* Tooltip */
+.tooltip {
+  position: fixed;
+  opacity: 0;
+  pointer-events: none;
+  background: #fff;
+  color: #111;
+  padding: 12px 14px;
+  border-radius: 8px;
+  box-shadow: 0 10px 30px rgba(15,23,42,0.15);
+  border: 1px solid #eef1f4;
+  font-size: 14px;
+  z-index: 9999;
+  max-width: 280px;
+  transition: opacity 0.15s ease;
+}
+
+/* Floating chat assistant */
+.chat-float {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  width: 340px;
+  z-index: 15000;
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 10px 40px rgba(2,6,23,0.12);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.22s ease;
+}
+.chat-header {
+  background: var(--sp-blue);
+  color: white;
+  padding: 10px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-weight: 600;
+}
+.chat-body { padding: 12px; height: 220px; overflow: auto; font-size: 14px; color: #222; }
+.chat-input { display: flex; gap: 8px; padding: 12px; border-top: 1px solid #f0f0f0; }
+.chat-input input { flex: 1; padding: 10px; border: 1px solid #e6e6e6; border-radius: 6px; outline: none; }
+.chat-input button { background: var(--sp-blue); color: #fff; border: none; padding: 10px 12px; border-radius: 6px; cursor: pointer; }
+.chat-float.min { width: 56px; height: 56px; border-radius: 50%; display: flex; align-items: center; justify-content: center; overflow: visible; }
+.chat-float.min .chat-header, .chat-float.min .chat-body, .chat-float.min .chat-input { display: none; }
+.chat-float.min::after { content: "💬"; font-size: 22px; color: white; }
+
+footer {
+  text-align: center;
+  padding: 14px 10px;
+  color: var(--muted);
+  font-size: 13px;
+}
 </style>
 </head>
 <body>
 
-  <header>
-    <img src="https://shiftup.sharepoint.com/:i:/r/sites/ICT-India-AI-SDLC-Hub/Media%20library/CPT%20AI%20SDLC%20SITE%20LOGO.png" alt="AI-SDLC" />
-    <h1>ICT India AI SDLC Hub</h1>
-  </header>
+<header>
+  <img src="https://shiftup.sharepoint.com/:i:/r/sites/ICT-India-AI-SDLC-Hub/Media%20library/CPT%20AI%20SDLC%20SITE%20LOGO.png" alt="AI-SDLC">
+  <h1>ICT India AI-SDLC Hub</h1>
+</header>
 
-  <nav>
-    <fluent-breadcrumb>
-      <fluent-breadcrumb-item href="#">Home</fluent-breadcrumb-item>
-      <fluent-breadcrumb-item current>SDLC Hub</fluent-breadcrumb-item>
-    </fluent-breadcrumb>
-  </nav>
+<nav>
+  <fluent-breadcrumb>
+    <fluent-breadcrumb-item href="#">Home</fluent-breadcrumb-item>
+    <fluent-breadcrumb-item current>SDLC Flow</fluent-breadcrumb-item>
+  </fluent-breadcrumb>
+</nav>
 
-  <main>
-    <!-- left quick links -->
-    <aside class="panel" aria-labelledby="ql-title">
-      <h2 id="ql-title">Quick Links</h2>
-      <ul style="padding-left:0;margin:0;font-size:15px;color:var(--accent);line-height:1.9">
-        <li><a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/SitePages/About-AI-SDLC.aspx" target="_blank">About AI-SDLC</a></li>
-        <li><a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Lists/Design%20Accelerators/AllItems.aspx" target="_blank">Design Accelerators</a></li>
-        <li><a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Implementation%20Accelerators/Forms/AllItems.aspx" target="_blank">Implementation Tools</a></li>
-        <li><a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Testing%20%20Integration/Forms/AllItems.aspx" target="_blank">Testing &amp; Integration</a></li>
-      </ul>
-    </aside>
+<main>
+  <aside class="panel">
+    <h2>Quick Links</h2>
+    <ul style="list-style:none;padding:0;line-height:1.9">
+      <li><a href="#">About AI-SDLC</a></li>
+      <li><a href="#">Design Accelerators</a></li>
+      <li><a href="#">Implementation Tools</a></li>
+      <li><a href="#">Testing & Integration</a></li>
+    </ul>
+  </aside>
 
-    <!-- wheel -->
-    <section class="wheel-wrap" aria-label="SDLC wheel area">
-      <div class="wheel-card">
-        <div class="wheel-area" role="img" aria-label="Interactive AI SDLC wheel with six phases">
-          <!-- SVG wheel: slices, arrows, center hub, outside labels -->
-          <svg viewBox="0 0 600 600" role="presentation" aria-hidden="false">
-            <defs>
-              <!-- gradients -->
-              <linearGradient id="g1" x1="0" x2="1"><stop offset="0" stop-color="#0e78d6"/><stop offset="1" stop-color="#0058a3"/></linearGradient>
-              <linearGradient id="g2" x1="0" x2="1"><stop offset="0" stop-color="#0a7d2a"/><stop offset="1" stop-color="#004d1b"/></linearGradient>
-              <linearGradient id="g3" x1="0" x2="1"><stop offset="0" stop-color="#ffb64d"/><stop offset="1" stop-color="#d48200"/></linearGradient>
-              <linearGradient id="g4" x1="0" x2="1"><stop offset="0" stop-color="#d6451e"/><stop offset="1" stop-color="#9f2510"/></linearGradient>
-              <!-- subtle outer ring -->
-              <radialGradient id="ringGlow" cx="50%" cy="40%"><stop offset="0%" stop-color="rgba(255,255,255,0.35)"/><stop offset="100%" stop-color="rgba(0,0,0,0.06)"/></radialGradient>
-              <!-- center hub gradient -->
-              <radialGradient id="hub" cx="50%" cy="40%">
-                <stop offset="0%" stop-color="#7fb8ff"/>
-                <stop offset="100%" stop-color="#0c5ea8"/>
-              </radialGradient>
-              <!-- arrow marker for flow -->
-              <marker id="arrow" markerWidth="10" markerHeight="10" refX="6" refY="5" orient="auto">
-                <path d="M0,0 L10,5 L0,10 z" fill="#ffffff" opacity="0.95"></path>
-              </marker>
-            </defs>
-
-            <!-- outer subtle border -->
-            <circle cx="300" cy="300" r="240" fill="url(#ringGlow)" opacity="0.25"></circle>
-
-            <!-- 6 slices as paths (60deg each) - radius 230 -->
-            <!-- Each path uses center at 300,300 and arcs to form wedges -->
-            <!-- order doesn't matter because labels will be rendered on top -->
-            <g id="slices" transform="">
-              <path class="slice" id="slice1" d="M300,300 L300,70 A230,230 0 0,1 520,190 Z" fill="url(#g1)" data-tip="Planning & Analysis — objectives, feasibility, stakeholder needs." />
-              <path class="slice" id="slice2" d="M300,300 L520,190 A230,230 0 0,1 520,410 Z" fill="url(#g2)" data-tip="Design — architecture, UI models, design accelerators." />
-              <path class="slice" id="slice3" d="M300,300 L520,410 A230,230 0 0,1 300,530 Z" fill="url(#g3)" data-tip="Implementation — build, integrate, pipelines, code." />
-              <path class="slice" id="slice4" d="M300,300 L300,530 A230,230 0 0,1 80,410 Z" fill="url(#g4)" data-tip="Testing & Integration — QA, automation, system tests." />
-              <path class="slice" id="slice5" d="M300,300 L80,410 A230,230 0 0,1 80,190 Z" fill="url(#g3)" data-tip="Deployment — release, infra, monitoring and UAT." />
-              <path class="slice" id="slice6" d="M300,300 L80,190 A230,230 0 0,1 300,70 Z" fill="url(#g4)" data-tip="Maintenance — support, enhancements, retrospectives." />
-            </g>
-
-            <!-- flow arrows around the outside ring (curved paths) -->
-            <g opacity="0.9" stroke="rgba(255,255,255,0.85)" stroke-width="2" fill="none" stroke-linecap="round" >
-              <!-- between slice1 -> slice2 -->
-              <path d="M400,95 A200,200 0 0,1 470,180" marker-end="url(#arrow)" opacity="0.08" />
-              <path d="M500,230 A200,200 0 0,1 475,320" marker-end="url(#arrow)" opacity="0.08" />
-              <path d="M430,395 A200,200 0 0,1 320,475" marker-end="url(#arrow)" opacity="0.08" />
-              <path d="M260,500 A200,200 0 0,1 140,395" marker-end="url(#arrow)" opacity="0.08" />
-              <path d="M95,320 A200,200 0 0,1 125,220" marker-end="url(#arrow)" opacity="0.08" />
-              <path d="M180,105 A200,200 0 0,1 300,95" marker-end="url(#arrow)" opacity="0.08" />
-            </g>
-
-            <!-- center hub (smaller, glassy, always on top) -->
-            <g id="centerGroup" style="isolation:isolate;">
-              <circle cx="300" cy="300" r="60" fill="url(#hub)" stroke="#073b6f" stroke-width="2" class="center-hub" />
-              <g pointer-events="none">
-                <text x="300" y="292" text-anchor="middle" fill="#fff" font-weight="700" font-size="16" style="text-shadow:0 8px 18px rgba(0,0,0,0.28)">AI-SDLC Wheel</text>
-                <text x="300" y="313" text-anchor="middle" fill="#e6f2ff" font-weight="600" font-size="12">Explore lifecycle phases</text>
-              </g>
-            </g>
-
-            <!-- outside label badges (placed with group rotations) -->
-            <!-- labels rendered after hub so they are clearly visible and not overlapped -->
-            <g id="labels">
-              <!-- use rotation groups around center, then place horizontal text at same y -->
-              <!-- 0 deg at -90 (top) then clockwise by 60deg increments -->
-              <g transform="rotate(0 300 300)">
-                <text x="300" y="110" class="label-badge">1. Planning &amp;<tspan x="300" dy="22" class="label-sub">Analysis</tspan></text>
-              </g>
-
-              <g transform="rotate(60 300 300)">
-                <!-- rotate back text to horizontal: rotate(-60) around text point -->
-                <g transform="rotate(-60 300 120)">
-                  <text x="300" y="120" class="label-badge">2. Design</text>
-                </g>
-              </g>
-
-              <g transform="rotate(120 300 300)">
-                <g transform="rotate(-120 300 220)">
-                  <text x="300" y="224" class="label-badge">3. Implementation</text>
-                </g>
-              </g>
-
-              <g transform="rotate(180 300 300)">
-                <g transform="rotate(-180 300 320)">
-                  <text x="300" y="320" class="label-badge">4. Testing &amp;<tspan x="300" dy="22" class="label-sub">Integration</tspan></text>
-                </g>
-              </g>
-
-              <g transform="rotate(240 300 300)">
-                <g transform="rotate(-240 300 300)">
-                  <text x="300" y="300" class="label-badge">5. Deployment</text>
-                </g>
-              </g>
-
-              <g transform="rotate(300 300 300)">
-                <g transform="rotate(-300 300 180)">
-                  <text x="300" y="180" class="label-badge">6. Maintenance</text>
-                </g>
-              </g>
-            </g>
-
-          </svg>
-        </div>
-      </div>
-    </section>
-
-    <!-- right resources / assistant -->
-    <aside class="panel" aria-labelledby="rh-title">
-      <h2 id="rh-title">Resources Hub</h2>
-      <ul style="padding-left:0;margin:0;font-size:15px;color:var(--accent);line-height:1.9">
-        <li><a href="#">SDLC Governance Model</a></li>
-        <li><a href="#">Solution Accelerator Catalog</a></li>
-        <li><a href="#">Best Practices Guide</a></li>
-        <li><a href="#">Security &amp; Compliance Docs</a></li>
-      </ul>
-      <div style="margin-top:18px;">
-        <h3 style="margin:8px 0 6px 0;color:var(--sp-blue);font-size:15px">AI-SDLC Assistant</h3>
-        <div style="background:#f7fbff;border-radius:8px;padding:10px;border:1px solid #eef6ff;font-size:14px;color:#0b2b4a">
-          <strong>Assistant:</strong> Hi 👋 — ask me where to find templates or which phase owns a resource.
-        </div>
-      </div>
-    </aside>
-  </main>
-
-  <!-- tooltip element (global) -->
-  <div id="global-tooltip" role="status" aria-live="polite"></div>
-
-  <!-- floating chat -->
-  <div class="chat-float" id="chatFloat">
-    <div class="chat-header">
-      AI-SDLC Assistant
-      <button id="minBtn" aria-label="Minimize" title="Minimize" style="background:none;border:none;color:white;font-size:20px;cursor:pointer">−</button>
+  <section class="flow-container">
+    <div class="ring"></div>
+    <div class="center-tile" id="centerTile">
+      <h3>AI-SDLC Wheel</h3>
+      <p>Explore lifecycle phases</p>
     </div>
-    <div class="chat-body" id="chatBody">
-      <p style="margin:0"><strong>Assistant:</strong> Hi — I can help you browse SDLC materials. Try: "Show design templates".</p>
-    </div>
-    <div class="chat-input">
-      <input id="chatInput" placeholder="Ask me something..." aria-label="Ask AI-SDLC Assistant" />
-      <button id="chatSend">Ask</button>
-    </div>
+
+    <div class="node" data-tip="Define objectives, analyze feasibility." data-phase="1. Planning & Analysis" style="--clr:#0078d4;" onclick="window.open('https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Planning%20%20Analysis/Forms/AllItems.aspx','_blank')">1<br><span>Planning</span></div>
+    <div class="node" data-tip="Create architecture, UX, UI mockups." data-phase="2. Design" onclick="window.open('https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Lists/Design%20Accelerators/AllItems.aspx','_blank')">2<br><span>Design</span></div>
+    <div class="node" data-tip="Develop, integrate and build solution." data-phase="3. Implementation" onclick="window.open('https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Implementation%20Accelerators/Forms/AllItems.aspx','_blank')">3<br><span>Implementation</span></div>
+    <div class="node" data-tip="Test and validate solution end-to-end." data-phase="4. Testing & Integration" onclick="window.open('https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Testing%20%20Integration/Forms/AllItems.aspx','_blank')">4<br><span>Testing</span></div>
+    <div class="node" data-tip="Deploy, monitor and verify releases." data-phase="5. Deployment" onclick="window.open('https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Deployment%20%20Operations%20Accelerators/Forms/AllItems.aspx','_blank')">5<br><span>Deployment</span></div>
+    <div class="node" data-tip="Maintain, support, and continuously improve." data-phase="6. Maintenance" onclick="window.open('https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Maintenance/Forms/AllItems.aspx','_blank')">6<br><span>Maintenance</span></div>
+  </section>
+
+  <aside class="panel">
+    <h2>Resources Hub</h2>
+    <ul style="list-style:none;padding:0;line-height:1.9">
+      <li><a href="#">SDLC Governance Model</a></li>
+      <li><a href="#">Solution Accelerator Catalog</a></li>
+      <li><a href="#">Best Practices Guide</a></li>
+      <li><a href="#">Security & Compliance Docs</a></li>
+    </ul>
+  </aside>
+</main>
+
+<div class="tooltip" id="tooltip"></div>
+
+<!-- Floating Chat -->
+<div class="chat-float" id="chatFloat">
+  <div class="chat-header">
+    AI-SDLC Assistant
+    <button id="minBtn" style="background:none;border:none;color:white;font-size:20px;cursor:pointer">−</button>
   </div>
+  <div class="chat-body" id="chatBody">
+    <p><strong>Assistant:</strong> Hi 👋 I can help you find SDLC resources. Try: "Show design templates".</p>
+  </div>
+  <div class="chat-input">
+    <input id="chatInput" placeholder="Ask me something...">
+    <button id="chatSend">Ask</button>
+  </div>
+</div>
 
-  <footer>© 2025 ICT India – AI-SDLC Hub | Powered by SharePoint &amp; Azure Static Web Apps</footer>
+<footer>© 2025 ICT India – AI-SDLC Hub</footer>
 
 <script>
-/* ---------- Tooltip (global fixed, high z-index) ---------- */
-(function(){
-  const tip = document.getElementById('global-tooltip');
+const tooltip = document.getElementById('tooltip');
+const centerTile = document.getElementById('centerTile');
 
-  function show(html, clientX, clientY){
-    tip.innerHTML = html;
-    tip.style.opacity = '1';
-    // position using viewport coords and clamp
-    requestAnimationFrame(()=>{
-      const r = tip.getBoundingClientRect();
-      const pad = 12;
-      let left = clientX + 16;
-      if (left + r.width > window.innerWidth - pad) left = clientX - r.width - 16;
-      if (left < pad) left = pad;
-      let top = clientY - r.height - 16;
-      if (top < 12) top = clientY + 18;
-      tip.style.left = left + 'px';
-      tip.style.top = top + 'px';
-      tip.style.transform = 'translateZ(0)';
-    });
-  }
-  function hide(){ tip.style.opacity = '0'; }
-
-  // attach to all slices
-  document.addEventListener('DOMContentLoaded', ()=>{
-    document.querySelectorAll('path.slice').forEach(p=>{
-      p.addEventListener('mousemove', e => show(p.getAttribute('data-tip') || '', e.clientX, e.clientY), {passive:true});
-      p.addEventListener('mouseleave', hide, {passive:true});
-      // touch fallback
-      p.addEventListener('touchstart', ev=> {
-        const t = ev.touches && ev.touches[0];
-        if (t) { show(p.getAttribute('data-tip')||'', t.clientX, t.clientY); setTimeout(hide, 2600); }
-      }, {passive:true});
-      // click behavior: open relevant SharePoint link in new tab (if desired)
-      p.addEventListener('click', ()=> {
-        const urlMap = {
-          slice1: 'https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Planning%20%20Analysis/Forms/AllItems.aspx',
-          slice2: 'https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Lists/Design%20Accelerators/AllItems.aspx',
-          slice3: 'https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Implementation%20Accelerators/Forms/AllItems.aspx',
-          slice4: 'https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Testing%20%20Integration/Forms/AllItems.aspx',
-          slice5: 'https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Deployment%20%20Operations%20Accelerators/Forms/AllItems.aspx',
-          slice6: 'https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Maintenance/Forms/AllItems.aspx'
-        };
-        const id = p.id;
-        const href = urlMap[id];
-        if (href) window.open(href, '_blank');
-      });
-    });
-    // hide tooltip on scroll/resize
-    window.addEventListener('scroll', hide, {passive:true});
-    window.addEventListener('resize', hide, {passive:true});
+document.querySelectorAll('.node').forEach(n=>{
+  n.addEventListener('mouseenter', e=>{
+    const msg = n.dataset.phase;
+    const tipText = n.dataset.tip;
+    centerTile.querySelector('h3').textContent = msg;
+    centerTile.querySelector('p').textContent = tipText;
+    tooltip.textContent = tipText;
+    tooltip.style.opacity='1';
   });
-})();
-
-/* ---------- Chat: basic behavior + minimize ---------- */
-(function(){
-  const chat = document.getElementById('chatFloat');
-  const minBtn = document.getElementById('minBtn');
-  const chatSend = document.getElementById('chatSend');
-  const chatBody = document.getElementById('chatBody');
-  const chatInput = document.getElementById('chatInput');
-
-  minBtn.addEventListener('click', (e)=>{
-    e.stopPropagation();
-    chat.classList.toggle('min');
+  n.addEventListener('mousemove', e=>{
+    tooltip.style.left=(e.clientX+18)+'px';
+    tooltip.style.top=(e.clientY-30)+'px';
   });
-
-  // click collapsed to open
-  chat.addEventListener('click', (e)=>{
-    if (chat.classList.contains('min')) chat.classList.remove('min');
+  n.addEventListener('mouseleave', ()=>{
+    centerTile.querySelector('h3').textContent = 'AI-SDLC Wheel';
+    centerTile.querySelector('p').textContent = 'Explore lifecycle phases';
+    tooltip.style.opacity='0';
   });
-
-  function appendMessage(html){
-    const p = document.createElement('p');
-    p.style.margin = '8px 0';
-    p.innerHTML = html;
-    chatBody.appendChild(p);
-    chatBody.scrollTop = chatBody.scrollHeight;
-  }
-
-  chatSend.addEventListener('click', ()=>{
-    const q = chatInput.value.trim();
-    if (!q) return;
-    appendMessage('<strong>You:</strong> ' + escapeHtml(q));
-    chatInput.value = '';
-    setTimeout(()=> appendMessage('<strong>Assistant:</strong> Try: "Open design accelerators" or "Show testing resources".'), 650);
-  });
-
-  chatInput.addEventListener('keypress', (e)=>{ if (e.key === 'Enter') chatSend.click(); });
-
-  function escapeHtml(s){ return s.replace(/[&<>]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[c])); }
-})();
-
-/* ---------- Optional: small animation on load ---------- */
-document.addEventListener('DOMContentLoaded', ()=>{
-  const slices = document.querySelectorAll('.slice');
-  slices.forEach((s,i)=> s.style.transitionDelay = (i*60)+'ms');
 });
+
+/* Chat behavior */
+const chat = document.getElementById('chatFloat');
+document.getElementById('minBtn').onclick = ()=>chat.classList.toggle('min');
+chat.addEventListener('click',()=>{if(chat.classList.contains('min'))chat.classList.remove('min');});
+document.getElementById('chatSend').onclick = ()=>{
+  const input=document.getElementById('chatInput');
+  const text=input.value.trim();
+  if(!text)return;
+  const body=document.getElementById('chatBody');
+  body.innerHTML+=`<p><strong>You:</strong> ${text}</p>`;
+  input.value='';
+  setTimeout(()=>body.innerHTML+=`<p><strong>Assistant:</strong> Try checking the Governance Model section.</p>`,600);
+  body.scrollTop=body.scrollHeight;
+};
 </script>
 </body>
 </html>
