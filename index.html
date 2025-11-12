@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>ICT-India AI-SDLC Hub</title>
 
-<style>
+<style id="wheel-style-v4">
 :root {
   --wheel-size: 520px;
-  --label-size: 85px;
-  --label-radius: 178px;
+  --label-size: 88px;
+  --label-radius: 176px;
   --font: "Segoe UI", Arial, sans-serif;
 }
 body {
@@ -70,8 +70,7 @@ body {
   transition:filter .25s ease;
   z-index:3;
 }
-.phase-label:hover{filter:brightness(1.1);}
-.phase-label br+&{font-size:12px;}
+.phase-label:hover{filter:brightness(1.15);}
 
 /* Tooltip */
 .tooltip{
@@ -91,16 +90,16 @@ body {
   z-index:99;
 }
 .phase-label:hover .tooltip{opacity:1;}
-.phase1 .tooltip,.phase2 .tooltip,.phase6 .tooltip{bottom:100%;transform:translate(-50%,-6px);}
-.phase3 .tooltip,.phase4 .tooltip,.phase5 .tooltip{top:100%;transform:translate(-50%,6px);}
+.phase1 .tooltip,.phase2 .tooltip,.phase6 .tooltip{bottom:105%;transform:translate(-50%,-8px);}
+.phase3 .tooltip,.phase4 .tooltip,.phase5 .tooltip{top:105%;transform:translate(-50%,8px);}
 
-/* precise centered placement */
-.phase1{background:#4F8EF7;transform:translate(-50%,-50%) rotate(30deg) translateY(-178px) rotate(-30deg);}
-.phase2{background:#F3B23A;transform:translate(-50%,-50%) rotate(90deg) translateY(-178px) rotate(-90deg);}
-.phase3{background:#F97A3C;transform:translate(-50%,-50%) rotate(150deg) translateY(-177px) rotate(-150deg);}
-.phase4{background:#FFD43B;transform:translate(-50%,-50%) rotate(210deg) translateY(-177px) rotate(-210deg);}
-.phase5{background:#4DC981;transform:translate(-50%,-50%) rotate(270deg) translateY(-178px) rotate(-270deg);}
-.phase6{background:#8C8CFF;transform:translate(-50%,-50%) rotate(330deg) translateY(-178px) rotate(-330deg);}
+/* exact new positioning — perfectly centered */
+.phase1{background:#4F8EF7;transform:translate(-50%,-50%) rotate(30deg) translateY(-176px) rotate(-30deg);}
+.phase2{background:#F3B23A;transform:translate(-50%,-50%) rotate(90deg) translateY(-176px) rotate(-90deg);}
+.phase3{background:#F97A3C;transform:translate(-50%,-50%) rotate(150deg) translateY(-176px) rotate(-150deg);}
+.phase4{background:#FFD43B;transform:translate(-50%,-50%) rotate(210deg) translateY(-176px) rotate(-210deg);}
+.phase5{background:#4DC981;transform:translate(-50%,-50%) rotate(270deg) translateY(-176px) rotate(-270deg);}
+.phase6{background:#8C8CFF;transform:translate(-50%,-50%) rotate(330deg) translateY(-176px) rotate(-330deg);}
 
 .panel{
   background:#fff;border-radius:12px;
@@ -170,5 +169,12 @@ body {
     <a href="#">Developer resources</a>
   </div>
 </div>
+
+<script>
+// 🔄 force CSS reload for caching
+const styleTag = document.getElementById('wheel-style-v4');
+styleTag.setAttribute('data-version', Date.now());
+</script>
+
 </body>
 </html>
