@@ -5,36 +5,45 @@
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>ICT-India AI-SDLC Hub</title>
 
-<style id="wheel-style-v4">
+<style>
 :root {
-  --wheel-size: 520px;
-  --label-size: 88px;
-  --label-radius: 176px;
+  --wheel-size: 560px;
+  --label-size: 90px;
   --font: "Segoe UI", Arial, sans-serif;
 }
 body {
   margin: 0;
   font-family: var(--font);
-  background: radial-gradient(circle at center,#fff 0%,#eaf1f9 100%);
+  background: radial-gradient(circle at center,#ffffff 0%,#eaf1f9 100%);
 }
 .topbar {
   background: linear-gradient(180deg,#0078D4 0%,#005A9E 100%);
-  color:#fff;font-weight:600;padding:10px 20px;
+  color:#fff;
+  font-weight:600;
+  padding:10px 20px;
   box-shadow:0 2px 4px rgba(0,0,0,.1);
 }
 .container {
-  display:grid;grid-template-columns:1fr 300px;
-  gap:24px;max-width:1200px;margin:30px auto;padding:0 20px;
+  display:grid;
+  grid-template-columns:1fr 300px;
+  gap:24px;
+  max-width:1200px;
+  margin:30px auto;
+  padding:0 20px;
 }
 .wheel-wrap {
-  display:flex;justify-content:center;align-items:center;
-  background:#fff;border-radius:16px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background:#fff;
+  border-radius:16px;
   box-shadow:0 6px 20px rgba(0,0,0,.05);
   padding:24px;
 }
 .wheel {
   position:relative;
-  width:var(--wheel-size);height:var(--wheel-size);
+  width:var(--wheel-size);
+  height:var(--wheel-size);
   border-radius:50%;
   background:conic-gradient(
     #4F8EF7 0deg 60deg,
@@ -44,36 +53,46 @@ body {
     #4DC981 240deg 300deg,
     #8C8CFF 300deg 360deg
   );
+  overflow:visible;
 }
 .center {
-  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
-  width:180px;height:180px;border-radius:50%;
-  background:linear-gradient(145deg,#0096ff 0%,#0078d4 50%,#005a9e 100%);
-  color:#fff;text-align:center;font-weight:600;
-  display:flex;flex-direction:column;justify-content:center;
-  box-shadow:0 10px 25px rgba(0,0,0,.2);z-index:2;
-}
-.center .title{font-size:16px;}
-.center .subtitle{font-size:11px;margin-top:4px;opacity:.9;}
-
-.phase-label{
-  position:absolute;top:50%;left:50%;
-  width:var(--label-size);height:var(--label-size);
-  margin:calc(var(--label-size)/-2);
+  position:absolute;
+  top:50%; left:50%;
+  transform:translate(-50%,-50%);
+  width:200px; height:200px;
   border-radius:50%;
-  font-weight:600;font-size:13px;line-height:1.1;
-  color:#fff;text-align:center;
-  display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(145deg,#0096ff 0%,#0078d4 50%,#005a9e 100%);
+  color:#fff; text-align:center; font-weight:600;
+  display:flex; flex-direction:column; justify-content:center;
+  box-shadow:0 10px 25px rgba(0,0,0,.2);
+  z-index:2;
+}
+.center .title {font-size:16px;}
+.center .subtitle {font-size:11px; margin-top:4px; opacity:.9;}
+
+.phase-label {
+  position:absolute;
+  width:var(--label-size);
+  height:var(--label-size);
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  color:#fff;
+  font-size:13px;
+  font-weight:600;
   cursor:pointer;
   border:2px solid rgba(255,255,255,0.4);
   box-shadow:0 3px 6px rgba(0,0,0,0.15),inset 0 0 6px rgba(255,255,255,0.2);
-  transition:filter .25s ease;
-  z-index:3;
+  transition:box-shadow .25s ease;
 }
-.phase-label:hover{filter:brightness(1.15);}
+.phase-label:hover {
+  box-shadow:0 0 0 6px rgba(255,255,255,0.3),0 6px 10px rgba(0,0,0,0.15);
+}
 
 /* Tooltip */
-.tooltip{
+.tooltip {
   position:absolute;
   left:50%;
   transform:translateX(-50%);
@@ -89,67 +108,48 @@ body {
   transition:opacity .25s ease;
   z-index:99;
 }
-.phase-label:hover .tooltip{opacity:1;}
-.phase1 .tooltip,.phase2 .tooltip,.phase6 .tooltip{bottom:105%;transform:translate(-50%,-8px);}
-.phase3 .tooltip,.phase4 .tooltip,.phase5 .tooltip{top:105%;transform:translate(-50%,8px);}
+.phase-label:hover .tooltip {opacity:1;}
 
-/* exact new positioning — perfectly centered */
-.phase1{background:#4F8EF7;transform:translate(-50%,-50%) rotate(30deg) translateY(-176px) rotate(-30deg);}
-.phase2{background:#F3B23A;transform:translate(-50%,-50%) rotate(90deg) translateY(-176px) rotate(-90deg);}
-.phase3{background:#F97A3C;transform:translate(-50%,-50%) rotate(150deg) translateY(-176px) rotate(-150deg);}
-.phase4{background:#FFD43B;transform:translate(-50%,-50%) rotate(210deg) translateY(-176px) rotate(-210deg);}
-.phase5{background:#4DC981;transform:translate(-50%,-50%) rotate(270deg) translateY(-176px) rotate(-270deg);}
-.phase6{background:#8C8CFF;transform:translate(-50%,-50%) rotate(330deg) translateY(-176px) rotate(-330deg);}
-
-.panel{
-  background:#fff;border-radius:12px;
+/* Quick Links Panel */
+.panel {
+  background:#fff;
+  border-radius:12px;
   box-shadow:0 6px 20px rgba(0,0,0,.05);
-  padding:20px;height:fit-content;
+  padding:20px;
+  height:fit-content;
 }
-.panel h3{color:#004578;font-weight:600;margin-top:0}
-.panel a{display:block;color:#0078D4;text-decoration:none;margin:6px 0;font-size:14px}
-.panel a:hover{text-decoration:underline}
+.panel h3 {
+  color:#004578;
+  font-weight:600;
+  margin-top:0;
+}
+.panel a {
+  display:block;
+  color:#0078D4;
+  text-decoration:none;
+  margin:6px 0;
+  font-size:14px;
+}
+.panel a:hover {text-decoration:underline;}
+
 @media(max-width:950px){
   .container{grid-template-columns:1fr;}
   .panel{order:2;margin-top:20px}
-  .wheel{width:400px;height:400px}
-  .center{width:140px;height:140px;font-size:13px}
+  .wheel{width:420px;height:420px}
+  .center{width:150px;height:150px}
 }
 </style>
 </head>
+
 <body>
 <div class="topbar"><span>ICT-India AI-SDLC Hub</span></div>
+
 <div class="container">
   <div class="wheel-wrap">
-    <div class="wheel">
+    <div class="wheel" id="wheel">
       <div class="center">
         <div class="title">AI-SDLC Wheel</div>
         <div class="subtitle">Hover a phase — click to open library</div>
-      </div>
-
-      <div class="phase-label phase1" onclick="window.open('https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Planning-Analysis','_blank')">
-        Planning<br>&amp; Analysis
-        <div class="tooltip">Plan requirements & business goals</div>
-      </div>
-      <div class="phase-label phase2" onclick="window.open('https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Design%20Accelerators/Forms/AllItems.aspx','_blank')">
-        Design
-        <div class="tooltip">Create wireframes & technical design</div>
-      </div>
-      <div class="phase-label phase3" onclick="window.open('https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Implementation%20Accelerators/Forms/AllItems.aspx','_blank')">
-        Implementation
-        <div class="tooltip">Develop and integrate components</div>
-      </div>
-      <div class="phase-label phase4" onclick="window.open('https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Testing%20%20Integration/Forms/AllItems.aspx','_blank')">
-        Testing<br>&amp; Integration
-        <div class="tooltip">Validate functionality & performance</div>
-      </div>
-      <div class="phase-label phase5" onclick="window.open('https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Deployment%20%20Operations%20Accelerators/Forms/AllItems.aspx','_blank')">
-        Deployment
-        <div class="tooltip">Release to production environments</div>
-      </div>
-      <div class="phase-label phase6" onclick="window.open('https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Maintenance/Forms/AllItems.aspx','_blank')">
-        Maintenance
-        <div class="tooltip">Monitor, optimize & enhance systems</div>
       </div>
     </div>
   </div>
@@ -171,9 +171,34 @@ body {
 </div>
 
 <script>
-// 🔄 force CSS reload for caching
-const styleTag = document.getElementById('wheel-style-v4');
-styleTag.setAttribute('data-version', Date.now());
+// ✅ Exact polar coordinate placement for perfect centering
+const phases = [
+  {name:"Planning<br>&amp; Analysis", angle:30, color:"#4F8EF7", link:"https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Planning-Analysis", tip:"Plan requirements & business goals"},
+  {name:"Design", angle:90, color:"#F3B23A", link:"https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Design%20Accelerators/Forms/AllItems.aspx", tip:"Create wireframes & technical design"},
+  {name:"Implementation", angle:150, color:"#F97A3C", link:"https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Implementation%20Accelerators/Forms/AllItems.aspx", tip:"Develop and integrate components"},
+  {name:"Testing<br>&amp; Integration", angle:210, color:"#FFD43B", link:"https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Testing%20%20Integration/Forms/AllItems.aspx", tip:"Validate functionality & performance"},
+  {name:"Deployment", angle:270, color:"#4DC981", link:"https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Deployment%20%20Operations%20Accelerators/Forms/AllItems.aspx", tip:"Release to production environments"},
+  {name:"Maintenance", angle:330, color:"#8C8CFF", link:"https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Maintenance/Forms/AllItems.aspx", tip:"Monitor, optimize & enhance systems"}
+];
+
+const wheel = document.getElementById('wheel');
+const radius = 560 / 2 - 100; // perfectly balanced from center
+phases.forEach(p => {
+  const el = document.createElement('div');
+  el.className = 'phase-label';
+  el.style.background = p.color;
+
+  const angleRad = (p.angle - 90) * Math.PI / 180; // rotate top reference
+  const x = radius * Math.cos(angleRad);
+  const y = radius * Math.sin(angleRad);
+
+  el.style.left = `calc(50% + ${x}px)`;
+  el.style.top = `calc(50% + ${y}px)`;
+
+  el.innerHTML = `${p.name}<div class="tooltip">${p.tip}</div>`;
+  el.onclick = () => window.open(p.link, '_blank');
+  wheel.appendChild(el);
+});
 </script>
 
 </body>
