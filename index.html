@@ -33,7 +33,6 @@ header {
   padding: 12px 28px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
   box-shadow: 0 2px 8px rgba(0,0,0,0.15);
 }
 .header-left {
@@ -49,26 +48,6 @@ header {
   font-size: 22px;
   font-weight: 500;
   margin: 0;
-}
-.search-bar {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  background: #ffffff20;
-  padding: 4px 10px;
-  border-radius: 6px;
-}
-.search-bar input {
-  background: transparent;
-  border: none;
-  color: white;
-  font-size: 15px;
-  outline: none;
-  width: 180px;
-}
-.search-bar:hover, .search-bar:focus-within {
-  background: #ffffff40;
-  transition: background 0.2s ease;
 }
 
 /* Breadcrumb */
@@ -106,6 +85,8 @@ main {
   width: 560px;
   height: 560px;
   position: relative;
+  z-index: 1;
+  overflow: visible;
   animation: fadeIn 1.2s ease 0.3s forwards;
   opacity: 0;
 }
@@ -141,8 +122,9 @@ text {
   transition: opacity 0.2s ease, transform 0.2s ease;
   pointer-events: none;
   border: 1px solid #e1dfdd;
-  max-width: 260px;
+  max-width: 280px;
   line-height: 1.4;
+  z-index: 9999; /* Always above all components */
 }
 .tooltip.show { opacity: 1; transform: translateY(0); }
 
@@ -175,54 +157,51 @@ text {
 }
 .side-panel a:hover, .resources-panel a:hover { color: #004578; text-decoration: underline; }
 
-/* AI Assistant */
-.ai-widget {
-  margin-top: 25px;
-  background: #f9fafb;
+/* Floating Chat Assistant */
+.chat-float {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  width: 340px;
+  background: #ffffff;
   border: 1px solid #e1dfdd;
-  border-radius: 10px;
-  padding: 16px;
-  box-shadow: 0 1px 6px rgba(0,0,0,0.1);
-  margin-bottom: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 18px rgba(0,0,0,0.2);
+  z-index: 99999;
+  overflow: hidden;
+  animation: fadeIn 1s ease 0.3s forwards;
 }
-.ai-widget h3 {
-  color: var(--sp-blue-dark);
-  margin-top: 0;
+.chat-header {
+  background: var(--sp-blue);
+  color: white;
+  padding: 10px 16px;
+  font-weight: 600;
 }
-.ai-chat {
-  height: 200px;
-  overflow-y: auto;
-  background: white;
-  border-radius: 8px;
+.chat-body {
+  height: 220px;
   padding: 10px;
-  margin-bottom: 10px;
-  font-size: 14px;
-  box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
-  display: flex;
-  flex-direction: column;
-}
-.ai-input {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-.ai-input input {
-  flex-grow: 1;
-  padding: 8px;
-  border: 1px solid #c8c6c4;
-  border-radius: 6px;
-  height: 34px;
+  overflow-y: auto;
   font-size: 14px;
 }
-.ai-input button {
+.chat-input {
+  display: flex;
+  border-top: 1px solid #ddd;
+}
+.chat-input input {
+  flex: 1;
+  border: none;
+  padding: 10px;
+  font-size: 14px;
+  outline: none;
+}
+.chat-input button {
   background: var(--sp-blue);
   color: white;
   border: none;
-  padding: 8px 14px;
-  border-radius: 6px;
+  padding: 10px 16px;
   cursor: pointer;
 }
-.ai-input button:hover { background: var(--sp-blue-dark); }
+.chat-input button:hover { background: var(--sp-blue-dark); }
 
 footer {
   background: var(--sp-gray-bg);
@@ -243,10 +222,6 @@ footer {
   <div class="header-left">
     <img src="https://shiftup.sharepoint.com/:i:/r/sites/ICT-India-AI-SDLC-Hub/Media%20library/CPT%20AI%20SDLC%20SITE%20LOGO.png" alt="AI-SDLC Logo" />
     <h1>ICT India AI SDLC Hub</h1>
-  </div>
-  <div class="search-bar">
-    <fluent-icon name="search"></fluent-icon>
-    <input type="text" placeholder="Search AI-SDLC Hub..." />
   </div>
 </header>
 
@@ -293,36 +268,36 @@ footer {
           </linearGradient>
         </defs>
 
-        <!-- Centered & Numbered Wheel -->
+        <!-- Numbered and Centered Wheel -->
         <a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Planning%20%20Analysis/Forms/AllItems.aspx" target="_blank">
           <path d="M300,300 L300,70 A230,230 0 0,1 520,190 Z" fill="url(#p1)" data-tip="🧠 Planning & Analysis: Define objectives and feasibility."/>
-          <text x="390" y="160" text-anchor="middle">
-            <tspan x="390" dy="0">1. Planning &</tspan>
-            <tspan x="390" dy="22">Analysis</tspan>
+          <text x="380" y="180" text-anchor="middle">
+            <tspan x="380" dy="0">1. Planning &</tspan>
+            <tspan x="380" dy="22">Analysis</tspan>
           </text>
         </a>
         <a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Lists/Design%20Accelerators/AllItems.aspx" target="_blank">
           <path d="M300,300 L520,190 A230,230 0 0,1 520,410 Z" fill="url(#p2)" data-tip="🎨 Design: Create system architecture and UI models."/>
-          <text x="470" y="310">2. Design</text>
+          <text x="450" y="300">2. Design</text>
         </a>
         <a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Implementation%20Accelerators/Forms/AllItems.aspx" target="_blank">
           <path d="M300,300 L520,410 A230,230 0 0,1 300,530 Z" fill="url(#p3)" data-tip="⚙️ Implementation: Develop and integrate the solution."/>
-          <text x="370" y="470">3. Implementation</text>
+          <text x="360" y="460">3. Implementation</text>
         </a>
         <a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Testing%20%20Integration/Forms/AllItems.aspx" target="_blank">
           <path d="M300,300 L300,530 A230,230 0 0,1 80,410 Z" fill="url(#p4)" data-tip="🧪 Testing & Integration: Validate quality and functionality."/>
-          <text x="230" y="470" text-anchor="middle">
-            <tspan x="230" dy="0">4. Testing &</tspan>
-            <tspan x="230" dy="22">Integration</tspan>
+          <text x="240" y="460" text-anchor="middle">
+            <tspan x="240" dy="0">4. Testing &</tspan>
+            <tspan x="240" dy="22">Integration</tspan>
           </text>
         </a>
         <a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Deployment%20%20Operations%20Accelerators/Forms/AllItems.aspx" target="_blank">
           <path d="M300,300 L80,410 A230,230 0 0,1 80,190 Z" fill="url(#p3)" data-tip="🚀 Deployment: Launch and verify readiness."/>
-          <text x="160" y="300">5. Deployment</text>
+          <text x="170" y="300">5. Deployment</text>
         </a>
         <a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Maintenance/Forms/AllItems.aspx" target="_blank">
           <path d="M300,300 L80,190 A230,230 0 0,1 300,70 Z" fill="url(#p4)" data-tip="🔧 Maintenance: Continuous support and improvement."/>
-          <text x="220" y="160">6. Maintenance</text>
+          <text x="220" y="180">6. Maintenance</text>
         </a>
 
         <!-- Center Circle -->
@@ -342,22 +317,20 @@ footer {
       <li><a href="#">Best Practices Guide</a></li>
       <li><a href="#">Security & Compliance Docs</a></li>
     </ul>
-
-    <div class="ai-widget">
-      <h3>AI-SDLC Assistant</h3>
-      <div class="ai-chat" id="ai-chat">
-        <div class="chat-bubble assistant"><strong>Assistant:</strong> Hi 👋, I can help you explore SDLC resources. Try asking, “Where can I find design templates?”</div>
-      </div>
-      <div class="ai-input">
-        <input id="userInput" type="text" placeholder="Ask me something..." />
-        <button onclick="sendMessage()">Ask</button>
-      </div>
-    </div>
-
-    <h2>Contact</h2>
-    <p>AI-SDLC CoE Team<br><a href="mailto:ictindia@stellantis.com">ictindia@stellantis.com</a></p>
   </div>
 </main>
+
+<!-- Floating Chat Assistant -->
+<div class="chat-float">
+  <div class="chat-header">AI-SDLC Assistant</div>
+  <div class="chat-body" id="chat-body">
+    <p><strong>Assistant:</strong> Hi 👋, I can help you explore SDLC resources. Try asking “Where can I find design templates?”</p>
+  </div>
+  <div class="chat-input">
+    <input id="chatInput" placeholder="Type your question..." />
+    <button onclick="sendMsg()">Ask</button>
+  </div>
+</div>
 
 <footer>
   © 2025 ICT India – AI-SDLC Hub | Powered by SharePoint & Azure Static Web Apps
@@ -379,6 +352,23 @@ document.querySelectorAll("path").forEach(slice => {
   });
   slice.addEventListener("mouseleave", () => tooltip.classList.remove("show"));
 });
+
+// Simple Assistant
+function sendMsg() {
+  const body = document.getElementById("chat-body");
+  const input = document.getElementById("chatInput");
+  if (!input.value.trim()) return;
+  const userQ = document.createElement("p");
+  userQ.innerHTML = "<strong>You:</strong> " + input.value;
+  body.appendChild(userQ);
+  const reply = document.createElement("p");
+  reply.innerHTML = "<strong>Assistant:</strong> Let me guide you – check the ‘Resources Hub’ or related phase for details.";
+  setTimeout(() => {
+    body.appendChild(reply);
+    body.scrollTop = body.scrollHeight;
+  }, 700);
+  input.value = "";
+}
 </script>
 </body>
 </html>
