@@ -183,12 +183,12 @@ const wheel = document.getElementById('wheel');
 const radius = 180;
   // 🎯 Optional per-phase radius fine-tuning (positive = farther out, negative = closer in)
 const radiusAdjustments = {
-  "Planning": 0,
+  "Planning": +1,
   "Design": 0,
-  "Implementation": +3,
+  "Implementation": +1,
   "Testing": +2,
   "Deployment": +4,
-  "Maintenance": 0
+  "Maintenance": +6
 };
 
 // 🎯 Individual Y corrections per phase (positive = down, negative = up)
@@ -198,7 +198,7 @@ const yAdjustments = {
   "Implementation": -10,
   "Testing": -8,
   "Deployment": -8,
-  "Maintenance": +3
+  "Maintenance": -6
 };
 
 
