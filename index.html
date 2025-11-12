@@ -8,8 +8,8 @@
 <style>
 :root {
   --wheel-size: 520px;
-  --label-size: 85px; /* Increased for better text fit */
-  --label-radius: 175px;
+  --label-size: 85px;
+  --label-radius: 180px;
   --font: "Segoe UI", Arial, sans-serif;
 }
 body {
@@ -36,7 +36,6 @@ body {
   position: relative;
   width: var(--wheel-size); height: var(--wheel-size);
   border-radius: 50%;
-  overflow: visible; /* Allows tooltip to be seen */
   background: conic-gradient(
     #4F8EF7 0deg 60deg,
     #F3B23A 60deg 120deg,
@@ -45,10 +44,7 @@ body {
     #4DC981 240deg 300deg,
     #8C8CFF 300deg 360deg
   );
-  animation: settle 1s ease-out;
 }
-@keyframes settle { from{transform:rotate(10deg)scale(.98)} to{transform:rotate(0)scale(1)} }
-
 .center {
   position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
   width: 180px; height: 180px; border-radius: 50%;
@@ -65,25 +61,19 @@ body {
   width: var(--label-size); height: var(--label-size);
   margin: calc(var(--label-size) / -2);
   border-radius: 50%;
-  font-size: 13px; font-weight: 600; text-align: center;
+  color: #fff; font-size: 13px; font-weight: 600; text-align: center;
   display: flex; align-items: center; justify-content: center;
   cursor: pointer;
-  color: #fff;
-  background-clip: padding-box;
   border: 2px solid rgba(255,255,255,0.4);
   box-shadow: inset 0 0 6px rgba(255,255,255,0.3);
-  transition: filter .25s, box-shadow .25s; /* removed transform animation */
   z-index: 3;
+  transition: filter .25s ease;
 }
-.phase-label:hover {
-  filter: brightness(1.2);
-  box-shadow: 0 0 25px rgba(0,0,0,0.25);
-}
+.phase-label:hover { filter: brightness(1.15); }
 
 /* Tooltip styling */
 .tooltip {
   position: absolute;
-  bottom: 90%;
   left: 50%;
   transform: translateX(-50%);
   background: #fff;
@@ -96,17 +86,21 @@ body {
   opacity: 0;
   pointer-events: none;
   transition: opacity .25s ease;
-  z-index: 10;
+  z-index: 99;
 }
 .phase-label:hover .tooltip { opacity: 1; }
 
-/* aligned midpoints inside circle */
-.phase1 { background:#4F8EF7; transform:translate(-50%,-50%) rotate(30deg) translateY(-175px) rotate(-30deg); }
-.phase2 { background:#F3B23A; transform:translate(-50%,-50%) rotate(90deg) translateY(-175px) rotate(-90deg); }
-.phase3 { background:#F97A3C; transform:translate(-50%,-50%) rotate(150deg) translateY(-175px) rotate(-150deg); }
-.phase4 { background:#FFD43B; color:#222; transform:translate(-50%,-50%) rotate(210deg) translateY(-175px) rotate(-210deg); }
-.phase5 { background:#4DC981; transform:translate(-50%,-50%) rotate(270deg) translateY(-175px) rotate(-270deg); }
-.phase6 { background:#8C8CFF; transform:translate(-50%,-50%) rotate(330deg) translateY(-175px) rotate(-330deg); }
+/* Placement of each phase (perfectly centered midpoints) */
+.phase1 { background:#4F8EF7; transform:translate(-50%,-50%) rotate(30deg) translateY(-180px) rotate(-30deg); }
+.phase2 { background:#F3B23A; transform:translate(-50%,-50%) rotate(90deg) translateY(-180px) rotate(-90deg); }
+.phase3 { background:#F97A3C; transform:translate(-50%,-50%) rotate(150deg) translateY(-180px) rotate(-150deg); }
+.phase4 { background:#FFD43B; transform:translate(-50%,-50%) rotate(210deg) translateY(-180px) rotate(-210deg); }
+.phase5 { background:#4DC981; transform:translate(-50%,-50%) rotate(270deg) translateY(-180px) rotate(-270deg); }
+.phase6 { background:#8C8CFF; transform:translate(-50%,-50%) rotate(330deg) translateY(-180px) rotate(-330deg); }
+
+/* Tooltip adaptive positions */
+.phase1 .tooltip, .phase2 .tooltip, .phase6 .tooltip { bottom: 90%; }
+.phase3 .tooltip, .phase4 .tooltip, .phase5 .tooltip { top: 90%; }
 
 .panel {
   background:#fff;border-radius:12px;box-shadow:0 6px 20px rgba(0,0,0,.05);
@@ -133,7 +127,6 @@ body {
         <div class="subtitle">Hover a phase — click to open library</div>
       </div>
 
-      <!-- Phase Labels -->
       <div class="phase-label phase1" onclick="window.open('https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Planning-Analysis','_blank')">
         Planning<br>&amp; Analysis
         <div class="tooltip">Plan requirements & business goals</div>
