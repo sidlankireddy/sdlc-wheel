@@ -61,8 +61,12 @@ body {
   width:190px; height:190px;
   border-radius:50%;
   background:linear-gradient(145deg,#0096ff 0%,#0078d4 50%,#005a9e 100%);
-  color:#fff; text-align:center; font-weight:600;
-  display:flex; flex-direction:column; justify-content:center;
+  color:#fff;
+  text-align:center;
+  font-weight:600;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
   box-shadow:0 10px 25px rgba(0,0,0,.2);
   z-index:2;
 }
@@ -87,9 +91,7 @@ body {
   box-shadow:0 3px 6px rgba(0,0,0,0.15),inset 0 0 6px rgba(255,255,255,0.2);
   transition:filter .25s ease;
 }
-.phase-label:hover {
-  filter:brightness(1.1);
-}
+.phase-label:hover { filter:brightness(1.1); }
 
 /* Hover Panel */
 #hover-panel {
@@ -115,9 +117,7 @@ body {
   color:#005A9E;
   margin:4px 0;
 }
-#hover-panel a:hover {
-  text-decoration:underline;
-}
+#hover-panel a:hover { text-decoration:underline; }
 
 @keyframes fadeIn {
   from {opacity:0; transform:translateY(4px);}
@@ -134,9 +134,9 @@ body {
 </head>
 
 <body>
+
 <div class="topbar"><span>ICT-India AI-SDLC Hub</span></div>
 
-<!-- Hover Panel -->
 <div id="hover-panel"></div>
 
 <div class="container">
@@ -151,8 +151,6 @@ body {
 
   <div class="panel">
     <h3>Quick Links</h3>
-
-    <!-- YOUR EXACT LINKS (NO CHANGES NEEDED) -->
     <a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Planning-Analysis" target="_blank">Planning & Analysis</a>
     <a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Design%20Accelerators/Forms/AllItems.aspx" target="_blank">Design Accelerators</a>
     <a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Implementation%20Accelerators/Forms/AllItems.aspx" target="_blank">Implementation Accelerators</a>
@@ -163,33 +161,28 @@ body {
 </div>
 
 <script>
-/* ---- YOUR EXACT PHASES AND LIBRARIES ---- */
+/* ---- EXACT PHASES WITH YOUR REAL SHAREPOINT LINKS ---- */
 const phases = [
   { name:"Planning & Analysis", angle:15, color:"#4F8EF7",
-    link:"https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Planning%20%20Analysis"
-  },
+    link:"https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Planning-Analysis" },
+
   { name:"Design", angle:85, color:"#F3B23A",
-    link:"https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Design%20Accelerators/Forms/AllItems.aspx"
-  },
+    link:"https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Design%20Accelerators/Forms/AllItems.aspx" },
+
   { name:"Implementation", angle:160, color:"#F97A3C",
-    link:"https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Implementation%20Accelerators/Forms/AllItems.aspx"
-  },
+    link:"https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Implementation%20Accelerators/Forms/AllItems.aspx" },
+
   { name:"Testing & Integration", angle:220, color:"#FFD43B",
-    link:"https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Testing%20%20Integration/Forms/AllItems.aspx"
-  },
+    link:"https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Testing%20%20Integration/Forms/AllItems.aspx" },
+
   { name:"Deployment & Operations", angle:285, color:"#4DC981",
-    link:"https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Deployment%20%20Operations%20Accelerators/Forms/AllItems.aspx"
-  },
+    link:"https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Deployment%20%20Operations%20Accelerators/Forms/AllItems.aspx" },
+
   { name:"Maintenance", angle:325, color:"#8C8CFF",
-    link:"https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Maintenance/Forms/AllItems.aspx"
-  }
+    link:"https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Maintenance/Forms/AllItems.aspx" }
 ];
 
-const wheel = document.getElementById('wheel');
-const hoverPanel = document.getElementById('hover-panel');
-const radius = 180;
-
-/* ---- REST CALL to GET 5 RECENT FILES ---- */
+/* ---- REST CALL: GET 5 MOST RECENT ITEMS ---- */
 async function getTop5(listUrl) {
   const listTitle = decodeURIComponent(listUrl.split("/").pop());
   const api = `${listUrl}/_api/web/lists/getbytitle('${listTitle}')/items?$orderby=Modified desc&$top=5&$select=Title,FileRef`;
@@ -204,18 +197,48 @@ async function getTop5(listUrl) {
   return data.value;
 }
 
-/* ---- BUILD WHEEL ---- */
+const radius = 180;
+const wheel = document.getElementById("wheel");
+const hoverPanel = document.getElementById("hover-panel");
+
+/* ---- Your exact radius + Y-offset adjustments ---- */
+const radiusAdjustments = {
+  "Planning & Analysis": +30,
+  "Design": -15,
+  "Implementation": 0,
+  "Testing & Integration": +40,
+  "Deployment & Operations": +65,
+  "Maintenance": +40
+};
+
+const yAdjustments = {
+  "Planning & Analysis": -32,
+  "Design": -30,
+  "Implementation": -25,
+  "Testing & Integration": -50,
+  "Deployment & Operations": +10,
+  "Maintenance": -34
+};
+
+/* ---- Build wheel with perfect original alignment ---- */
 phases.forEach(p => {
   const el = document.createElement("div");
   el.className = "phase-label";
   el.style.background = p.color;
 
   const rad = (p.angle - 90) * Math.PI / 180;
-  el.style.left = `calc(50% + ${radius * Math.cos(rad)}px)`;
-  el.style.top  = `calc(50% + ${radius * Math.sin(rad)}px)`;
+
+  const r = radius + (radiusAdjustments[p.name] || 0);
+  const yOff = yAdjustments[p.name] || 0;
+
+  const x = r * Math.cos(rad);
+  const y = r * Math.sin(rad) + yOff;
+
+  el.style.left = `calc(50% + ${x}px)`;
+  el.style.top  = `calc(50% + ${y}px)`;
   el.innerHTML = p.name;
 
-  /* ---- HOVER: GET LIVE DATA ---- */
+  /* ---- Hover → show top 5 items ---- */
   el.onmouseenter = async () => {
     hoverPanel.style.display = "block";
     hoverPanel.innerHTML = `<h4>${p.name}</h4><div>Loading...</div>`;
@@ -236,7 +259,7 @@ phases.forEach(p => {
 
     const rect = el.getBoundingClientRect();
     hoverPanel.style.left = (rect.right + 15) + "px";
-    hoverPanel.style.top = rect.top + "px";
+    hoverPanel.style.top  = rect.top + "px";
   };
 
   el.onmouseleave = () => hoverPanel.style.display = "none";
