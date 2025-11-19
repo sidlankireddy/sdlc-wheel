@@ -1,257 +1,251 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>ICT-India AI-SDLC Hub</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>ICT-India AI-SDLC Hub</title>
 
-  <style>
-    :root {
-      --wheel-size: 560px;
-      --label-size: 90px;
-      --font: "Segoe UI", Arial, sans-serif;
-    }
-    body {
-      margin:0;
-      font-family: var(--font);
-      background: radial-gradient(circle at center,#ffffff 0%,#eaf1f9 100%);
-    }
-    .topbar {
-      background: linear-gradient(180deg,#0078D4 0%,#005A9E 100%);
-      color:#fff;
-      font-weight:600;
-      padding:10px 20px;
-      box-shadow:0 2px 4px rgba(0,0,0,.1);
-    }
-    .container {
-      display:grid;
-      grid-template-columns:1fr 300px;
-      gap:24px;
-      max-width:1200px;
-      margin:30px auto;
-      padding:0 20px;
-    }
-    .wheel-wrap {
-      display:flex;
-      justify-content:center;
-      align-items:center;
-      background:#fff;
-      border-radius:16px;
-      box-shadow:0 6px 20px rgba(0,0,0,.05);
-      padding:24px;
-    }
-    .wheel {
-      position:relative;
-      width: var(--wheel-size);
-      height: var(--wheel-size);
-      border-radius:50%;
-      background: conic-gradient(
-        #4F8EF7 0deg 60deg,
-        #F3B23A 60deg 120deg,
-        #F97A3C 120deg 180deg,
-        #FFD43B 180deg 240deg,
-        #4DC981 240deg 300deg,
-        #8C8CFF 300deg 360deg
-      );
-    }
-    .center {
-      position:absolute;
-      top:50%; left:50%;
-      transform: translate(-50%,-50%);
-      width:190px; height:190px;
-      border-radius:50%;
-      background: linear-gradient(145deg,#0096ff 0%,#0078d4 50%,#005a9e 100%);
-      color:#fff;
-      text-align:center;
-      font-weight:600;
-      display:flex;
-      flex-direction:column;
-      justify-content:center;
-      box-shadow:0 10px 25px rgba(0,0,0,.2);
-      z-index:2;
-    }
-    .center .title { font-size:16px; }
-    .center .subtitle { font-size:11px; margin-top:4px; opacity:.9; }
+<style>
+:root {
+  --wheel-size: 560px;
+  --label-size: 90px;
+  --font: "Segoe UI", Arial, sans-serif;
+}
+body {
+  margin:0;
+  font-family: var(--font);
+  background: radial-gradient(circle at center,#ffffff 0%,#eaf1f9 100%);
+}
+.topbar {
+  background: linear-gradient(180deg,#0078D4 0%,#005A9E 100%);
+  color:#fff;
+  font-weight:600;
+  padding:10px 20px;
+  box-shadow:0 2px 4px rgba(0,0,0,.1);
+}
+.container {
+  display:grid;
+  grid-template-columns:1fr 300px;
+  gap:24px;
+  max-width:1200px;
+  margin:30px auto;
+  padding:0 20px;
+}
+.wheel-wrap {
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background:#fff;
+  border-radius:16px;
+  box-shadow:0 6px 20px rgba(0,0,0,.05);
+  padding:24px;
+}
+.wheel {
+  position:relative;
+  width:var(--wheel-size);
+  height:var(--wheel-size);
+  border-radius:50%;
+  background:conic-gradient(
+    #4F8EF7 0deg 60deg,
+    #F3B23A 60deg 120deg,
+    #F97A3C 120deg 180deg,
+    #FFD43B 180deg 240deg,
+    #4DC981 240deg 300deg,
+    #8C8CFF 300deg 360deg
+  );
+}
+.center {
+  position:absolute;
+  top:50%; left:50%;
+  transform:translate(-50%,-50%);
+  width:190px; height:190px;
+  border-radius:50%;
+  background:linear-gradient(145deg,#0096ff 0%,#0078d4 50%,#005a9e 100%);
+  color:#fff; text-align:center; font-weight:600;
+  display:flex; flex-direction:column; justify-content:center;
+  box-shadow:0 10px 25px rgba(0,0,0,.2);
+  z-index:2;
+}
+.center .title {font-size:16px;}
+.center .subtitle {font-size:11px; margin-top:4px; opacity:.9;}
 
-    .phase-label {
-      position:absolute;
-      width: var(--label-size);
-      height: var(--label-size);
-      border-radius:50%;
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-      justify-content:center;
-      text-align:center;
-      color:#fff;
-      font-size:13px;
-      font-weight:600;
-      cursor:pointer;
-      border:2px solid rgba(255,255,255,0.4);
-      box-shadow:0 3px 6px rgba(0,0,0,0.15), inset 0 0 6px rgba(255,255,255,0.2);
-      transition:filter .25s ease;
-    }
-    .phase-label:hover {
-      filter:brightness(1.1);
-    }
+.phase-label {
+  position:absolute;
+  width:var(--label-size);
+  height:var(--label-size);
+  border-radius:50%;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  color:#fff;
+  font-size:13px;
+  font-weight:600;
+  cursor:pointer;
+  border:2px solid rgba(255,255,255,0.4);
+  box-shadow:0 3px 6px rgba(0,0,0,0.15),inset 0 0 6px rgba(255,255,255,0.2);
+  transition:filter .25s ease;
+}
+.phase-label:hover {
+  filter:brightness(1.1);
+}
 
-    /* Hover Panel */
-    #hover-panel {
-      position:absolute;
-      display:none;
-      background:white;
-      border-radius:12px;
-      padding:14px 18px;
-      box-shadow:0 4px 16px rgba(0,0,0,0.15);
-      width:260px;
-      z-index:999;
-      font-size:13px;
-      animation:fadeIn 0.15s ease-out;
-    }
-    #hover-panel h4 {
-      margin:0 0 8px 0;
-      font-size:14px;
-      color:#004578;
-    }
-    #hover-panel a {
-      display:block;
-      text-decoration:none;
-      color:#005A9E;
-      margin:4px 0;
-    }
-    #hover-panel a:hover {
-      text-decoration:underline;
-    }
+/* Hover Panel */
+#hover-panel {
+  position:absolute;
+  display:none;
+  background:white;
+  border-radius:12px;
+  padding:14px 18px;
+  box-shadow:0 4px 16px rgba(0,0,0,0.15);
+  width:260px;
+  z-index:999;
+  font-size:13px;
+  animation:fadeIn 0.15s ease-out;
+}
+#hover-panel h4 {
+  margin: 0 0 8px 0;
+  font-size:14px;
+  color:#004578;
+}
+#hover-panel a {
+  display:block;
+  text-decoration:none;
+  color:#005A9E;
+  margin:4px 0;
+}
+#hover-panel a:hover {
+  text-decoration:underline;
+}
 
-    @keyframes fadeIn {
-      from {opacity:0; transform:translateY(4px);}
-      to   {opacity:1; transform:translateY(0);}
-    }
+@keyframes fadeIn {
+  from {opacity:0; transform:translateY(4px);}
+  to {opacity:1; transform:translateY(0);}
+}
 
-    @media(max-width:950px){
-      .container{ grid-template-columns:1fr; }
-      .panel{ order:2; margin-top:20px; }
-      .wheel{ width:420px; height:420px; }
-      .center{ width:150px; height:150px; }
-    }
-  </style>
-
+@media(max-width:950px){
+  .container{grid-template-columns:1fr;}
+  .panel{order:2;margin-top:20px}
+  .wheel{width:420px;height:420px}
+  .center{width:150px;height:150px}
+}
+</style>
 </head>
 
 <body>
-  <div class="topbar"><span>ICT-India AI-SDLC Hub</span></div>
+<div class="topbar"><span>ICT-India AI-SDLC Hub</span></div>
 
-  <!-- Hover Panel -->
-  <div id="hover-panel"></div>
+<!-- Hover Panel -->
+<div id="hover-panel"></div>
 
-  <div class="container">
-    <div class="wheel-wrap">
-      <div class="wheel" id="wheel">
-        <div class="center">
-          <div class="title">AI-SDLC Wheel</div>
-          <div class="subtitle">Hover a phase — click to open library</div>
-        </div>
+<div class="container">
+  <div class="wheel-wrap">
+    <div class="wheel" id="wheel">
+      <div class="center">
+        <div class="title">AI-SDLC Wheel</div>
+        <div class="subtitle">Hover a phase — click to open library</div>
       </div>
-    </div>
-
-    <div class="panel">
-      <h3>Quick Links</h3>
-      <!-- UPDATE these links to match your libraries -->
-      <a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Planning-Analysis" target="_blank">Planning & Analysis</a>
-      <a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Design%20Accelerators/Forms/AllItems.aspx" target="_blank">Design Accelerators</a>
-      <a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Implementation%20Accelerators/Forms/AllItems.aspx" target="_blank">Implementation Accelerators</a>
-      <a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Testing%20%20Integration/Forms/AllItems.aspx" target="_blank">Testing & Integration</a>
-      <a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Deployment%20%20Operations%20Accelerators/Forms/AllItems.aspx" target="_blank">Deployment & Operations</a>
-      <a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Maintenance/Forms/AllItems.aspx" target="_blank">Maintenance</a>
-      <!-- END UPDATE -->
     </div>
   </div>
 
-  <script>
-    /* ---- Phase definitions ---- */
-    const phases = [
-      { name:"Planning & Analysis",            angle:15,  color:"#4F8EF7", link:"https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Planning-Analysis" },
-      { name:"Design",                          angle:85,  color:"#F3B23A", link:"https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Design%20Accelerators/Forms/AllItems.aspx" },
-      { name:"Implementation",                 angle:160, color:"#F97A3C", link:"https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Implementation%20Accelerators/Forms/AllItems.aspx" },
-      { name:"Testing & Integration",          angle:220, color:"#FFD43B", link:"https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Testing%20%20Integration/Forms/AllItems.aspx" },
-      { name:"Deployment & Operations",        angle:285, color:"#4DC981", link:"https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Deployment%20%20Operations%20Accelerators/Forms/AllItems.aspx" },
-      { name:"Maintenance",                     angle:325, color:"#8C8CFF", link:"https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Maintenance/Forms/AllItems.aspx" }
-    ];
+  <div class="panel">
+    <h3>Quick Links</h3>
 
-    const radius = 180;
-    const wheel = document.getElementById('wheel');
-    const hoverPanel = document.getElementById('hover-panel');
+    <!-- YOUR EXACT LINKS (NO CHANGES NEEDED) -->
+    <a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Planning-Analysis" target="_blank">Planning & Analysis</a>
+    <a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Design%20Accelerators/Forms/AllItems.aspx" target="_blank">Design Accelerators</a>
+    <a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Implementation%20Accelerators/Forms/AllItems.aspx" target="_blank">Implementation Accelerators</a>
+    <a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Testing%20%20Integration/Forms/AllItems.aspx" target="_blank">Testing & Integration</a>
+    <a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Deployment%20%20Operations%20Accelerators/Forms/AllItems.aspx" target="_blank">Deployment & Operations</a>
+    <a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Maintenance/Forms/AllItems.aspx" target="_blank">Maintenance</a>
+  </div>
+</div>
 
-    // Fetch list items from SharePoint
-    async function getTop5Items(listUrl, listTitle) {
-      const apiUrl = `${listUrl}/_api/web/lists/getbytitle('${encodeURIComponent(listTitle)}')/items?$orderby=Modified desc&$top=5&$select=Title,Modified,FileRef`;
-      const response = await fetch(apiUrl, {
-        method: "GET",
-        headers: {
-          "Accept": "application/json;odata=nometadata"
-        },
-        credentials: "include"
+<script>
+/* ---- YOUR EXACT PHASES AND LIBRARIES ---- */
+const phases = [
+  { name:"Planning & Analysis", angle:15, color:"#4F8EF7",
+    link:"https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Planning%20%20Analysis"
+  },
+  { name:"Design", angle:85, color:"#F3B23A",
+    link:"https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Design%20Accelerators/Forms/AllItems.aspx"
+  },
+  { name:"Implementation", angle:160, color:"#F97A3C",
+    link:"https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Implementation%20Accelerators/Forms/AllItems.aspx"
+  },
+  { name:"Testing & Integration", angle:220, color:"#FFD43B",
+    link:"https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Testing%20%20Integration/Forms/AllItems.aspx"
+  },
+  { name:"Deployment & Operations", angle:285, color:"#4DC981",
+    link:"https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Deployment%20%20Operations%20Accelerators/Forms/AllItems.aspx"
+  },
+  { name:"Maintenance", angle:325, color:"#8C8CFF",
+    link:"https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Maintenance/Forms/AllItems.aspx"
+  }
+];
+
+const wheel = document.getElementById('wheel');
+const hoverPanel = document.getElementById('hover-panel');
+const radius = 180;
+
+/* ---- REST CALL to GET 5 RECENT FILES ---- */
+async function getTop5(listUrl) {
+  const listTitle = decodeURIComponent(listUrl.split("/").pop());
+  const api = `${listUrl}/_api/web/lists/getbytitle('${listTitle}')/items?$orderby=Modified desc&$top=5&$select=Title,FileRef`;
+
+  const res = await fetch(api, {
+    headers: { "Accept": "application/json;odata=nometadata" },
+    credentials: "include"
+  });
+
+  if (!res.ok) return [];
+  const data = await res.json();
+  return data.value;
+}
+
+/* ---- BUILD WHEEL ---- */
+phases.forEach(p => {
+  const el = document.createElement("div");
+  el.className = "phase-label";
+  el.style.background = p.color;
+
+  const rad = (p.angle - 90) * Math.PI / 180;
+  el.style.left = `calc(50% + ${radius * Math.cos(rad)}px)`;
+  el.style.top  = `calc(50% + ${radius * Math.sin(rad)}px)`;
+  el.innerHTML = p.name;
+
+  /* ---- HOVER: GET LIVE DATA ---- */
+  el.onmouseenter = async () => {
+    hoverPanel.style.display = "block";
+    hoverPanel.innerHTML = `<h4>${p.name}</h4><div>Loading...</div>`;
+
+    const listUrl = p.link.split("/Forms")[0];
+    const items = await getTop5(listUrl);
+
+    let html = `<h4>${p.name}</h4>`;
+    if (items.length === 0) {
+      html += "<div>No recent items found</div>";
+    } else {
+      items.forEach(i => {
+        html += `<a href="https://shiftup.sharepoint.com${i.FileRef}" target="_blank">${i.Title}</a>`;
       });
-      if (!response.ok) {
-        return [];
-      }
-      const data = await response.json();
-      return data.value || [];
     }
 
-    phases.forEach(p => {
-      const el = document.createElement('div');
-      el.className = 'phase-label';
-      el.style.background = p.color;
+    hoverPanel.innerHTML = html;
 
-      const rad = (p.angle - 90) * Math.PI / 180;
-      const x   = radius * Math.cos(rad);
-      const y   = radius * Math.sin(rad);
+    const rect = el.getBoundingClientRect();
+    hoverPanel.style.left = (rect.right + 15) + "px";
+    hoverPanel.style.top = rect.top + "px";
+  };
 
-      el.style.left = `calc(50% + ${x}px)`;
-      el.style.top  = `calc(50% + ${y}px)`;
-      el.innerHTML = p.name;
+  el.onmouseleave = () => hoverPanel.style.display = "none";
 
-      el.onmouseenter = async (e) => {
-        hoverPanel.style.display = 'block';
-        hoverPanel.innerHTML = `<h4>${p.name}</h4><div>Loading…</div>`;
+  el.onclick = () => window.open(p.link, "_blank");
 
-        const listUrl   = p.link.split("/Forms")[0];
-        const listTitle = decodeURIComponent(listUrl.split("/").pop());
-
-        const items     = await getTop5Items(listUrl, listTitle);
-
-        let html = `<h4>${p.name}</h4>`;
-        if (items.length === 0) {
-          html += "<div>No recent items found</div>";
-        } else {
-          items.forEach(i => {
-            html += `<a href="https://shiftup.sharepoint.com${i.FileRef}" target="_blank">${i.Title}</a>`;
-          });
-        }
-
-        hoverPanel.innerHTML = html;
-
-        const rect        = el.getBoundingClientRect();
-        const panelWidth  = hoverPanel.offsetWidth;
-        const leftSide    = rect.left < window.innerWidth / 2;
-        hoverPanel.style.left = leftSide 
-                                ? (rect.right + 10) + "px" 
-                                : (rect.left - panelWidth - 10) + "px";
-        hoverPanel.style.top = (rect.top - 10) + "px";
-      };
-
-      el.onmouseleave = () => {
-        hoverPanel.style.display = 'none';
-      };
-
-      el.onclick = () => {
-        window.open(p.link, "_blank");
-      };
-
-      wheel.appendChild(el);
-    });
-  </script>
+  wheel.appendChild(el);
+});
+</script>
 
 </body>
 </html>
