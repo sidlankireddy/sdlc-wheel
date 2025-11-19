@@ -151,17 +151,14 @@ body {
 
   <div class="panel">
     <h3>Quick Links</h3>
-    <a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Planning-Analysis" target="_blank">Planning & Analysis</a>
-    <a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Design%20Accelerators/Forms/AllItems.aspx" target="_blank">Design Accelerators</a>
-    <a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Implementation%20Accelerators/Forms/AllItems.aspx" target="_blank">Implementation Accelerators</a>
-    <a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Testing%20%20Integration/Forms/AllItems.aspx" target="_blank">Testing & Integration</a>
-    <a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Deployment%20%20Operations%20Accelerators/Forms/AllItems.aspx" target="_blank">Deployment & Operations</a>
-    <a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Maintenance/Forms/AllItems.aspx" target="_blank">Maintenance</a>
-  </div>
-</div>
+    <a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Planning-Analysis" target="_/a>
+    <a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Design%20Accelerators/Forms/AllItems.aspx" target="_/a>
+    <a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Implementation%20Accelerators/Forms/AllItems.aspx" target="_erators</a>
+    <a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Testing%20%20Integration/Forms/AllItems.aspx" targettion</a>
+    <a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Deployment%20%20Operations%20Accelerators/Forms/aspxDeployment & Operations</a>
+    <a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Maintenance/Forms/AllItems.aspx" target="_blank</div>
 
 <script>
-/* ---- Phase positions ---- */
 const phases = [
   { name:"Planning & Analysis", angle:15,  color:"#4F8EF7", link:"https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Planning-Analysis" },
   { name:"Design", angle:85,  color:"#F3B23A", link:"https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Design%20Accelerators/Forms/AllItems.aspx" },
@@ -175,7 +172,6 @@ const radius = 180;
 const wheel = document.getElementById('wheel');
 const hoverPanel = document.getElementById('hover-panel');
 
-/* Adjustments */
 const radiusAdjustments = {
   "Planning & Analysis": +30,
   "Design": -15,
@@ -195,19 +191,17 @@ const yAdjustments = {
 
 let jsonData = [];
 
-/* ---- Load JSON from SharePoint ---- */
-fetch("https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/_api/web/GetFileByServerRelativeUrl('/sites/ICT-India-AI-SDLC-Hub/Shared Documents/Automation/data.json')/$value")
+// Load JSON from SharePoint
+fetch("https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Shared%20Documents/Automation/data.json")
   .then(res => res.json())
   .then(data => jsonData = data);
 
-/* ---- Create wheel labels ---- */
 phases.forEach(p => {
   const el = document.createElement('div');
   el.className = 'phase-label';
   el.style.background = p.color;
 
   const rad = (p.angle - 90) * Math.PI / 180;
-
   const r = radius + (radiusAdjustments[p.name] || 0);
   const yOff = yAdjustments[p.name] || 0;
 
@@ -218,14 +212,13 @@ phases.forEach(p => {
   el.style.top = `calc(50% + ${y}px)`;
   el.innerHTML = p.name;
 
-  /* --- Hover logic --- */
-  el.onmouseenter = (e) => {
+  el.onmouseenter = () => {
     const phaseData = jsonData.find(x => x.phase === p.name);
     if (!phaseData) return;
 
     let html = `<h4>${p.name}</h4>`;
-    phaseData.items.forEach(item => {
-      html += `<a href="${item.url}" target="_blank">${item.title}</a>`;
+    phaseData.items.slice(0,5).forEach(item => {
+      html += `<a href="${${item.title}</a>`;
     });
 
     hoverPanel.innerHTML = html;
