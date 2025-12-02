@@ -7,27 +7,27 @@
 <style>
 :root{
   --wheel-size: 560px;
-  --label-size: 88px; /* slightly larger for comfortable two-line labels */
+  --label-size: 102px; /* final chosen size */
   --center-size: 170px;
   --font: "Segoe UI", Arial, sans-serif;
 }
 
-/* Page base */
+/* Base */
 body{
   margin:0;
   font-family:var(--font);
   background: radial-gradient(circle at center,#ffffff 0%,#eef4fa 100%);
-  animation:fadeInPage .45s ease-out;
   color:#1b1b1b;
+  animation:fadeInPage .45s ease-out;
 }
-@keyframes fadeInPage {
-  from {opacity:0; transform:translateY(8px);} to {opacity:1; transform:translateY(0);}
-}
+@keyframes fadeInPage { from{opacity:0; transform:translateY(8px);} to{opacity:1; transform:translateY(0);} }
 
-/* Top bar */
+/* Topbar */
 .topbar{
   background: linear-gradient(180deg,#002C5F 0%,#001F44 100%);
-  color:#fff; font-weight:600; padding:10px 20px;
+  color:#fff;
+  font-weight:600;
+  padding:10px 20px;
   box-shadow:0 2px 4px rgba(0,0,0,.08);
 }
 
@@ -41,7 +41,7 @@ body{
   padding:0 20px;
 }
 
-/* wheel container */
+/* Wheel container */
 .wheel-wrap{
   position:relative;
   display:flex;
@@ -53,11 +53,9 @@ body{
   box-shadow:0 6px 20px rgba(0,0,0,0.06);
   animation:fadeInWheel .55s ease-out;
 }
-@keyframes fadeInWheel {
-  from {opacity:0; transform:scale(.975)} to {opacity:1; transform:scale(1)}
-}
+@keyframes fadeInWheel { from{opacity:0; transform:scale(.975)} to{opacity:1; transform:scale(1)} }
 
-/* refined, softer glow */
+/* Softer glow behind wheel */
 .wheel-wrap::before{
   content:"";
   position:absolute;
@@ -68,7 +66,7 @@ body{
   z-index:0;
 }
 
-/* Wheel: base conic + separators + radial soft shading to create slice depth */
+/* Wheel: base conic + separators + subtle inner shading */
 .wheel{
   position:relative;
   width:var(--wheel-size);
@@ -77,35 +75,33 @@ body{
   z-index:1;
   overflow:visible;
 
-  /* color slices (staggered contrast) */
+  /* slices (contrast-staggered palette) */
   background:
-    /* thin separators at every 60deg (very subtle) */
     repeating-conic-gradient(
-      rgba(255,255,255,0.06) 0deg 0.4deg,
-      transparent 0.4deg 60deg
+      rgba(255,255,255,0.06) 0deg 0.35deg,
+      transparent 0.35deg 60deg
     ),
-    /* base slices */
     conic-gradient(
       #2F6FA6 0deg 60deg,      /* Planning (darker blue) */
-      #B7792F 60deg 120deg,     /* Design (muted warm) */
-      #C14F45 120deg 180deg,    /* Implementation (deep coral) */
-      #D8B441 180deg 240deg,    /* Testing (soft gold) */
-      #3B9A95 240deg 300deg,    /* Deployment (calm teal) */
-      #504ED0 300deg 360deg     /* Maintenance (indigo) */
+      #B7792F 60deg 120deg,    /* Design (muted warm) */
+      #C14F45 120deg 180deg,   /* Implementation (deep coral) */
+      #D8B441 180deg 240deg,   /* Testing (soft gold) */
+      #3B9A95 240deg 300deg,   /* Deployment (calm teal) */
+      #504ED0 300deg 360deg    /* Maintenance (indigo) */
     );
 
-  /* subtle radial highlight (top-left) to give depth */
-  box-shadow: inset 0 30px 70px rgba(255,255,255,0.06), inset 0 -24px 48px rgba(0,0,0,0.04);
+  box-shadow: inset 0 28px 60px rgba(255,255,255,0.06), inset 0 -22px 40px rgba(0,0,0,0.04);
   border-radius:50%;
   border:1px solid rgba(255,255,255,0.28);
 }
 
-/* center circle */
+/* Center circle */
 .center{
   position:absolute;
   top:50%; left:50%;
   transform:translate(-50%,-50%);
-  width:var(--center-size); height:var(--center-size);
+  width:var(--center-size);
+  height:var(--center-size);
   border-radius:50%;
   background:linear-gradient(145deg,#004e86 0%, #00395f 60%, #002a4a 100%);
   color:white;
@@ -118,46 +114,7 @@ body{
   box-shadow: 0 10px 25px rgba(0,0,0,0.22);
 }
 
-/* phase labels: improved centering, wrapping */
-.phase-label{
-  position:absolute;
-  width:var(--label-size);
-  height:var(--label-size);
-  border-radius:50%;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  text-align:center;
-  padding:6px 8px;
-  color:#fff;
-  font-size:12px;
-  font-weight:700;
-  cursor:pointer;
-  line-height:1.15;
-  word-break:break-word;
-  white-space:normal;
-
-  /* frost but subtle so colors show through */
-  background:rgba(255,255,255,0.18);
-  backdrop-filter:blur(6px);
-  border:1.6px solid rgba(255,255,255,0.42);
-
-  box-shadow:
-    0 3px 8px rgba(0,0,0,0.14),
-    inset 0 0 10px rgba(255,255,255,0.14);
-
-  transition:all .22s ease;
-}
-
-/* hover feel */
-.phase-label:hover{
-  transform:scale(1.08);
-  box-shadow:
-    0 10px 20px rgba(0,0,0,0.22),
-    inset 0 0 14px rgba(255,255,255,0.35);
-}
-
-/* subtle inner ring to separate center visually */
+/* inner subtle ring to separate center visually */
 .wheel::after{
   content:"";
   position:absolute;
@@ -171,23 +128,62 @@ body{
   box-shadow: 0 0 0 8px rgba(255,255,255,0.02), 0 0 0 1px rgba(0,0,0,0.06) inset;
 }
 
-/* hover panel */
+/* Labels: 102px circles, centered text, wrapping handled */
+.phase-label{
+  position:absolute;
+  width:var(--label-size);
+  height:var(--label-size);
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  padding:8px;
+  color:#fff;
+  font-size:13px;
+  font-weight:700;
+  cursor:pointer;
+  line-height:1.12;
+  word-break:break-word;
+  white-space:normal;
+
+  /* frost but subtle so colors show through */
+  background:rgba(255,255,255,0.20);
+  backdrop-filter:blur(6px);
+  border:1.6px solid rgba(255,255,255,0.42);
+
+  box-shadow:
+    0 4px 10px rgba(0,0,0,0.14),
+    inset 0 0 10px rgba(255,255,255,0.14);
+
+  transition:all .22s ease;
+}
+
+/* hover */
+.phase-label:hover{
+  transform:scale(1.07);
+  box-shadow:
+    0 12px 22px rgba(0,0,0,0.22),
+    inset 0 0 14px rgba(255,255,255,0.35);
+}
+
+/* Hover panel */
 #hover-panel{
   position:absolute;
   display:none;
   background:#fff;
   border-radius:12px;
   padding:14px 18px;
-  box-shadow:0 6px 22px rgba(0,0,0,0.12);
+  box-shadow:0 8px 24px rgba(0,0,0,0.12);
   width:260px;
   z-index:999;
   font-size:13px;
   animation:fadeIn .15s ease-out;
 }
-@keyframes fadeIn { from {opacity:0; transform:translateY(6px);} to {opacity:1; transform:translateY(0);} }
-#hover-panel h4{ margin:0 0 8px 0; font-size:14px; color:#003a6c;}
+@keyframes fadeIn{ from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:translateY(0);} }
+#hover-panel h4{ margin:0 0 8px 0; font-size:14px; color:#003a6c; }
 
-/* right-side quick info */
+/* Right column text */
 .info-box{
   background:#fff;
   padding:18px 20px;
@@ -204,10 +200,10 @@ footer{ margin-top:40px; padding:15px; text-align:center; color:#555; font-size:
 
 /* responsive */
 @media(max-width:950px){
-  .container{ grid-template-columns:1fr; padding-bottom:20px;}
-  .info-box{ order:2; margin-top:20px;}
-  .wheel{ width:420px; height:420px;}
-  :root{ --label-size:72px; --center-size:140px; }
+  .container{ grid-template-columns:1fr; padding-bottom:20px; }
+  .info-box{ order:2; margin-top:20px; }
+  .wheel{ width:420px; height:420px; }
+  :root{ --label-size:86px; --center-size:140px; }
 }
 </style>
 </head>
@@ -237,7 +233,7 @@ footer{ margin-top:40px; padding:15px; text-align:center; color:#555; font-size:
 </div>
 
 <script>
-/* UTIL: hex -> rgba */
+/* convert hex to rgba */
 function hexToRgba(hex, alpha){
   hex = hex.replace('#','');
   if(hex.length === 3) hex = hex.split('').map(c=>c+c).join('');
@@ -247,7 +243,7 @@ function hexToRgba(hex, alpha){
   return `rgba(${r},${g},${b},${alpha})`;
 }
 
-/* chosen, tested palette (contrast staggered) */
+/* final tuned palette (contrast staggered) */
 const phases = [
   { name:"Planning & Analysis", angle:15, color:"#2F6FA6",
     desc:"Requirements gathering, feasibility checks, and scope definition.",
@@ -278,33 +274,33 @@ const wheel = document.getElementById('wheel');
 const hoverPanel = document.getElementById('hover-panel');
 const radius = 180;
 
-/* adjusted offsets tuned to avoid labels spilling out */
+/* tuned position offsets for label circles (final) */
 const radiusAdjustments = {
   "Planning & Analysis": +30,
-  "Design": -10,
-  "Implementation": -22,   /* moved inward to avoid overflow */
+  "Design": -12,
+  "Implementation": -30,   /* moved inward more to avoid spill */
   "Testing & Integration": +40,
-  "Deployment & Operations": +60,
+  "Deployment & Operations": +62,
   "Maintenance": +36
 };
 const yAdjustments = {
-  "Planning & Analysis": -32,
+  "Planning & Analysis": -34,
   "Design": -30,
-  "Implementation": -10,   /* slight upward nudge */
+  "Implementation": -14,   /* slight upward nudge */
   "Testing & Integration": -50,
   "Deployment & Operations": +10,
-  "Maintenance": -34
+  "Maintenance": -36
 };
 
-/* build labels with proper background tint */
+/* build labels with stronger tint for readability */
 phases.forEach(p=>{
   const el = document.createElement('div');
   el.className = 'phase-label';
 
-  /* tinted background (stronger tint so label reads) */
-  el.style.background = hexToRgba(p.color, 0.30);
+  /* use 32% tint of slice color for label background */
+  el.style.background = hexToRgba(p.color, 0.32);
 
-  /* place */
+  /* placement math */
   const rad = (p.angle - 90) * Math.PI / 180;
   const r = radius + (radiusAdjustments[p.name] || 0);
   const yOff = (yAdjustments[p.name] || 0);
@@ -313,7 +309,13 @@ phases.forEach(p=>{
 
   el.style.left = `calc(50% + ${x}px)`;
   el.style.top  = `calc(50% + ${y}px)`;
-  el.innerHTML = p.name;
+
+  /* force single-line for Implementation by using a thin non-breaking space trick if needed */
+  if (p.name === "Implementation") {
+    el.innerHTML = p.name.replace(/\s+/g, '&nbsp;');
+  } else {
+    el.innerHTML = p.name;
+  }
 
   /* hover */
   el.onmouseenter = ()=>{
