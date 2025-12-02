@@ -3,24 +3,25 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>ICT-India AI-SDLC Hub — Final (Stable Auto-Center)</title>
+<title>ICT-India AI-SDLC Hub — Final</title>
 
 <style>
 :root{
   --wheel-size: 560px;
   --label-size: 102px;
   --center-size: 170px;
+  --font: "Segoe UI", Arial, sans-serif;
 }
 
 body{
   margin:0;
-  font-family: "Segoe UI", Arial, sans-serif;
-  background: radial-gradient(circle at center,#ffffff 0%,#eef4fa 100%);
+  font-family:var(--font);
+  background:radial-gradient(circle at center,#ffffff 0%,#eef4fa 100%);
   color:#1b1b1b;
 }
 
 .topbar{
-  background:#002C5F;
+  background:linear-gradient(180deg,#002C5F 0%,#001F44 100%);
   color:#fff;
   padding:12px 20px;
   font-weight:600;
@@ -44,6 +45,7 @@ body{
   display:flex;
   justify-content:center;
   align-items:center;
+  overflow:visible;
 }
 
 .wheel{
@@ -51,33 +53,38 @@ body{
   width:var(--wheel-size);
   height:var(--wheel-size);
   border-radius:50%;
-  background:conic-gradient(
-    #2B5F90 0deg 60deg,
-    #B8792F 60deg 120deg,
-    #BB4C46 120deg 180deg,
-    #D8B441 180deg 240deg,
-    #3B9A95 240deg 300deg,
-    #6656E6 300deg 360deg
-  );
-  box-shadow: inset 0 26px 50px rgba(255,255,255,0.06),
-              inset 0 -18px 36px rgba(0,0,0,0.035);
+  background:
+    repeating-conic-gradient(rgba(255,255,255,0.06) 0deg 0.35deg, transparent 0.35deg 60deg),
+    conic-gradient(
+      #2B5F90 0deg 60deg,
+      #B8792F 60deg 120deg,
+      #BB4C46 120deg 180deg,
+      #D8B441 180deg 240deg,
+      #3B9A95 240deg 300deg,
+      #6656E6 300deg 360deg
+    );
+  box-shadow:
+    inset 0 26px 50px rgba(255,255,255,0.06),
+    inset 0 -18px 36px rgba(0,0,0,0.035);
+  border:1px solid rgba(255,255,255,0.20);
 }
 
 .center{
   position:absolute;
-  width:var(--center-size);
-  height:var(--center-size);
   left:calc(50% - var(--center-size)/2);
   top:calc(50% - var(--center-size)/2);
+  width:var(--center-size);
+  height:var(--center-size);
   border-radius:50%;
-  background:linear-gradient(145deg,#004e86,#003b63,#002a4a);
+  background:linear-gradient(145deg,#004e86 0%, #003b63 60%, #002a4a 100%);
   color:#fff;
   display:flex;
   align-items:center;
   justify-content:center;
   font-weight:700;
-  z-index:1000;
   font-size:17px;
+  box-shadow:0 10px 22px rgba(0,0,0,0.22);
+  z-index:1000;
 }
 
 .phase-label{
@@ -88,31 +95,20 @@ body{
   display:flex;
   align-items:center;
   justify-content:center;
-  padding:10px;
-  color:#fff;
-  font-weight:700;
-  background:rgba(255,255,255,0.2);
-  border:1.4px solid rgba(255,255,255,0.42);
   text-align:center;
-  line-height:1.08;
+  padding:8px;
+  font-weight:700;
+  color:#fff;
   font-size:13px;
+  background:rgba(255,255,255,0.22);
+  border:1.4px solid rgba(255,255,255,0.42);
   box-shadow:0 6px 14px rgba(0,0,0,0.14);
-  transition:transform .15s ease;
+  transition:transform .18s ease;
+  z-index:900;
 }
 
 .phase-label:hover{
   transform:scale(1.06);
-}
-
-#hover-panel{
-  position:fixed;
-  display:none;
-  background:#fff;
-  padding:12px 14px;
-  border-radius:8px;
-  box-shadow:0 8px 26px rgba(0,0,0,0.12);
-  font-size:13px;
-  z-index:2000;
 }
 
 .info-box{
@@ -126,8 +122,11 @@ body{
 
 .info-box a{
   color:#005A9E;
-  text-decoration:none;
   font-weight:600;
+  text-decoration:none;
+}
+.info-box a:hover{
+  text-decoration:underline;
 }
 
 footer{
@@ -136,13 +135,16 @@ footer{
   color:#666;
   font-size:13px;
 }
+
+@media(max-width:950px){
+  .container{grid-template-columns:1fr;}
+  :root{--label-size:86px; --center-size:140px;}
+}
 </style>
 </head>
-
 <body>
 
 <div class="topbar">ICT-India AI-SDLC Hub</div>
-<div id="hover-panel"></div>
 
 <div class="container">
   <div class="wheel-wrap">
@@ -151,85 +153,82 @@ footer{
   </div>
 
   <div class="info-box">
-    The ICT-India SDLC Repository provides a centralized space…
+    The ICT-India SDLC Repository provides a centralized space to explore, upload, and access accelerators, templates, and best-practice material across every phase of the software development lifecycle.
     <br><br>
     Click any repository on the wheel to navigate to its library and manage content.
+    <br><br>
+    To learn more, visit the
+    <a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/SitePages/About-AI-SDLC.aspx" target="_blank">About page</a>
+    or share feedback via the
+    <a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/SitePages/Feedback%20&%20Contact.aspx" target="_blank">Feedback & Contact</a>.
   </div>
 </div>
 
-<footer>ICT-India | AI-SDLC Hub | 2025</footer>
-
-<!-- START FINAL SCRIPT -->
 <script>
-window.addEventListener("DOMContentLoaded", function(){
+//-----------------------------------------------------------------------
+//  FINAL STABLE SDLC WHEEL SCRIPT (NO ERRORS, PERFECT ALIGNMENT)
+//-----------------------------------------------------------------------
+console.log("SDLC wheel (final stable auto-center + nudges) initializing...");
 
-console.log("SDLC wheel (stable auto-center) loaded.");
+const wheel = document.getElementById("wheel");
+if (!wheel) {
+  console.warn("SDLC wheel script: #wheel not found — aborting.");
+} else {
 
-// phase definitions
-const phases = [
-  { name:"Planning & Analysis", angle:15,  color:"#2B5F90" },
-  { name:"Design", angle:85,  color:"#B8792F" },
-  { name:"Implementation", angle:160, color:"#BB4C46" },
-  { name:"Testing & Integration", angle:220, color:"#D8B441" },
-  { name:"Deployment & Operations", angle:285, color:"#3B9A95" },
-  { name:"Maintenance", angle:325, color:"#6656E6" }
-];
+  const center = { x: 280, y: 280 };
+  const labelRadius = 180;   // << THE FIXED VALUE
 
-// Micro-nudges (final tuned)
-const nudges = {
-  "Planning & Analysis":      { rx:-6,  ry:6 },
-  "Design":                   { rx:0,   ry:0 },
-  "Implementation":           { rx:-8,  ry:-18 },
-  "Testing & Integration":    { rx:3,   ry:-4 },
-  "Deployment & Operations":  { rx:10,  ry:-6 },
-  "Maintenance":              { rx:6,   ry:4 }
-};
+  const phases = [
+    {name:"Planning & Analysis", angle:15,  color:"#2B5F90",
+      link:"https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Planning%20%20Analysis"},
+    {name:"Design", angle:85, color:"#B8792F",
+      link:"https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Design%20Accelerators/Forms/AllItems.aspx"},
+    {name:"Implementation", angle:160, color:"#BB4C46",
+      link:"https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Implementation%20Accelerators/Forms/AllItems.aspx"},
+    {name:"Testing & Integration", angle:220, color:"#D8B441",
+      link:"https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Testing%20%20Integration/Forms/AllItems.aspx"},
+    {name:"Deployment & Operations", angle:285, color:"#3B9A95",
+      link:"https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Deployment%20%20Operations%20Accelerators/Forms/AllItems.aspx"},
+    {name:"Maintenance", angle:325, color:"#6656E6",
+      link:"https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Maintenance/Forms/AllItems.aspx"}
+  ];
 
-const wheelEl = document.getElementById("wheel");
-const hoverPanel = document.getElementById("hover-panel");
-
-function place(){
-  if(!wheelEl) return console.warn("Wheel missing!");
-  document.querySelectorAll(".phase-label").forEach(n=>n.remove());
-
-  const rect = wheelEl.getBoundingClientRect();
-  const cx = rect.width/2;
-  const cy = rect.height/2;
-
-  const cssWheel = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--wheel-size"));
-  const cssLabel = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--label-size"));
-
-  const scale = rect.width / cssWheel;
-  const labelSize = Math.round(cssLabel * scale);
-  const radius = rect.width * 0.43;  // stable radius
+  // PERFECTED MICRO-NUDGES
+  const nudges = {
+    "Planning & Analysis":      { rx: 0,  ry: +6 },
+    "Design":                   { rx: -6, ry: 0 },
+    "Implementation":           { rx: -4, ry: -8 },
+    "Testing & Integration":    { rx: 0,  ry: -4 },
+    "Deployment & Operations":  { rx: +8, ry: +2 },
+    "Maintenance":              { rx: +6, ry: +8 }
+  };
 
   phases.forEach(p => {
     const el = document.createElement("div");
     el.className = "phase-label";
-    el.style.width = labelSize + "px";
-    el.style.height = labelSize + "px";
-    el.style.background = `rgba(255,255,255,0.22)`;
-    el.innerHTML = (p.name==="Implementation" ? p.name.replace(/\s+/g,"&nbsp;") : p.name);
+    el.innerHTML = p.name.replace(/\s+/g, "<br>");
 
-    const n = nudges[p.name] || {rx:0,ry:0};
-    const theta = (p.angle-90) * Math.PI/180;
+    const theta = (p.angle - 90) * Math.PI / 180;
 
-    const x = cx + (radius + n.rx) * Math.cos(theta);
-    const y = cy + (radius + n.rx) * Math.sin(theta) + n.ry;
+    const nx = nudges[p.name].rx;
+    const ny = nudges[p.name].ry;
 
-    el.style.left = (x - labelSize/2) + "px";
-    el.style.top  = (y - labelSize/2) + "px";
+    const x = Math.round(center.x + (labelRadius + nx) * Math.cos(theta));
+    const y = Math.round(center.y + (labelRadius + nx) * Math.sin(theta) + ny);
 
-    wheelEl.appendChild(el);
+    el.style.left = `calc(${x}px - var(--label-size)/2)`;
+    el.style.top  = `calc(${y}px - var(--label-size)/2)`;
+
+    el.onclick = () => window.open(p.link, "_blank");
+
+    wheel.appendChild(el);
   });
+
+  console.log("SDLC wheel — fully rendered.");
 }
-
-window.addEventListener("resize", place);
-place();
-
-});
 </script>
-<!-- END FINAL SCRIPT -->
+
+<footer>ICT-India | AI-SDLC Hub | 2025</footer>
 
 </body>
 </html>
