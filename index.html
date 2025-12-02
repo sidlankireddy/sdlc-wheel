@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="en">
+
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
@@ -25,7 +26,7 @@ body {
 }
 .container {
   display:grid;
-  grid-template-columns:1fr 300px;
+  grid-template-columns:1fr 340px;
   gap:24px;
   max-width:1200px;
   margin:30px auto;
@@ -69,10 +70,10 @@ body {
   justify-content:center;
   box-shadow:0 10px 25px rgba(0,0,0,.2);
   z-index:2;
+  font-size:18px;
 }
-.center .title {font-size:16px;}
-.center .subtitle {font-size:11px; margin-top:4px; opacity:.9;}
 
+/* Phase Labels */
 .phase-label {
   position:absolute;
   width:var(--label-size);
@@ -88,10 +89,15 @@ body {
   font-weight:600;
   cursor:pointer;
   border:2px solid rgba(255,255,255,0.4);
-  box-shadow:0 3px 6px rgba(0,0,0,0.15),inset 0 0 6px rgba(255,255,255,0.2);
-  transition:filter .25s ease;
+  box-shadow:0 3px 6px rgba(0,0,0,0.15), inset 0 0 6px rgba(255,255,255,0.2);
+  transition:all .25s ease;
 }
-.phase-label:hover { filter:brightness(1.1); }
+.phase-label:hover {
+  transform:scale(1.08);
+  box-shadow:
+    0 0 12px rgba(255,255,255,0.7),
+    0 6px 18px rgba(0,0,0,0.2);
+}
 
 /* Hover Panel */
 #hover-panel {
@@ -101,32 +107,42 @@ body {
   border-radius:12px;
   padding:14px 18px;
   box-shadow:0 4px 16px rgba(0,0,0,0.15);
-  width:260px;
+  width:240px;
   z-index:999;
   font-size:13px;
   animation:fadeIn 0.15s ease-out;
 }
 #hover-panel h4 {
-  margin: 0 0 8px 0;
+  margin:0 0 8px 0;
   font-size:14px;
   color:#004578;
 }
-#hover-panel a {
-  display:block;
-  text-decoration:none;
-  color:#005A9E;
-  margin:4px 0;
-}
-#hover-panel a:hover { text-decoration:underline; }
 
 @keyframes fadeIn {
   from {opacity:0; transform:translateY(4px);}
   to {opacity:1; transform:translateY(0);}
 }
 
+/* Sidebar Paragraph */
+.info-box {
+  background:#fff;
+  padding:18px 20px;
+  border-radius:12px;
+  box-shadow:0 6px 20px rgba(0,0,0,0.05);
+  line-height:1.55;
+  font-size:14px;
+}
+.info-box a {
+  color:#005A9E;
+  font-weight:600;
+  text-decoration:none;
+}
+.info-box a:hover { text-decoration:underline; }
+
+/* Mobile */
 @media(max-width:950px){
   .container{grid-template-columns:1fr;}
-  .panel{order:2;margin-top:20px}
+  .info-box{order:2;margin-top:20px}
   .wheel{width:420px;height:420px}
   .center{width:150px;height:150px}
 }
@@ -140,68 +156,62 @@ body {
 <div id="hover-panel"></div>
 
 <div class="container">
+
+  <!-- Wheel -->
   <div class="wheel-wrap">
     <div class="wheel" id="wheel">
-      <div class="center">
-        <div class="title">AI-SDLC Wheel</div>
-        <div class="subtitle">Hover a phase — click to open library</div>
-      </div>
+      <div class="center">SDLC Repository</div>
     </div>
   </div>
 
-  <div class="panel">
-    <h3>Quick Links</h3>
-    <a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Planning-Analysis" target="_blank">Planning & Analysis</a>
-    <a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Design%20Accelerators/Forms/AllItems.aspx" target="_blank">Design Accelerators</a>
-    <a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Implementation%20Accelerators/Forms/AllItems.aspx" target="_blank">Implementation Accelerators</a>
-    <a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Testing%20%20Integration/Forms/AllItems.aspx" target="_blank">Testing & Integration</a>
-    <a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Deployment%20%20Operations%20Accelerators/Forms/AllItems.aspx" target="_blank">Deployment & Operations</a>
-    <a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Maintenance/Forms/AllItems.aspx" target="_blank">Maintenance</a>
+  <!-- Sidebar Text Block -->
+  <div class="info-box">
+    The ICT-India SDLC Repository provides a centralized space to explore, upload, and access accelerators, templates, and best-practice material across every phase of the software development lifecycle. 
+    <br><br>
+    Click any repository on the wheel to navigate to its library and manage content.
+    <br><br>
+    To learn more, visit the 
+    <a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/SitePages/About-AI-SDLC.aspx" target="_blank">About page</a>, 
+    or share your thoughts through the 
+    <a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/SitePages/Feedback%20&%20Contact.aspx" target="_blank">Feedback & Contact</a> 
+    link.
   </div>
+
 </div>
 
 <script>
-/* ---- EXACT PHASES WITH YOUR REAL SHAREPOINT LINKS ---- */
+/* ------------ Phase Metadata ------------ */
 const phases = [
   { name:"Planning & Analysis", angle:15, color:"#4F8EF7",
+    desc:"Requirements gathering, feasibility checks, and scope definition.",
     link:"https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Planning%20%20Analysis" },
 
   { name:"Design", angle:85, color:"#F3B23A",
+    desc:"Solution architecture, UX planning, and technical design.",
     link:"https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Design%20Accelerators/Forms/AllItems.aspx" },
 
   { name:"Implementation", angle:160, color:"#F97A3C",
+    desc:"Development and build activities aligned to defined designs.",
     link:"https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Implementation%20Accelerators/Forms/AllItems.aspx" },
 
   { name:"Testing & Integration", angle:220, color:"#FFD43B",
+    desc:"Functional testing, regression, validation, and system integration.",
     link:"https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Testing%20%20Integration/Forms/AllItems.aspx" },
 
   { name:"Deployment & Operations", angle:285, color:"#4DC981",
+    desc:"Release preparation, deployment execution, monitoring, and operations.",
     link:"https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Deployment%20%20Operations%20Accelerators/Forms/AllItems.aspx" },
 
   { name:"Maintenance", angle:325, color:"#8C8CFF",
+    desc:"Enhancements, fixes, optimizations, and continuous improvements.",
     link:"https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Maintenance/Forms/AllItems.aspx" }
 ];
 
-/* ---- REST CALL: GET 5 MOST RECENT ITEMS ---- */
-async function getTop5(listUrl) {
-  const listTitle = decodeURIComponent(listUrl.split("/").pop());
-  const api = `${listUrl}/_api/web/lists/getbytitle('${listTitle}')/items?$orderby=Modified desc&$top=5&$select=Title,FileRef`;
-
-  const res = await fetch(api, {
-    headers: { "Accept": "application/json;odata=nometadata" },
-    credentials: "include"
-  });
-
-  if (!res.ok) return [];
-  const data = await res.json();
-  return data.value;
-}
-
+/* ------------ Position Labels on Wheel ------------ */
 const radius = 180;
 const wheel = document.getElementById("wheel");
 const hoverPanel = document.getElementById("hover-panel");
 
-/* ---- Your exact radius + Y-offset adjustments ---- */
 const radiusAdjustments = {
   "Planning & Analysis": +30,
   "Design": -15,
@@ -220,14 +230,13 @@ const yAdjustments = {
   "Maintenance": -34
 };
 
-/* ---- Build wheel with perfect original alignment ---- */
+/* ------------ Build Wheel ------------ */
 phases.forEach(p => {
   const el = document.createElement("div");
   el.className = "phase-label";
   el.style.background = p.color;
 
   const rad = (p.angle - 90) * Math.PI / 180;
-
   const r = radius + (radiusAdjustments[p.name] || 0);
   const yOff = yAdjustments[p.name] || 0;
 
@@ -238,24 +247,13 @@ phases.forEach(p => {
   el.style.top  = `calc(50% + ${y}px)`;
   el.innerHTML = p.name;
 
-  /* ---- Hover → show top 5 items ---- */
-  el.onmouseenter = async () => {
+  /* --- Hover Panel (Static Descriptions Only) --- */
+  el.onmouseenter = () => {
     hoverPanel.style.display = "block";
-    hoverPanel.innerHTML = `<h4>${p.name}</h4><div>Loading...</div>`;
-
-    const listUrl = p.link.split("/Forms")[0];
-    const items = await getTop5(listUrl);
-
-    let html = `<h4>${p.name}</h4>`;
-    if (items.length === 0) {
-      html += "<div>No recent items found</div>";
-    } else {
-      items.forEach(i => {
-        html += `<a href="https://shiftup.sharepoint.com${i.FileRef}" target="_blank">${i.Title}</a>`;
-      });
-    }
-
-    hoverPanel.innerHTML = html;
+    hoverPanel.innerHTML = `
+      <h4>${p.name}</h4>
+      <div>${p.desc}</div>
+    `;
 
     const rect = el.getBoundingClientRect();
     hoverPanel.style.left = (rect.right + 15) + "px";
@@ -264,6 +262,7 @@ phases.forEach(p => {
 
   el.onmouseleave = () => hoverPanel.style.display = "none";
 
+  /* --- Click to open repo link --- */
   el.onclick = () => window.open(p.link, "_blank");
 
   wheel.appendChild(el);
@@ -272,4 +271,3 @@ phases.forEach(p => {
 
 </body>
 </html>
-
