@@ -1,202 +1,235 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>ICT-India AI-SDLC Hub — Final (Stable Auto-Center)</title>
+
+<style>
+:root{
+  --wheel-size: 560px;
+  --label-size: 102px;
+  --center-size: 170px;
+}
+
+body{
+  margin:0;
+  font-family: "Segoe UI", Arial, sans-serif;
+  background: radial-gradient(circle at center,#ffffff 0%,#eef4fa 100%);
+  color:#1b1b1b;
+}
+
+.topbar{
+  background:#002C5F;
+  color:#fff;
+  padding:12px 20px;
+  font-weight:600;
+}
+
+.container{
+  display:grid;
+  grid-template-columns:1fr 340px;
+  gap:24px;
+  max-width:1200px;
+  margin:30px auto;
+  padding:0 20px;
+}
+
+.wheel-wrap{
+  position:relative;
+  background:#fff;
+  border-radius:16px;
+  padding:22px;
+  box-shadow:0 6px 22px rgba(0,0,0,0.05);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+
+.wheel{
+  position:relative;
+  width:var(--wheel-size);
+  height:var(--wheel-size);
+  border-radius:50%;
+  background:conic-gradient(
+    #2B5F90 0deg 60deg,
+    #B8792F 60deg 120deg,
+    #BB4C46 120deg 180deg,
+    #D8B441 180deg 240deg,
+    #3B9A95 240deg 300deg,
+    #6656E6 300deg 360deg
+  );
+  box-shadow: inset 0 26px 50px rgba(255,255,255,0.06),
+              inset 0 -18px 36px rgba(0,0,0,0.035);
+}
+
+.center{
+  position:absolute;
+  width:var(--center-size);
+  height:var(--center-size);
+  left:calc(50% - var(--center-size)/2);
+  top:calc(50% - var(--center-size)/2);
+  border-radius:50%;
+  background:linear-gradient(145deg,#004e86,#003b63,#002a4a);
+  color:#fff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:700;
+  z-index:1000;
+  font-size:17px;
+}
+
+.phase-label{
+  position:absolute;
+  width:var(--label-size);
+  height:var(--label-size);
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:10px;
+  color:#fff;
+  font-weight:700;
+  background:rgba(255,255,255,0.2);
+  border:1.4px solid rgba(255,255,255,0.42);
+  text-align:center;
+  line-height:1.08;
+  font-size:13px;
+  box-shadow:0 6px 14px rgba(0,0,0,0.14);
+  transition:transform .15s ease;
+}
+
+.phase-label:hover{
+  transform:scale(1.06);
+}
+
+#hover-panel{
+  position:fixed;
+  display:none;
+  background:#fff;
+  padding:12px 14px;
+  border-radius:8px;
+  box-shadow:0 8px 26px rgba(0,0,0,0.12);
+  font-size:13px;
+  z-index:2000;
+}
+
+.info-box{
+  background:#fff;
+  padding:18px 20px;
+  border-radius:12px;
+  box-shadow:0 4px 14px rgba(0,0,0,0.05);
+  line-height:1.55;
+  font-size:14px;
+}
+
+.info-box a{
+  color:#005A9E;
+  text-decoration:none;
+  font-weight:600;
+}
+
+footer{
+  margin-top:40px;
+  text-align:center;
+  color:#666;
+  font-size:13px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="topbar">ICT-India AI-SDLC Hub</div>
+<div id="hover-panel"></div>
+
+<div class="container">
+  <div class="wheel-wrap">
+    <div class="wheel" id="wheel"></div>
+    <div class="center">SDLC Repository</div>
+  </div>
+
+  <div class="info-box">
+    The ICT-India SDLC Repository provides a centralized space…
+    <br><br>
+    Click any repository on the wheel to navigate to its library and manage content.
+  </div>
+</div>
+
+<footer>ICT-India | AI-SDLC Hub | 2025</footer>
+
+<!-- START FINAL SCRIPT -->
 <script>
-/* Auto-center + micro-nudges (safe, debounced, collision-aware)
-   Replace your existing script with this block.
-*/
-(function(){
-  // safe logging
-  console.log("SDLC wheel (auto-center + micro-nudges) initializing...");
+window.addEventListener("DOMContentLoaded", function(){
 
-  function hexToRgba(hex,a){
-    try{
-      hex=(hex||'#999').replace('#','');
-      if(hex.length===3) hex=hex.split('').map(c=>c+c).join('');
-      const r=parseInt(hex.slice(0,2),16), g=parseInt(hex.slice(2,4),16), b=parseInt(hex.slice(4,6),16);
-      return `rgba(${r},${g},${b},${a})`;
-    }catch(e){ return `rgba(150,150,150,${a})`; }
-  }
+console.log("SDLC wheel (stable auto-center) loaded.");
 
-  const phases = [
-    { name:"Planning & Analysis", angle:15,  color:"#2B5F90", link:"https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Planning%20%20Analysis" },
-    { name:"Design",               angle:85,  color:"#B8792F", link:"https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Design%20Accelerators/Forms/AllItems.aspx" },
-    { name:"Implementation",       angle:160, color:"#BB4C46", link:"https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Implementation%20Accelerators/Forms/AllItems.aspx" },
-    { name:"Testing & Integration",angle:220, color:"#D8B441", link:"https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Testing%20%20Integration/Forms/AllItems.aspx" },
-    { name:"Deployment & Operations",angle:285,color:"#3B9A95", link:"https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Deployment%20%20Operations%20Accelerators/Forms/AllItems.aspx" },
-    { name:"Maintenance",          angle:325, color:"#6656E6", link:"https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Maintenance/Forms/AllItems.aspx" }
-  ];
+// phase definitions
+const phases = [
+  { name:"Planning & Analysis", angle:15,  color:"#2B5F90" },
+  { name:"Design", angle:85,  color:"#B8792F" },
+  { name:"Implementation", angle:160, color:"#BB4C46" },
+  { name:"Testing & Integration", angle:220, color:"#D8B441" },
+  { name:"Deployment & Operations", angle:285, color:"#3B9A95" },
+  { name:"Maintenance", angle:325, color:"#6656E6" }
+];
 
-  // micro-nudges (pixels) — conservative, optical tweaks
-  // rx: extra radius (positive = outward, negative = inward)
-  // ry: vertical pixel shift on final placement (positive = down, negative = up)
-  const nudges = {
-    "Planning & Analysis":      { rx: -6, ry: +6 },
-    "Design":                   { rx: 0,   ry: 0  },
-    "Implementation":           { rx: -8, ry: -18 }, // move up & slightly inward
-    "Testing & Integration":    { rx: +3, ry: -4 },
-    "Deployment & Operations":  { rx: +10, ry: -6 },  // outward & up
-    "Maintenance":              { rx: +6, ry: +4 }
-  };
+// Micro-nudges (final tuned)
+const nudges = {
+  "Planning & Analysis":      { rx:-6,  ry:6 },
+  "Design":                   { rx:0,   ry:0 },
+  "Implementation":           { rx:-8,  ry:-18 },
+  "Testing & Integration":    { rx:3,   ry:-4 },
+  "Deployment & Operations":  { rx:10,  ry:-6 },
+  "Maintenance":              { rx:6,   ry:4 }
+};
 
-  const wheelEl = document.getElementById('wheel');
-  const hoverPanel = document.getElementById('hover-panel');
+const wheelEl = document.getElementById("wheel");
+const hoverPanel = document.getElementById("hover-panel");
 
-  if (!wheelEl) {
-    console.warn("SDLC wheel script: '#wheel' not found — aborting.");
-    return;
-  }
+function place(){
+  if(!wheelEl) return console.warn("Wheel missing!");
+  document.querySelectorAll(".phase-label").forEach(n=>n.remove());
 
-  function intersects(a,b){
-    return !(a.left + a.width <= b.left || b.left + b.width <= a.left || a.top + a.height <= b.top || b.top + b.height <= a.top);
-  }
+  const rect = wheelEl.getBoundingClientRect();
+  const cx = rect.width/2;
+  const cy = rect.height/2;
 
-  function screenToLocal(screenX, screenY, wheelRect, labelSize){
-    const leftLocal = screenX - (window.scrollX + wheelRect.left) - (labelSize/2);
-    const topLocal  = screenY - (window.scrollY + wheelRect.top)  - (labelSize/2);
-    return { leftLocal, topLocal };
-  }
+  const cssWheel = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--wheel-size"));
+  const cssLabel = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--label-size"));
 
-  function getShortDesc(n){
-    switch(n){
-      case "Planning & Analysis": return "Requirements gathering, feasibility checks and scope definition.";
-      case "Design": return "Solution architecture, UX planning and technical design.";
-      case "Implementation": return "Development and build activities aligned to defined designs.";
-      case "Testing & Integration": return "Functional testing, regression, validation and system integration.";
-      case "Deployment & Operations": return "Release preparation, deployment execution, monitoring and operations.";
-      case "Maintenance": return "Enhancements, fixes, optimizations and continuous improvements.";
-      default: return "";
-    }
-  }
+  const scale = rect.width / cssWheel;
+  const labelSize = Math.round(cssLabel * scale);
+  const radius = rect.width * 0.43;  // stable radius
 
-  function placeLabelsAuto(){
-    // clear previous
-    Array.from(document.querySelectorAll('.phase-label')).forEach(n=>n.remove());
+  phases.forEach(p => {
+    const el = document.createElement("div");
+    el.className = "phase-label";
+    el.style.width = labelSize + "px";
+    el.style.height = labelSize + "px";
+    el.style.background = `rgba(255,255,255,0.22)`;
+    el.innerHTML = (p.name==="Implementation" ? p.name.replace(/\s+/g,"&nbsp;") : p.name);
 
-    const rect = wheelEl.getBoundingClientRect();
-    if (!rect || rect.width === 0) {
-      console.warn("Wheel geometry not ready — skipping placement.");
-      return;
-    }
+    const n = nudges[p.name] || {rx:0,ry:0};
+    const theta = (p.angle-90) * Math.PI/180;
 
-    const wheelCenter = { x: rect.left + rect.width/2, y: rect.top + rect.height/2 };
-    const wheelRadius = rect.width/2;
+    const x = cx + (radius + n.rx) * Math.cos(theta);
+    const y = cy + (radius + n.rx) * Math.sin(theta) + n.ry;
 
-    const rootWheel = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--wheel-size')) || 560;
-    const cssLabelSize = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--label-size')) || 102;
-    const labelSize = Math.max(72, Math.round(cssLabelSize * (rect.width / rootWheel)));
+    el.style.left = (x - labelSize/2) + "px";
+    el.style.top  = (y - labelSize/2) + "px";
 
-    // base radius for labels (proportional)
-    const baseLabelRadius = Math.round((rect.width/2) * 0.60);
+    wheelEl.appendChild(el);
+  });
+}
 
-    const placed = [];
+window.addEventListener("resize", place);
+place();
 
-    phases.forEach(p => {
-      try {
-        const el = document.createElement('div');
-        el.className = 'phase-label';
-        el.style.width  = `${labelSize}px`;
-        el.style.height = `${labelSize}px`;
-        el.style.background = hexToRgba(p.color, 0.28);
-        el.style.whiteSpace = 'nowrap';
-        el.style.textAlign = 'center';
-        el.style.lineHeight = '1.05';
-        el.style.fontWeight = '700';
-        el.innerHTML = (p.name === "Implementation") ? p.name.replace(/\s+/g, '&nbsp;') : p.name;
-        el.style.visibility = 'hidden';
-        wheelEl.appendChild(el);
-
-        const nud = nudges[p.name] || { rx:0, ry:0 };
-
-        const theta = (p.angle - 90) * Math.PI / 180;
-        const step = Math.max(6, Math.round(labelSize * 0.06));
-        let r = baseLabelRadius + (nud.rx || 0);
-        const maxR = Math.round(rect.width * 0.72);
-        let safe = false;
-        let trials = 0;
-        let finalLocal = { left: 0, top: 0, width: labelSize, height: labelSize };
-
-        while(!safe && trials < 80 && r <= maxR) {
-          const xScreen = Math.round(wheelCenter.x + r * Math.cos(theta));
-          const yScreen = Math.round(wheelCenter.y + r * Math.sin(theta)) + (nud.ry || 0);
-          const local = screenToLocal(xScreen, yScreen, rect, labelSize);
-
-          // ensure center-of-label inside wheel
-          const dx = xScreen - wheelCenter.x;
-          const dy = yScreen - wheelCenter.y;
-          const dist = Math.sqrt(dx*dx + dy*dy);
-          if (dist + (labelSize/2) > wheelRadius + 6) {
-            // too far out -> stop outwarding
-            break;
-          }
-
-          // avoid hitting center region (center-size)
-          const cssCenterSize = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--center-size')) || 170;
-          const scaledCenterRadius = (cssCenterSize * (rect.width / rootWheel)) / 2;
-          const centerDist = Math.sqrt(Math.pow(xScreen - wheelCenter.x,2) + Math.pow(yScreen - wheelCenter.y,2));
-          if (centerDist < scaledCenterRadius + (labelSize/2) + 6) { r += step; trials++; continue; }
-
-          const cand = { left: Math.round(local.leftLocal), top: Math.round(local.topLocal), width: labelSize, height: labelSize };
-          let overlap = false;
-          for (const b of placed) { if (intersects(cand, b)) { overlap = true; break; } }
-          if (overlap) { r += step; trials++; continue; }
-
-          // ok
-          finalLocal = cand; safe = true;
-        }
-
-        if (!safe) {
-          // fallback — place at base radius with nudge applied
-          const xScreen = Math.round(wheelCenter.x + baseLabelRadius * Math.cos(theta));
-          const yScreen = Math.round(wheelCenter.y + baseLabelRadius * Math.sin(theta)) + (nud.ry || 0);
-          const local = screenToLocal(xScreen, yScreen, rect, labelSize);
-          finalLocal = { left: Math.round(local.leftLocal), top: Math.round(local.topLocal), width: labelSize, height: labelSize };
-        }
-
-        el.style.left = `${finalLocal.left}px`;
-        el.style.top  = `${finalLocal.top}px`;
-        el.style.visibility = 'visible';
-
-        placed.push({ left: finalLocal.left, top: finalLocal.top, width: finalLocal.width, height: finalLocal.height });
-
-        // hover
-        el.addEventListener('mouseenter', () => {
-          if (!hoverPanel) return;
-          hoverPanel.style.display = 'block';
-          hoverPanel.innerHTML = `<strong style="color:#003a6c">${p.name}</strong><div style="margin-top:6px;color:#333;font-size:13px">${getShortDesc(p.name)}</div>`;
-          const rct = el.getBoundingClientRect();
-          let left = rct.right + 12;
-          let top = rct.top;
-          if (left + 260 > window.innerWidth) left = rct.left - 260 - 12;
-          if (top + 120 > window.innerHeight) top = window.innerHeight - 140;
-          hoverPanel.style.left = left + 'px';
-          hoverPanel.style.top  = top + 'px';
-        });
-        el.addEventListener('mouseleave', () => { if (hoverPanel) hoverPanel.style.display = 'none'; });
-        el.addEventListener('click', () => { if (p.link) window.open(p.link, '_blank'); });
-
-      } catch(e) {
-        console.warn("label placement error for", p.name, e);
-      }
-    }); // phases loop
-  } // placeLabelsAuto
-
-  // small helper duplicate of getShortDesc used inside
-  function getShortDesc(n){
-    switch(n){
-      case "Planning & Analysis": return "Requirements gathering, feasibility checks and scope definition.";
-      case "Design": return "Solution architecture, UX planning and technical design.";
-      case "Implementation": return "Development and build activities aligned to defined designs.";
-      case "Testing & Integration": return "Functional testing, regression, validation and system integration.";
-      case "Deployment & Operations": return "Release preparation, deployment execution, monitoring and operations.";
-      case "Maintenance": return "Enhancements, fixes, optimizations and continuous improvements.";
-      default: return "";
-    }
-  }
-
-  // debounce and lifecycle
-  const deb = () => { clearTimeout(window.__sdlc_timer); window.__sdlc_timer = setTimeout(() => { try { placeLabelsAuto(); } catch(e){console.error(e);} }, 90); };
-  window.addEventListener('load', deb);
-  window.addEventListener('resize', deb);
-  if (document.readyState === 'complete' || document.readyState === 'interactive') deb();
-
-  console.log("SDLC wheel (auto-center + micro-nudges) active.");
-})();
+});
 </script>
+<!-- END FINAL SCRIPT -->
+
+</body>
+</html>
