@@ -12,11 +12,21 @@
   --label-size: 90px;
   --font: "Segoe UI", Arial, sans-serif;
 }
+
 body {
   margin:0;
   font-family: var(--font);
   background: radial-gradient(circle at center,#ffffff 0%,#eaf1f9 100%);
+
+  /* Fade-in animation */
+  animation:fadeInPage .45s ease-out;
 }
+
+@keyframes fadeInPage {
+  from { opacity:0; transform:translateY(8px); }
+  to { opacity:1; transform:translateY(0); }
+}
+
 .topbar {
   background: linear-gradient(180deg,#0078D4 0%,#005A9E 100%);
   color:#fff;
@@ -24,6 +34,7 @@ body {
   padding:10px 20px;
   box-shadow:0 2px 4px rgba(0,0,0,.1);
 }
+
 .container {
   display:grid;
   grid-template-columns:1fr 340px;
@@ -32,7 +43,10 @@ body {
   margin:30px auto;
   padding:0 20px;
 }
+
+/* Wheel Wrapper */
 .wheel-wrap {
+  position:relative;
   display:flex;
   justify-content:center;
   align-items:center;
@@ -40,7 +54,33 @@ body {
   border-radius:16px;
   box-shadow:0 6px 20px rgba(0,0,0,.05);
   padding:24px;
+
+  /* Fade-in wheel animation */
+  animation:fadeInWheel .55s ease-out;
 }
+
+@keyframes fadeInWheel {
+  from { opacity:0; transform:scale(0.97); }
+  to { opacity:1; transform:scale(1); }
+}
+
+/* Soft glow behind wheel */
+.wheel-wrap::before {
+  content:"";
+  position:absolute;
+  width:600px;
+  height:600px;
+  border-radius:50%;
+  background:radial-gradient(
+    circle,
+    rgba(0,120,212,0.25) 0%,
+    rgba(0,120,212,0) 70%
+  );
+  filter:blur(45px);
+  z-index:0;
+}
+
+/* Wheel */
 .wheel {
   position:relative;
   width:var(--wheel-size);
@@ -54,7 +94,10 @@ body {
     #4DC981 240deg 300deg,
     #8C8CFF 300deg 360deg
   );
+  z-index:1;
 }
+
+/* Wheel Center */
 .center {
   position:absolute;
   top:50%; left:50%;
@@ -66,14 +109,14 @@ body {
   text-align:center;
   font-weight:600;
   display:flex;
-  flex-direction:column;
+  align-items:center;
   justify-content:center;
   box-shadow:0 10px 25px rgba(0,0,0,.2);
   z-index:2;
   font-size:18px;
 }
 
-/* Phase Labels */
+/* Phase Labels – Frosted Glass Style */
 .phase-label {
   position:absolute;
   width:var(--label-size);
@@ -88,15 +131,25 @@ body {
   font-size:13px;
   font-weight:600;
   cursor:pointer;
-  border:2px solid rgba(255,255,255,0.4);
-  box-shadow:0 3px 6px rgba(0,0,0,0.15), inset 0 0 6px rgba(255,255,255,0.2);
+
+  /* Frosted glass effect */
+  border:2px solid rgba(255,255,255,0.45);
+  background:rgba(255,255,255,0.08);
+  backdrop-filter:blur(6px);
+
+  box-shadow:
+    0 3px 8px rgba(0,0,0,0.2),
+    inset 0 0 10px rgba(255,255,255,0.25);
+
   transition:all .25s ease;
 }
+
 .phase-label:hover {
-  transform:scale(1.08);
+  transform:scale(1.1);
   box-shadow:
-    0 0 12px rgba(255,255,255,0.7),
-    0 6px 18px rgba(0,0,0,0.2);
+    0 0 12px rgba(255,255,255,0.8),
+    0 8px 20px rgba(0,0,0,0.25),
+    inset 0 0 12px rgba(255,255,255,0.35);
 }
 
 /* Hover Panel */
@@ -110,7 +163,7 @@ body {
   width:240px;
   z-index:999;
   font-size:13px;
-  animation:fadeIn 0.15s ease-out;
+  animation:fadeIn .15s ease-out;
 }
 #hover-panel h4 {
   margin:0 0 8px 0;
@@ -123,7 +176,7 @@ body {
   to {opacity:1; transform:translateY(0);}
 }
 
-/* Sidebar Paragraph */
+/* Sidebar Info Box */
 .info-box {
   background:#fff;
   padding:18px 20px;
@@ -144,7 +197,7 @@ body {
   .container{grid-template-columns:1fr;}
   .info-box{order:2;margin-top:20px}
   .wheel{width:420px;height:420px}
-  .center{width:150px;height:150px}
+  .center{width:150px;height:150px;font-size:16px;}
 }
 </style>
 </head>
@@ -157,16 +210,16 @@ body {
 
 <div class="container">
 
-  <!-- Wheel -->
+  <!-- WHEEL -->
   <div class="wheel-wrap">
     <div class="wheel" id="wheel">
       <div class="center">SDLC Repository</div>
     </div>
   </div>
 
-  <!-- Sidebar Text Block -->
+  <!-- SIDEBAR TEXT -->
   <div class="info-box">
-    The ICT-India SDLC Repository provides a centralized space to explore, upload, and access accelerators, templates, and best-practice material across every phase of the software development lifecycle. 
+    The ICT-India SDLC Repository provides a centralized space to explore, upload, and access accelerators, templates, and best-practice material across every phase of the software development lifecycle.
     <br><br>
     Click any repository on the wheel to navigate to its library and manage content.
     <br><br>
@@ -180,7 +233,7 @@ body {
 </div>
 
 <script>
-/* ------------ Phase Metadata ------------ */
+/* PHASE DEFINITIONS */
 const phases = [
   { name:"Planning & Analysis", angle:15, color:"#4F8EF7",
     desc:"Requirements gathering, feasibility checks, and scope definition.",
@@ -207,7 +260,7 @@ const phases = [
     link:"https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Maintenance/Forms/AllItems.aspx" }
 ];
 
-/* ------------ Position Labels on Wheel ------------ */
+/* POSITION LABELS */
 const radius = 180;
 const wheel = document.getElementById("wheel");
 const hoverPanel = document.getElementById("hover-panel");
@@ -230,7 +283,7 @@ const yAdjustments = {
   "Maintenance": -34
 };
 
-/* ------------ Build Wheel ------------ */
+/* BUILD WHEEL LABELS */
 phases.forEach(p => {
   const el = document.createElement("div");
   el.className = "phase-label";
@@ -247,14 +300,10 @@ phases.forEach(p => {
   el.style.top  = `calc(50% + ${y}px)`;
   el.innerHTML = p.name;
 
-  /* --- Hover Panel (Static Descriptions Only) --- */
+  /* HOVER STATIC DESCRIPTION */
   el.onmouseenter = () => {
     hoverPanel.style.display = "block";
-    hoverPanel.innerHTML = `
-      <h4>${p.name}</h4>
-      <div>${p.desc}</div>
-    `;
-
+    hoverPanel.innerHTML = `<h4>${p.name}</h4><div>${p.desc}</div>`;
     const rect = el.getBoundingClientRect();
     hoverPanel.style.left = (rect.right + 15) + "px";
     hoverPanel.style.top  = rect.top + "px";
@@ -262,12 +311,24 @@ phases.forEach(p => {
 
   el.onmouseleave = () => hoverPanel.style.display = "none";
 
-  /* --- Click to open repo link --- */
+  /* CLICK → OPEN LINK */
   el.onclick = () => window.open(p.link, "_blank");
 
   wheel.appendChild(el);
 });
 </script>
+
+<!-- FOOTER -->
+<footer style="
+  margin-top:40px;
+  padding:15px;
+  text-align:center;
+  color:#555;
+  font-size:13px;
+  opacity:0.75;
+">
+  ICT-India | AI-SDLC Hub | 2025
+</footer>
 
 </body>
 </html>
