@@ -1,41 +1,38 @@
 <!doctype html>
 <html lang="en">
-
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>ICT-India AI-SDLC Hub</title>
-
 <style>
-:root {
+:root{
   --wheel-size: 560px;
-  --label-size: 80px; /* Smaller, more premium */
+  --label-size: 88px; /* slightly larger for comfortable two-line labels */
+  --center-size: 170px;
   --font: "Segoe UI", Arial, sans-serif;
 }
 
-/* Page fade-in */
-body {
+/* Page base */
+body{
   margin:0;
-  font-family: var(--font);
-  background: radial-gradient(circle at center,#ffffff 0%,#eef2f7 100%);
+  font-family:var(--font);
+  background: radial-gradient(circle at center,#ffffff 0%,#eef4fa 100%);
   animation:fadeInPage .45s ease-out;
+  color:#1b1b1b;
 }
 @keyframes fadeInPage {
-  from { opacity:0; transform:translateY(8px); }
-  to { opacity:1; transform:translateY(0); }
+  from {opacity:0; transform:translateY(8px);} to {opacity:1; transform:translateY(0);}
 }
 
-/* Top Bar */
-.topbar {
+/* Top bar */
+.topbar{
   background: linear-gradient(180deg,#002C5F 0%,#001F44 100%);
-  color:#fff;
-  font-weight:600;
-  padding:10px 20px;
-  box-shadow:0 2px 4px rgba(0,0,0,.1);
+  color:#fff; font-weight:600; padding:10px 20px;
+  box-shadow:0 2px 4px rgba(0,0,0,.08);
 }
 
 /* Layout */
-.container {
+.container{
   display:grid;
   grid-template-columns:1fr 340px;
   gap:24px;
@@ -44,80 +41,85 @@ body {
   padding:0 20px;
 }
 
-/* Wheel container */
-.wheel-wrap {
+/* wheel container */
+.wheel-wrap{
   position:relative;
   display:flex;
   justify-content:center;
   align-items:center;
   background:#fff;
   border-radius:16px;
-  box-shadow:0 4px 14px rgba(0,0,0,.08);
-  padding:24px;
+  padding:22px;
+  box-shadow:0 6px 20px rgba(0,0,0,0.06);
   animation:fadeInWheel .55s ease-out;
 }
 @keyframes fadeInWheel {
-  from { opacity:0; transform:scale(0.97); }
-  to { opacity:1; transform:scale(1); }
+  from {opacity:0; transform:scale(.975)} to {opacity:1; transform:scale(1)}
 }
 
-/* Softer glow behind wheel */
-.wheel-wrap::before {
+/* refined, softer glow */
+.wheel-wrap::before{
   content:"";
   position:absolute;
-  width:580px;
-  height:580px;
+  width:560px; height:560px;
   border-radius:50%;
-  background:radial-gradient(
-    circle,
-    rgba(0,44,95,0.18) 0%,
-    rgba(0,44,95,0) 70%
-  );
-  filter:blur(35px);
+  background:radial-gradient(circle, rgba(0,44,95,0.14) 0%, rgba(0,44,95,0) 60%);
+  filter:blur(30px);
   z-index:0;
 }
 
-/* Wheel (with subtle gradients + separators) */
-.wheel {
+/* Wheel: base conic + separators + radial soft shading to create slice depth */
+.wheel{
   position:relative;
   width:var(--wheel-size);
   height:var(--wheel-size);
   border-radius:50%;
-  background:
-    conic-gradient(
-      from 0deg,
-      #3B6EA5 0deg 60deg,
-      #C27A32 60deg 120deg,
-      #BF5E4A 120deg 180deg,
-      #D8B441 180deg 240deg,
-      #4AA1A1 240deg 300deg,
-      #5A55CC 300deg 360deg
-    );
   z-index:1;
-  border:2px solid rgba(255,255,255,0.35); /* separator ring */
+  overflow:visible;
+
+  /* color slices (staggered contrast) */
+  background:
+    /* thin separators at every 60deg (very subtle) */
+    repeating-conic-gradient(
+      rgba(255,255,255,0.06) 0deg 0.4deg,
+      transparent 0.4deg 60deg
+    ),
+    /* base slices */
+    conic-gradient(
+      #2F6FA6 0deg 60deg,      /* Planning (darker blue) */
+      #B7792F 60deg 120deg,     /* Design (muted warm) */
+      #C14F45 120deg 180deg,    /* Implementation (deep coral) */
+      #D8B441 180deg 240deg,    /* Testing (soft gold) */
+      #3B9A95 240deg 300deg,    /* Deployment (calm teal) */
+      #504ED0 300deg 360deg     /* Maintenance (indigo) */
+    );
+
+  /* subtle radial highlight (top-left) to give depth */
+  box-shadow: inset 0 30px 70px rgba(255,255,255,0.06), inset 0 -24px 48px rgba(0,0,0,0.04);
+  border-radius:50%;
+  border:1px solid rgba(255,255,255,0.28);
 }
 
-/* Wheel center */
-.center {
+/* center circle */
+.center{
   position:absolute;
   top:50%; left:50%;
   transform:translate(-50%,-50%);
-  width:180px; height:180px;
+  width:var(--center-size); height:var(--center-size);
   border-radius:50%;
-  background:linear-gradient(145deg,#005A9E 0%,#004B82 60%,#003A63 100%);
-  color:#fff;
-  text-align:center;
+  background:linear-gradient(145deg,#004e86 0%, #00395f 60%, #002a4a 100%);
+  color:white;
   display:flex;
   align-items:center;
   justify-content:center;
-  font-size:18px;
-  font-weight:600;
-  box-shadow:0 10px 25px rgba(0,0,0,.25);
-  z-index:2;
+  font-weight:700;
+  font-size:17px;
+  z-index:3;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.22);
 }
 
-/* Frosted labels (more subtle opacity) */
-.phase-label {
+/* phase labels: improved centering, wrapping */
+.phase-label{
   position:absolute;
   width:var(--label-size);
   height:var(--label-size);
@@ -125,56 +127,68 @@ body {
   display:flex;
   align-items:center;
   justify-content:center;
+  text-align:center;
+  padding:6px 8px;
   color:#fff;
   font-size:12px;
-  font-weight:600;
+  font-weight:700;
   cursor:pointer;
+  line-height:1.15;
+  word-break:break-word;
+  white-space:normal;
 
-  background:rgba(255,255,255,0.04); /* lighter frost */
-  backdrop-filter:blur(5px);
-  border:1.5px solid rgba(255,255,255,0.35);
+  /* frost but subtle so colors show through */
+  background:rgba(255,255,255,0.18);
+  backdrop-filter:blur(6px);
+  border:1.6px solid rgba(255,255,255,0.42);
 
   box-shadow:
-    0 2px 6px rgba(0,0,0,0.18),
-    inset 0 0 8px rgba(255,255,255,0.20);
+    0 3px 8px rgba(0,0,0,0.14),
+    inset 0 0 10px rgba(255,255,255,0.14);
 
-  transition:all .25s ease;
+  transition:all .22s ease;
 }
 
-/* Hover highlight */
-.phase-label:hover {
-  transform:scale(1.10);
+/* hover feel */
+.phase-label:hover{
+  transform:scale(1.08);
   box-shadow:
-    0 0 12px rgba(255,255,255,0.85),
-    0 6px 18px rgba(0,0,0,0.22),
-    inset 0 0 10px rgba(255,255,255,0.35);
+    0 10px 20px rgba(0,0,0,0.22),
+    inset 0 0 14px rgba(255,255,255,0.35);
 }
 
-/* Hover Panel */
-#hover-panel {
+/* subtle inner ring to separate center visually */
+.wheel::after{
+  content:"";
+  position:absolute;
+  left:50%; top:50%;
+  transform:translate(-50%,-50%);
+  width:calc(var(--center-size) + 8px);
+  height:calc(var(--center-size) + 8px);
+  border-radius:50%;
+  z-index:2;
+  pointer-events:none;
+  box-shadow: 0 0 0 8px rgba(255,255,255,0.02), 0 0 0 1px rgba(0,0,0,0.06) inset;
+}
+
+/* hover panel */
+#hover-panel{
   position:absolute;
   display:none;
-  background:white;
+  background:#fff;
   border-radius:12px;
   padding:14px 18px;
-  box-shadow:0 4px 16px rgba(0,0,0,0.15);
-  width:240px;
+  box-shadow:0 6px 22px rgba(0,0,0,0.12);
+  width:260px;
   z-index:999;
   font-size:13px;
   animation:fadeIn .15s ease-out;
 }
-#hover-panel h4 {
-  margin:0 0 8px 0;
-  font-size:14px;
-  color:#004578;
-}
-@keyframes fadeIn {
-  from {opacity:0; transform:translateY(4px);}
-  to {opacity:1; transform:translateY(0);}
-}
+@keyframes fadeIn { from {opacity:0; transform:translateY(6px);} to {opacity:1; transform:translateY(0);} }
+#hover-panel h4{ margin:0 0 8px 0; font-size:14px; color:#003a6c;}
 
-/* Right-side paragraph block */
-.info-box {
+/* right-side quick info */
+.info-box{
   background:#fff;
   padding:18px 20px;
   border-radius:12px;
@@ -182,123 +196,118 @@ body {
   line-height:1.55;
   font-size:14px;
 }
-.info-box a {
-  color:#005A9E;
-  font-weight:600;
-  text-decoration:none;
-}
-.info-box a:hover { text-decoration:underline; }
+.info-box a{ color:#005A9E; font-weight:600; text-decoration:none; }
+.info-box a:hover{text-decoration:underline;}
 
-/* Footer */
-footer {
-  margin-top:40px;
-  padding:15px;
-  text-align:center;
-  color:#555;
-  font-size:13px;
-  opacity:0.75;
-}
+/* footer */
+footer{ margin-top:40px; padding:15px; text-align:center; color:#555; font-size:13px; opacity:.78; }
 
-/* Mobile responsiveness */
+/* responsive */
 @media(max-width:950px){
-  .container{grid-template-columns:1fr;}
-  .info-box{order:2;margin-top:20px}
-  .wheel{width:420px;height:420px}
-  .center{width:140px;height:140px;font-size:16px;}
+  .container{ grid-template-columns:1fr; padding-bottom:20px;}
+  .info-box{ order:2; margin-top:20px;}
+  .wheel{ width:420px; height:420px;}
+  :root{ --label-size:72px; --center-size:140px; }
 }
 </style>
 </head>
-
 <body>
 
-<div class="topbar"><span>ICT-India AI-SDLC Hub</span></div>
+<div class="topbar">ICT-India AI-SDLC Hub</div>
 
 <div id="hover-panel"></div>
 
 <div class="container">
-
-  <!-- WHEEL -->
   <div class="wheel-wrap">
     <div class="wheel" id="wheel">
       <div class="center">SDLC Repository</div>
     </div>
   </div>
 
-  <!-- SIDEBAR TEXT -->
   <div class="info-box">
     The ICT-India SDLC Repository provides a centralized space to explore, upload, and access accelerators, templates, and best-practice material across every phase of the software development lifecycle.
     <br><br>
     Click any repository on the wheel to navigate to its library and manage content.
     <br><br>
-    To learn more, visit the 
-    <a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/SitePages/About-AI-SDLC.aspx" target="_blank">About page</a>, 
-    or share your thoughts through the 
-    <a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/SitePages/Feedback%20&%20Contact.aspx" target="_blank">Feedback & Contact</a> 
-    link.
+    To learn more, visit the
+    <a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/SitePages/About-AI-SDLC.aspx" target="_blank">About page</a>,
+    or share your thoughts via the
+    <a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/SitePages/Feedback%20&%20Contact.aspx" target="_blank">Feedback & Contact</a>.
   </div>
-
 </div>
 
 <script>
-/* Phase Definitions – Improved Stellantis Palette */
+/* UTIL: hex -> rgba */
+function hexToRgba(hex, alpha){
+  hex = hex.replace('#','');
+  if(hex.length === 3) hex = hex.split('').map(c=>c+c).join('');
+  const r = parseInt(hex.substring(0,2),16);
+  const g = parseInt(hex.substring(2,4),16);
+  const b = parseInt(hex.substring(4,6),16);
+  return `rgba(${r},${g},${b},${alpha})`;
+}
+
+/* chosen, tested palette (contrast staggered) */
 const phases = [
-  { name:"Planning & Analysis", angle:15, color:"#3B6EA5",
+  { name:"Planning & Analysis", angle:15, color:"#2F6FA6",
     desc:"Requirements gathering, feasibility checks, and scope definition.",
     link:"https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Planning%20%20Analysis" },
 
-  { name:"Design", angle:85, color:"#C27A32",
+  { name:"Design", angle:85, color:"#B7792F",
     desc:"Solution architecture, UX planning, and technical design.",
     link:"https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Design%20Accelerators/Forms/AllItems.aspx" },
 
-  { name:"Implementation",angle:160,color:"#BF5E4A",
+  { name:"Implementation", angle:160, color:"#C14F45",
     desc:"Development and build activities aligned to defined designs.",
     link:"https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Implementation%20Accelerators/Forms/AllItems.aspx" },
 
-  { name:"Testing & Integration",angle:220,color:"#D8B441",
+  { name:"Testing & Integration", angle:220, color:"#D8B441",
     desc:"Functional testing, regression, validation, and system integration.",
     link:"https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Testing%20%20Integration/Forms/AllItems.aspx" },
 
-  { name:"Deployment & Operations",angle:285,color:"#4AA1A1",
+  { name:"Deployment & Operations", angle:285, color:"#3B9A95",
     desc:"Release preparation, deployment execution, monitoring, and operations.",
     link:"https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Deployment%20%20Operations%20Accelerators/Forms/AllItems.aspx" },
 
-  { name:"Maintenance",angle:325,color:"#5A55CC",
+  { name:"Maintenance", angle:325, color:"#504ED0",
     desc:"Enhancements, fixes, optimizations, and continuous improvements.",
     link:"https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Maintenance/Forms/AllItems.aspx" }
 ];
 
+const wheel = document.getElementById('wheel');
+const hoverPanel = document.getElementById('hover-panel');
 const radius = 180;
-const wheel = document.getElementById("wheel");
-const hoverPanel = document.getElementById("hover-panel");
 
-/* label positioning tweaks */
+/* adjusted offsets tuned to avoid labels spilling out */
 const radiusAdjustments = {
   "Planning & Analysis": +30,
-  "Design": -15,
-  "Implementation": 0,
+  "Design": -10,
+  "Implementation": -22,   /* moved inward to avoid overflow */
   "Testing & Integration": +40,
-  "Deployment & Operations": +65,
-  "Maintenance": +40
+  "Deployment & Operations": +60,
+  "Maintenance": +36
 };
 const yAdjustments = {
   "Planning & Analysis": -32,
   "Design": -30,
-  "Implementation": -25,
+  "Implementation": -10,   /* slight upward nudge */
   "Testing & Integration": -50,
   "Deployment & Operations": +10,
   "Maintenance": -34
 };
 
-/* Build label elements */
-phases.forEach(p => {
-  const el = document.createElement("div");
-  el.className = "phase-label";
-  el.style.background = p.color + "33"; /* hex + 33 = 20% opacity, subtle tint */
+/* build labels with proper background tint */
+phases.forEach(p=>{
+  const el = document.createElement('div');
+  el.className = 'phase-label';
 
+  /* tinted background (stronger tint so label reads) */
+  el.style.background = hexToRgba(p.color, 0.30);
+
+  /* place */
   const rad = (p.angle - 90) * Math.PI / 180;
   const r = radius + (radiusAdjustments[p.name] || 0);
-  const yOff = yAdjustments[p.name] || 0;
-
+  const yOff = (yAdjustments[p.name] || 0);
   const x = r * Math.cos(rad);
   const y = r * Math.sin(rad) + yOff;
 
@@ -306,26 +315,22 @@ phases.forEach(p => {
   el.style.top  = `calc(50% + ${y}px)`;
   el.innerHTML = p.name;
 
-  /* Hover Description */
-  el.onmouseenter = () => {
-    hoverPanel.style.display = "block";
-    hoverPanel.innerHTML = `<h4>${p.name}</h4><div>${p.desc}</div>`;
+  /* hover */
+  el.onmouseenter = ()=>{
+    hoverPanel.style.display = 'block';
+    hoverPanel.innerHTML = `<h4>${p.name}</h4><div style="color:#333">${p.desc}</div>`;
     const rect = el.getBoundingClientRect();
-    hoverPanel.style.left = (rect.right + 15) + "px";
-    hoverPanel.style.top  = rect.top + "px";
+    hoverPanel.style.left = (rect.right + 14) + 'px';
+    hoverPanel.style.top = rect.top + 'px';
   };
+  el.onmouseleave = ()=> hoverPanel.style.display = 'none';
 
-  el.onmouseleave = () => hoverPanel.style.display = "none";
-
-  el.onclick = () => window.open(p.link, "_blank");
+  el.onclick = ()=> window.open(p.link, '_blank');
 
   wheel.appendChild(el);
 });
 </script>
 
-<footer>
-  ICT-India | AI-SDLC Hub | 2025
-</footer>
-
+<footer>ICT-India | AI-SDLC Hub | 2025</footer>
 </body>
 </html>
