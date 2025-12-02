@@ -1,189 +1,240 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>ICT-India AI-SDLC Hub — FINAL AUTO-CENTER</title>
+
+<style>
+:root{
+  --wheel-size: 560px;
+  --label-size: 102px;
+  --center-size: 170px;
+  --font: "Segoe UI", Arial, sans-serif;
+}
+
+body{
+  margin:0;
+  font-family:var(--font);
+  background:radial-gradient(circle at center,#ffffff 0%,#eef4fa 100%);
+  color:#1b1b1b;
+}
+
+.topbar{
+  background:linear-gradient(180deg,#002C5F 0%,#001F44 100%);
+  color:#fff;
+  padding:12px 20px;
+  font-weight:600;
+}
+
+.container{
+  display:grid;
+  grid-template-columns:1fr 340px;
+  gap:24px;
+  max-width:1200px;
+  margin:30px auto;
+  padding:0 20px;
+}
+
+.wheel-wrap{
+  position:relative;
+  background:#fff;
+  border-radius:16px;
+  padding:22px;
+  box-shadow:0 6px 22px rgba(0,0,0,0.05);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  overflow:visible;
+}
+
+.wheel{
+  position:relative;
+  width:var(--wheel-size);
+  height:var(--wheel-size);
+  border-radius:50%;
+  background:repeating-conic-gradient(
+      rgba(255,255,255,0.06) 0deg 0.35deg,
+      transparent 0.35deg 60deg
+    ),
+    conic-gradient(
+      #2B5F90 0deg 60deg,
+      #B8792F 60deg 120deg,
+      #BB4C46 120deg 180deg,
+      #D8B441 180deg 240deg,
+      #3B9A95 240deg 300deg,
+      #6656E6 300deg 360deg
+    );
+  box-shadow:
+    inset 0 26px 50px rgba(255,255,255,0.06),
+    inset 0 -18px 36px rgba(0,0,0,0.035);
+  border:1px solid rgba(255,255,255,0.20);
+  overflow:visible;
+}
+
+.center{
+  position:absolute;
+  left:calc(50% - var(--center-size)/2);
+  top:calc(50% - var(--center-size)/2);
+  width:var(--center-size);
+  height:var(--center-size);
+  border-radius:50%;
+  background:linear-gradient(145deg,#004e86 0%, #003b63 60%, #002a4a 100%);
+  color:#fff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:700;
+  font-size:17px;
+  box-shadow:0 10px 22px rgba(0,0,0,0.22);
+  z-index:1000;
+}
+
+.phase-label{
+  position:absolute;
+  width:var(--label-size);
+  height:var(--label-size);
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:10px;
+  text-align:center;
+  color:#fff;
+  font-weight:700;
+  font-size:13px;
+  line-height:1.08;
+  background:rgba(255,255,255,0.32);
+  border:1.4px solid rgba(255,255,255,0.52);
+  box-shadow:0 6px 14px rgba(0,0,0,0.16);
+  transition:transform .16s ease, box-shadow .16s ease;
+}
+
+.phase-label:hover{
+  transform:scale(1.06);
+  box-shadow:0 12px 26px rgba(0,0,0,0.22);
+}
+
+#hover-panel{
+  position:fixed;
+  display:none;
+  background:#fff;
+  padding:12px 14px;
+  border-radius:8px;
+  box-shadow:0 8px 26px rgba(0,0,0,0.12);
+  z-index:2000;
+  font-size:13px;
+  color:#222;
+}
+
+.info-box{
+  background:#fff;
+  padding:18px 20px;
+  border-radius:12px;
+  box-shadow:0 4px 14px rgba(0,0,0,0.05);
+  line-height:1.55;
+  font-size:14px;
+}
+
+.info-box a{
+  color:#005A9E;
+  font-weight:600;
+  text-decoration:none;
+}
+
+footer{
+  margin-top:40px;
+  text-align:center;
+  color:#666;
+  font-size:13px;
+}
+
+@media(max-width:950px){
+  .container{grid-template-columns:1fr;padding-bottom:20px}
+  .info-box{order:2;margin-top:20px}
+  :root{--label-size:86px;--center-size:140px}
+}
+</style>
+</head>
+<body>
+<div class="topbar">ICT-India AI-SDLC Hub</div>
+<div id="hover-panel"></div>
+
+<div class="container">
+  <div class="wheel-wrap">
+    <div class="wheel" id="wheel"></div>
+    <div class="center">SDLC Repository</div>
+  </div>
+
+  <div class="info-box">
+    The ICT-India SDLC Repository provides a centralized space to explore, upload, and access
+    accelerators, templates, and best-practice material across every phase of the software development lifecycle.
+    <br><br>Click any repository on the wheel to navigate to its library and manage content.
+    <br><br>To learn more, visit the
+    <a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/SitePages/About-AI-SDLC.aspx" target="_blank">About page</a>
+    or share feedback via the
+    <a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/SitePages/Feedback%20&%20Contact.aspx" target="_blank">Feedback & Contact</a>.
+  </div>
+</div>
+
 <script>
-(function(){
-  try {
-    console.log("SDLC wheel (auto-center) — initializing (hardened)...");
-    // helper: hex -> rgba
-    function hexToRgba(hex,a){
-      try {
-        hex = (hex||'#999').replace('#','').trim();
-        if(hex.length===3) hex = hex.split('').map(c=>c+c).join('');
-        const r = parseInt(hex.slice(0,2),16);
-        const g = parseInt(hex.slice(2,4),16);
-        const b = parseInt(hex.slice(4,6),16);
-        if (Number.isNaN(r)||Number.isNaN(g)||Number.isNaN(b)) return `rgba(150,150,150,${a})`;
-        return `rgba(${r},${g},${b},${a})`;
-      } catch(e){ return `rgba(150,150,150,${a})`; }
-    }
+console.log("SDLC wheel (auto-center) loaded.");
 
-    const phases = [
-      { name: "Planning & Analysis", angle: 15, color: "#2B5F90", link: "https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Planning%20%20Analysis" },
-      { name: "Design", angle: 85, color: "#B8792F", link: "https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Design%20Accelerators/Forms/AllItems.aspx" },
-      { name: "Implementation", angle: 160, color: "#BB4C46", link: "https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Implementation%20Accelerators/Forms/AllItems.aspx" },
-      { name: "Testing & Integration", angle: 220, color: "#D8B441", link: "https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Testing%20%20Integration/Forms/AllItems.aspx" },
-      { name: "Deployment & Operations", angle: 285, color: "#3B9A95", link: "https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Deployment%20%20Operations%20Accelerators/Forms/AllItems.aspx" },
-      { name: "Maintenance", angle: 325, color: "#6656E6", link: "https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Maintenance/Forms/AllItems.aspx" }
-    ];
+// Convert hex → rgba
+function hexToRgba(hex, a){
+  hex = hex.replace('#','');
+  if (hex.length === 3) hex = hex.split('').map(c=>c+c).join('');
+  return `rgba(${parseInt(hex.substr(0,2),16)},${parseInt(hex.substr(2,2),16)},${parseInt(hex.substr(4,2),16)},${a})`;
+}
 
-    const wheelEl = document.getElementById('wheel');
-    const hoverPanel = document.getElementById('hover-panel');
+// PHASES
+const phases = [
+  {name:"Planning & Analysis", angle:15,  color:"#2B5F90", link:"https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Planning%20%20Analysis"},
+  {name:"Design",              angle:85,  color:"#B8792F", link:"https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Design%20Accelerators/Forms/AllItems.aspx"},
+  {name:"Implementation",      angle:160, color:"#BB4C46", link:"https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Implementation%20Accelerators/Forms/AllItems.aspx"},
+  {name:"Testing & Integration",angle:220,color:"#D8B441", link:"https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Testing%20%20Integration/Forms/AllItems.aspx"},
+  {name:"Deployment & Operations",angle:285,color:"#3B9A95", link:"https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Deployment%20%20Operations%20Accelerators/Forms/AllItems.aspx"},
+  {name:"Maintenance",         angle:325, color:"#6656E6", link:"https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Maintenance/Forms/AllItems.aspx"}
+];
 
-    if (!wheelEl) {
-      console.warn("SDLC wheel script: '#wheel' element not found - aborting script (safe).");
-      return;
-    }
+// Auto-center labels
+function placeLabelsAuto() {
+  const wheel = document.getElementById("wheel");
+  if (!wheel) return;
 
-    function intersects(a,b){
-      return !(a.left + a.width <= b.left || b.left + b.width <= a.left || a.top + a.height <= b.top || b.top + b.height <= a.top);
-    }
+  document.querySelectorAll(".phase-label").forEach(e=>e.remove());
 
-    function screenToLocal(screenX, screenY, wheelRect, labelSize){
-      const leftLocal = screenX - (window.scrollX + wheelRect.left) - (labelSize / 2);
-      const topLocal  = screenY - (window.scrollY + wheelRect.top)  - (labelSize / 2);
-      return { leftLocal, topLocal };
-    }
+  const r = wheel.getBoundingClientRect();
+  const centerX = r.left + r.width/2;
+  const centerY = r.top  + r.height/2;
 
-    function getShortDesc(n){
-      switch(n){
-        case "Planning & Analysis": return "Requirements gathering, feasibility checks and scope definition.";
-        case "Design": return "Solution architecture, UX planning and technical design.";
-        case "Implementation": return "Development and build activities aligned to defined designs.";
-        case "Testing & Integration": return "Functional testing, regression, validation and system integration.";
-        case "Deployment & Operations": return "Release preparation, deployment execution, monitoring and operations.";
-        case "Maintenance": return "Enhancements, fixes, optimizations and continuous improvements.";
-        default: return "";
-      }
-    }
+  const labelRadius = r.width * 0.37;
 
-    function placeLabelsAuto() {
-      // safe remove (no throw)
-      try {
-        Array.from(wheelEl.querySelectorAll('.phase-label')).forEach(n=>n.remove());
-      } catch(e){}
+  phases.forEach(p => {
+    const el = document.createElement("div");
+    el.className="phase-label";
+    el.innerHTML = p.name;
 
-      const rect = wheelEl.getBoundingClientRect();
-      if (!rect || rect.width === 0) {
-        console.warn("Wheel bounding box not measurable yet — skipping this tick.");
-        return;
-      }
+    const theta = (p.angle - 90) * Math.PI/180;
+    const x = centerX + labelRadius * Math.cos(theta);
+    const y = centerY + labelRadius * Math.sin(theta);
 
-      const wheelLeft = rect.left;
-      const wheelTop  = rect.top;
-      const wheelWidth = rect.width;
-      const wheelCenter = { x: wheelLeft + wheelWidth/2, y: wheelTop + wheelWidth/2 };
+    el.style.left = `calc(${x}px - var(--label-size)/2)`;
+    el.style.top  = `calc(${y}px - var(--label-size)/2)`;
 
-      // CSS vars fallback parsing
-      const rootWheel = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--wheel-size')) || 560;
-      const cssLabelSize = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--label-size')) || 110;
-      const scaledLabelSize = Math.max(72, Math.round(cssLabelSize * (wheelWidth / rootWheel)));
+    el.onclick = ()=>window.open(p.link, "_blank");
+    document.body.appendChild(el);
+  });
+}
 
-      const cssCenterSize = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--center-size')) || 170;
-      const scaledCenterRadius = (cssCenterSize * (wheelWidth / rootWheel)) / 2;
-
-      const baseLabelRadius = Math.round((wheelWidth / 2) * 0.61);
-
-      const placedBoxes = [];
-
-      function computeScreenXY(angleDeg, radius){
-        const theta = (angleDeg - 90) * Math.PI / 180;
-        const x = Math.round(wheelCenter.x + radius * Math.cos(theta));
-        const y = Math.round(wheelCenter.y + radius * Math.sin(theta));
-        return { x, y };
-      }
-
-      phases.forEach((p) => {
-        try {
-          const el = document.createElement('div');
-          el.className = 'phase-label';
-          el.style.width = `${scaledLabelSize}px`;
-          el.style.height = `${scaledLabelSize}px`;
-          el.style.background = hexToRgba(p.color, 0.28);
-          el.innerHTML = (p.name === "Implementation") ? p.name.replace(/\s+/g,'&nbsp;') : p.name;
-          el.style.visibility = 'hidden';
-          wheelEl.appendChild(el);
-
-          const step = Math.max(6, Math.round(scaledLabelSize * 0.06));
-          let r = baseLabelRadius;
-          const maxR = Math.round(wheelWidth * 0.72);
-          let safe = false;
-          let trials = 0;
-          let finalLocal = { left: 0, top: 0, width: scaledLabelSize, height: scaledLabelSize };
-
-          while(!safe && trials < 80 && r <= maxR) {
-            const { x: sx, y: sy } = computeScreenXY(p.angle, r);
-            const local = screenToLocal(sx, sy, rect, scaledLabelSize);
-
-            const dx = sx - wheelCenter.x;
-            const dy = sy - wheelCenter.y;
-            const dist = Math.sqrt(dx*dx + dy*dy);
-            const wheelRadius = wheelWidth / 2;
-            if (dist + (scaledLabelSize / 2) > wheelRadius + 6) { break; }
-
-            const centerDist = Math.sqrt(Math.pow(sx - wheelCenter.x,2) + Math.pow(sy - wheelCenter.y,2));
-            if (centerDist < scaledCenterRadius + (scaledLabelSize/2) + 6) { r += step; trials++; continue; }
-
-            const cand = { left: Math.round(local.leftLocal), top: Math.round(local.topLocal), width: scaledLabelSize, height: scaledLabelSize };
-
-            let overlap = false;
-            for (const b of placedBoxes) { if (intersects(cand,b)) { overlap = true; break; } }
-            if (overlap) { r += step; trials++; continue; }
-
-            finalLocal = cand; safe = true;
-          }
-
-          if (!safe) {
-            const { x: sx, y: sy } = computeScreenXY(p.angle, baseLabelRadius);
-            const local = screenToLocal(sx, sy, rect, scaledLabelSize);
-            finalLocal = { left: Math.round(local.leftLocal), top: Math.round(local.topLocal), width: scaledLabelSize, height: scaledLabelSize };
-          }
-
-          el.style.left = `${finalLocal.left}px`;
-          el.style.top  = `${finalLocal.top}px`;
-          el.style.visibility = 'visible';
-
-          placedBoxes.push({ left: finalLocal.left, top: finalLocal.top, width: finalLocal.width, height: finalLocal.height });
-
-          el.addEventListener('mouseenter', () => {
-            try {
-              if (!hoverPanel) return;
-              hoverPanel.style.display = 'block';
-              hoverPanel.innerHTML = `<strong style="color:#003a6c">${p.name}</strong><div style="margin-top:6px;color:#333;font-size:13px">${getShortDesc(p.name)}</div>`;
-              const rct = el.getBoundingClientRect();
-              let left = rct.right + 12;
-              let top  = rct.top;
-              if (left + 260 > window.innerWidth) left = rct.left - 260 - 12;
-              if (top + 120 > window.innerHeight) top = window.innerHeight - 140;
-              hoverPanel.style.left = left + 'px';
-              hoverPanel.style.top  = top + 'px';
-            } catch(e){}
-          });
-          el.addEventListener('mouseleave', () => { try { if (hoverPanel) hoverPanel.style.display = 'none'; } catch(e){} });
-          el.addEventListener('click', () => { try { if (p.link) window.open(p.link, '_blank'); } catch(e){} });
-
-        } catch(innerE){
-          console.warn("Failed placing one label, continuing...", innerE);
-        }
-      });
-
-    } // end placeLabelsAuto
-
-    // debounce wrapper
-    function refreshLabelsDebounced(){
-      clearTimeout(window.__sdlc_place_labels_timer);
-      window.__sdlc_place_labels_timer = setTimeout(()=> {
-        try { placeLabelsAuto(); }
-        catch(e){ console.error("placeLabelsAuto error:", e); }
-      }, 100);
-    }
-
-    // run on load / resize safely
-    window.addEventListener('load', refreshLabelsDebounced);
-    window.addEventListener('resize', refreshLabelsDebounced);
-    if (document.readyState === 'complete' || document.readyState === 'interactive') refreshLabelsDebounced();
-
-    console.log("SDLC wheel (auto-center) — loaded safely.");
-  } catch(e){
-    console.error("Fatal error in SDLC wheel script (caught):", e);
-    // do not rethrow — page must remain usable
-  }
-})();
+window.addEventListener("load", () => {
+  setTimeout(placeLabelsAuto, 80);
+});
+window.addEventListener("resize", () => {
+  setTimeout(placeLabelsAuto, 80);
+});
 </script>
+
+<footer>ICT-India | AI-SDLC Hub | 2025</footer>
+</body>
+</html>
