@@ -3,16 +3,18 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>ICT-India AI-SDLC Hub — Fixed</title>
+<title>ICT-India AI-SDLC Hub — Stable</title>
 <style>
 :root{
   --wheel-size: 560px;
+  --wheel-radius: 280px;
+  --wheel-center: 280px; /* for calc center */
   --label-size: 102px;
   --center-size: 170px;
   --font: "Segoe UI", Arial, sans-serif;
 }
 
-/* Base */
+/* page */
 body{
   margin:0;
   font-family:var(--font);
@@ -20,15 +22,15 @@ body{
   color:#1b1b1b;
 }
 
-/* Top bar */
+/* top bar */
 .topbar{
   background: linear-gradient(180deg,#002C5F 0%,#001F44 100%);
-  color:white;
-  padding:12px 20px;
+  color:#fff;
+  padding:10px 20px;
   font-weight:600;
 }
 
-/* Layout */
+/* layout */
 .container{
   display:grid;
   grid-template-columns:1fr 340px;
@@ -38,74 +40,60 @@ body{
   padding:0 20px;
 }
 
-/* Wheel card */
+/* wheel card */
 .wheel-wrap{
-  background:white;
+  position:relative;
+  background:#fff;
   border-radius:16px;
   padding:22px;
   box-shadow:0 6px 22px rgba(0,0,0,0.05);
   display:flex;
   justify-content:center;
   align-items:center;
-  position:relative;
+  overflow:visible;
 }
 
-/* Wheel */
+/* wheel slices (conic) */
 .wheel{
   position:relative;
   width:var(--wheel-size);
   height:var(--wheel-size);
   border-radius:50%;
   background:
-    repeating-conic-gradient(rgba(255,255,255,0.06) 0deg 0.34deg, transparent 0.34deg 60deg),
+    repeating-conic-gradient(rgba(255,255,255,0.06) 0deg 0.35deg, transparent 0.35deg 60deg),
     conic-gradient(
-      #2B5F90 0deg 60deg,      /* Planning */
-      #B8792F 60deg 120deg,    /* Design */
-      #BB4C46 120deg 180deg,   /* Implementation */
-      #D8B441 180deg 240deg,   /* Testing */
-      #3B9A95 240deg 300deg,   /* Deployment */
-      #6656E6 300deg 360deg    /* Maintenance */
+      #2B5F90 0deg 60deg,
+      #B8792F 60deg 120deg,
+      #BB4C46 120deg 180deg,
+      #D8B441 180deg 240deg,
+      #3B9A95 240deg 300deg,
+      #6656E6 300deg 360deg
     );
   box-shadow: inset 0 26px 50px rgba(255,255,255,0.06), inset 0 -18px 36px rgba(0,0,0,0.035);
-  overflow:visible; /* ensure labels aren't clipped */
+  border:1px solid rgba(255,255,255,0.20);
+  overflow:visible; /* labels placed absolutely outside */
 }
 
-/* subtle ring to separate center */
-.wheel::after{
-  content:"";
-  position:absolute;
-  left:50%; top:50%;
-  transform:translate(-50%,-50%);
-  width:calc(var(--center-size) + 8px);
-  height:calc(var(--center-size) + 8px);
-  border-radius:50%;
-  z-index:2;
-  pointer-events:none;
-  box-shadow: 0 0 0 8px rgba(255,255,255,0.02), 0 0 0 1px rgba(0,0,0,0.06) inset;
-}
-
-/* Center circle (topmost) */
+/* center circle stays on top */
 .center{
   position:absolute;
-  top:50%; left:50%;
-  transform:translate(-50%,-50%);
+  left:calc(50% - var(--center-size)/2);
+  top:calc(50% - var(--center-size)/2);
   width:var(--center-size);
   height:var(--center-size);
   border-radius:50%;
   background:linear-gradient(145deg,#004e86 0%, #003b63 60%, #002a4a 100%);
-  color:white;
+  color:#fff;
   display:flex;
   align-items:center;
   justify-content:center;
   font-weight:700;
   font-size:17px;
-  z-index:999; /* ensure center stays above labels */
-  box-shadow:
-    0 10px 22px rgba(0,0,0,0.22),
-    inset 0 0 10px rgba(255,255,255,0.06);
+  box-shadow: 0 10px 22px rgba(0,0,0,0.22);
+  z-index:1000; /* ensure center always above labels */
 }
 
-/* Label circles */
+/* label style (stable, no inset glare) */
 .phase-label{
   position:absolute;
   width:var(--label-size);
@@ -116,42 +104,40 @@ body{
   justify-content:center;
   padding:10px;
   text-align:center;
-  color:white;
+  color:#fff;
   font-weight:700;
   font-size:13px;
-  line-height:1.08;
-  word-break:break-word;
-  white-space:normal;
-
-  /* simplified, stable label style (no inset glare) */
-  background:rgba(255,255,255,0.18);
+  background:rgba(255,255,255,0.20); /* tint; color shows underneath */
   border:1.4px solid rgba(255,255,255,0.42);
-  box-shadow:0 6px 16px rgba(0,0,0,0.14);
-  z-index:50; /* below center but above wheel */
-  transition:transform .18s ease, box-shadow .18s ease;
+  box-shadow:0 6px 14px rgba(0,0,0,0.14);
+  z-index:900; /* below center */
+  transition:transform .16s ease, box-shadow .16s ease;
+  white-space:normal;
+  line-height:1.08;
 }
 .phase-label:hover{
   transform:scale(1.06);
   box-shadow:0 12px 26px rgba(0,0,0,0.22);
 }
 
-/* Hover panel */
+/* remove fragile effects that caused white blobs (no backdrop-filter) */
+
+/* hover tooltip (simple) */
 #hover-panel{
-  position:absolute;
+  position:fixed;
   display:none;
   background:#fff;
-  border-radius:12px;
-  padding:14px 18px;
-  box-shadow:0 8px 24px rgba(0,0,0,0.12);
-  width:260px;
-  z-index:1200;
+  padding:12px 14px;
+  border-radius:8px;
+  box-shadow:0 8px 26px rgba(0,0,0,0.12);
+  z-index:2000;
   font-size:13px;
+  color:#222;
 }
-#hover-panel h4{ margin:0 0 8px 0; font-size:14px; color:#003a6c; }
 
-/* Info panel */
+/* right info */
 .info-box{
-  background:white;
+  background:#fff;
   padding:18px 20px;
   border-radius:12px;
   box-shadow:0 4px 14px rgba(0,0,0,0.05);
@@ -168,7 +154,6 @@ footer{ margin-top:40px; text-align:center; color:#666; font-size:13px; }
 @media(max-width:950px){
   .container{ grid-template-columns:1fr; padding-bottom:20px;}
   .info-box{ order:2; margin-top:20px; }
-  .wheel{ width:420px; height:420px; }
   :root{ --label-size:86px; --center-size:140px; }
 }
 </style>
@@ -181,9 +166,10 @@ footer{ margin-top:40px; text-align:center; color:#666; font-size:13px; }
 
 <div class="container">
   <div class="wheel-wrap">
-    <div class="wheel" id="wheel">
-      <div class="center">SDLC Repository</div>
-    </div>
+    <div class="wheel" id="wheel"></div>
+
+    <!-- center after wheel so it sits on top -->
+    <div class="center">SDLC Repository</div>
   </div>
 
   <div class="info-box">
@@ -199,86 +185,108 @@ footer{ margin-top:40px; text-align:center; color:#666; font-size:13px; }
 </div>
 
 <script>
-/* convert hex to rgba helper for tinting */
-function hexToRgba(hex, alpha){
+/*
+Stable label placement strategy:
+
+- Wheel is 560px (center 280,280).
+- We compute and use fixed, tested positions for label centers (mid-slice alignment).
+- Labels are rendered as absolutely positioned divs (above the wheel but below the center).
+- Implementation forced to single line via non-breaking spaces.
+*/
+
+/* helper: hex -> rgba */
+function hexToRgba(hex, a){
   hex = hex.replace('#','');
-  if(hex.length === 3) hex = hex.split('').map(c=>c+c).join('');
-  const r = parseInt(hex.substring(0,2),16);
-  const g = parseInt(hex.substring(2,4),16);
-  const b = parseInt(hex.substring(4,6),16);
-  return `rgba(${r},${g},${b},${alpha})`;
+  if(hex.length===3) hex = hex.split('').map(c=>c+c).join('');
+  const r = parseInt(hex.slice(0,2),16);
+  const g = parseInt(hex.slice(2,4),16);
+  const b = parseInt(hex.slice(4,6),16);
+  return `rgba(${r},${g},${b},${a})`;
 }
 
-/* final palette + descriptions (no glints) */
+/* final palette and positions (tested) */
+const center = { x:280, y:280 };
+const labelRadius = 205; // mid-slice radius for label centers
+
+/* phases: angle (deg), color (slice color) */
+/* angles are the same as earlier: 15,85,160,220,285,325 */
 const phases = [
-  { name:"Planning & Analysis", angle:15,  color:"#2B5F90", link:"https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Planning%20%20Analysis" },
-  { name:"Design",              angle:85,  color:"#B8792F", link:"https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Design%20Accelerators/Forms/AllItems.aspx" },
-  { name:"Implementation",      angle:160, color:"#BB4C46", link:"https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Implementation%20Accelerators/Forms/AllItems.aspx" },
-  { name:"Testing & Integration",angle:220,color:"#D8B441", link:"https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Testing%20%20Integration/Forms/AllItems.aspx" },
-  { name:"Deployment & Operations",angle:285,color:"#3B9A95", link:"https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Deployment%20%20Operations%20Accelerators/Forms/AllItems.aspx" },
-  { name:"Maintenance",         angle:325, color:"#6656E6", link:"https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Maintenance/Forms/AllItems.aspx" }
+  { name:"Planning & Analysis", angle:15,  color:"#2B5F90",  link:"https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Planning%20%20Analysis" },
+  { name:"Design",              angle:85,  color:"#B8792F",  link:"https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Design%20Accelerators/Forms/AllItems.aspx" },
+  { name:"Implementation",      angle:160, color:"#BB4C46",  link:"https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Implementation%20Accelerators/Forms/AllItems.aspx" },
+  { name:"Testing & Integration",angle:220,color:"#D8B441",  link:"https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Testing%20%20Integration/Forms/AllItems.aspx" },
+  { name:"Deployment & Operations",angle:285,color:"#3B9A95",link:"https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Deployment%20%20Operations%20Accelerators/Forms/AllItems.aspx" },
+  { name:"Maintenance",         angle:325, color:"#6656E6",  link:"https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Maintenance/Forms/AllItems.aspx" }
 ];
 
-const wheel = document.getElementById('wheel');
-const hoverPanel = document.getElementById('hover-panel');
-
-/* MID-SLICE radius that accounts for 102px labels */
-const idealRadius = 205;
-
-/* light, small per-phase nudges (very conservative now) */
+/* final per-phase tiny nudges to correct optical perception (kept minimal) */
 const nudges = {
-  "Planning & Analysis":      { r: 0,  y: 4 },
-  "Design":                   { r:-4,  y:-2 },
-  "Implementation":           { r:-8,  y:-6 },
-  "Testing & Integration":    { r:+2,  y:-4 },
-  "Deployment & Operations":  { r:+2,  y:0 },
-  "Maintenance":              { r:-2,  y:+6 }
+  "Planning & Analysis":      { rx: 0,  ry: 6 },
+  "Design":                   { rx:-6,  ry: 0 },
+  "Implementation":           { rx:-10, ry:-10 },
+  "Testing & Integration":    { rx:+6,  ry:-6 },
+  "Deployment & Operations":  { rx:+6,  ry:+2 },
+  "Maintenance":              { rx:-6,  ry:+8 }
 };
 
-/* build labels */
+const wheelEl = document.getElementById('wheel');
+const hoverPanel = document.getElementById('hover-panel');
+
+/* create labels */
 phases.forEach(p=>{
   const el = document.createElement('div');
   el.className = 'phase-label';
 
-  /* tint label with slice color (subtle) */
+  /* compute angle and position */
+  const theta = (p.angle - 90) * Math.PI / 180;
+  const rx = (nudges[p.name] && nudges[p.name].rx) ? nudges[p.name].rx : 0;
+  const ry = (nudges[p.name] && nudges[p.name].ry) ? nudges[p.name].ry : 0;
+  const x = Math.round(center.x + (labelRadius + rx) * Math.cos(theta));
+  const y = Math.round(center.y + (labelRadius + rx) * Math.sin(theta) + ry);
+
+  /* set position so that the label center is at (x,y) */
+  el.style.left = `calc(${x}px - var(--label-size)/2)`;
+  el.style.top  = `calc(${y}px - var(--label-size)/2)`;
+
+  /* tint label background with slice color (subtle) */
   el.style.background = hexToRgba(p.color, 0.28);
 
-  /* ensure implementation stays single-line */
-  el.innerHTML = p.name === "Implementation"? p.name.replace(/\s+/g,'&nbsp;') : p.name;
+  /* force single-line for Implementation */
+  if (p.name === "Implementation") el.innerHTML = p.name.replace(/\s+/g,'&nbsp;');
+  else el.textContent = p.name;
 
-  const angleRad = (p.angle - 90) * Math.PI / 180;
-  const r = idealRadius + (nudges[p.name].r || 0);
-  const x = r * Math.cos(angleRad);
-  const y = r * Math.sin(angleRad) + (nudges[p.name].y || 0);
-
-  el.style.left = `calc(50% + ${x}px)`;
-  el.style.top  = `calc(50% + ${y}px)`;
-
-  /* hover simple description panel (optional) */
-  el.onmouseenter = ()=>{
+  /* hover tooltip */
+  el.onmouseenter = (e)=>{
     hoverPanel.style.display = 'block';
-    hoverPanel.innerHTML = `<h4>${p.name}</h4><div style="color:#333">${getDescription(p.name)}</div>`;
+    hoverPanel.innerHTML = `<strong style="color:#003a6c">${p.name}</strong><div style="margin-top:6px;color:#333;font-size:13px">${getShortDesc(p.name)}</div>`;
+    // place tooltip near label (right side if possible)
     const rect = el.getBoundingClientRect();
-    hoverPanel.style.left = (rect.right + 12) + 'px';
-    hoverPanel.style.top = rect.top + 'px';
+    let left = rect.right + 12;
+    let top = rect.top;
+    if (left + 260 > window.innerWidth) left = rect.left - 260 - 12;
+    if (top + 120 > window.innerHeight) top = window.innerHeight - 140;
+    hoverPanel.style.left = left + 'px';
+    hoverPanel.style.top = top + 'px';
   };
   el.onmouseleave = ()=> hoverPanel.style.display = 'none';
-  el.onclick = ()=> window.open(p.link,'_blank');
 
-  wheel.appendChild(el);
+  /* click opens link */
+  el.onclick = ()=> window.open(p.link, '_blank');
+
+  // append
+  wheelEl.appendChild(el);
 });
 
-/* small map for hover descriptions (keep short, stable) */
-function getDescription(name){
+function getShortDesc(name){
   switch(name){
-    case "Planning & Analysis": return "Requirements gathering, feasibility checks, and scope definition.";
-    case "Design": return "Solution architecture, UX planning, and technical design.";
+    case "Planning & Analysis": return "Requirements gathering, feasibility checks and scope definition.";
+    case "Design": return "Solution architecture, UX planning and technical design.";
     case "Implementation": return "Development and build activities aligned to defined designs.";
-    case "Testing & Integration": return "Functional testing, regression, validation, and system integration.";
-    case "Deployment & Operations": return "Release preparation, deployment execution, monitoring, and operations.";
-    case "Maintenance": return "Enhancements, fixes, optimizations, and continuous improvements.";
+    case "Testing & Integration": return "Functional testing, regression, validation and system integration.";
+    case "Deployment & Operations": return "Release preparation, deployment execution, monitoring and operations.";
+    case "Maintenance": return "Enhancements, fixes, optimizations and continuous improvements.";
     default: return "";
-  }
+}
 }
 </script>
 
