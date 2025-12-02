@@ -3,18 +3,16 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>ICT-India AI-SDLC Hub — Stable</title>
+<title>ICT-India AI-SDLC Hub — Final</title>
 <style>
 :root{
   --wheel-size: 560px;
-  --wheel-radius: 280px;
-  --wheel-center: 280px; /* for calc center */
   --label-size: 102px;
   --center-size: 170px;
   --font: "Segoe UI", Arial, sans-serif;
 }
 
-/* page */
+/* Page base */
 body{
   margin:0;
   font-family:var(--font);
@@ -22,15 +20,15 @@ body{
   color:#1b1b1b;
 }
 
-/* top bar */
+/* Top bar */
 .topbar{
   background: linear-gradient(180deg,#002C5F 0%,#001F44 100%);
   color:#fff;
-  padding:10px 20px;
+  padding:12px 20px;
   font-weight:600;
 }
 
-/* layout */
+/* Layout */
 .container{
   display:grid;
   grid-template-columns:1fr 340px;
@@ -40,7 +38,7 @@ body{
   padding:0 20px;
 }
 
-/* wheel card */
+/* Wheel card */
 .wheel-wrap{
   position:relative;
   background:#fff;
@@ -53,7 +51,7 @@ body{
   overflow:visible;
 }
 
-/* wheel slices (conic) */
+/* Wheel (conic slices) */
 .wheel{
   position:relative;
   width:var(--wheel-size);
@@ -71,10 +69,10 @@ body{
     );
   box-shadow: inset 0 26px 50px rgba(255,255,255,0.06), inset 0 -18px 36px rgba(0,0,0,0.035);
   border:1px solid rgba(255,255,255,0.20);
-  overflow:visible; /* labels placed absolutely outside */
+  overflow:visible;
 }
 
-/* center circle stays on top */
+/* center circle above labels */
 .center{
   position:absolute;
   left:calc(50% - var(--center-size)/2);
@@ -90,10 +88,10 @@ body{
   font-weight:700;
   font-size:17px;
   box-shadow: 0 10px 22px rgba(0,0,0,0.22);
-  z-index:1000; /* ensure center always above labels */
+  z-index:1000;
 }
 
-/* label style (stable, no inset glare) */
+/* label circles (stable, no glare) */
 .phase-label{
   position:absolute;
   width:var(--label-size);
@@ -107,22 +105,21 @@ body{
   color:#fff;
   font-weight:700;
   font-size:13px;
-  background:rgba(255,255,255,0.20); /* tint; color shows underneath */
+  line-height:1.08;
+  word-break:break-word;
+  white-space:normal;
+  background:rgba(255,255,255,0.20);
   border:1.4px solid rgba(255,255,255,0.42);
   box-shadow:0 6px 14px rgba(0,0,0,0.14);
-  z-index:900; /* below center */
+  z-index:900;
   transition:transform .16s ease, box-shadow .16s ease;
-  white-space:normal;
-  line-height:1.08;
 }
 .phase-label:hover{
   transform:scale(1.06);
   box-shadow:0 12px 26px rgba(0,0,0,0.22);
 }
 
-/* remove fragile effects that caused white blobs (no backdrop-filter) */
-
-/* hover tooltip (simple) */
+/* hover tooltip */
 #hover-panel{
   position:fixed;
   display:none;
@@ -135,7 +132,7 @@ body{
   color:#222;
 }
 
-/* right info */
+/* info box */
 .info-box{
   background:#fff;
   padding:18px 20px;
@@ -167,8 +164,6 @@ footer{ margin-top:40px; text-align:center; color:#666; font-size:13px; }
 <div class="container">
   <div class="wheel-wrap">
     <div class="wheel" id="wheel"></div>
-
-    <!-- center after wheel so it sits on top -->
     <div class="center">SDLC Repository</div>
   </div>
 
@@ -185,15 +180,6 @@ footer{ margin-top:40px; text-align:center; color:#666; font-size:13px; }
 </div>
 
 <script>
-/*
-Stable label placement strategy:
-
-- Wheel is 560px (center 280,280).
-- We compute and use fixed, tested positions for label centers (mid-slice alignment).
-- Labels are rendered as absolutely positioned divs (above the wheel but below the center).
-- Implementation forced to single line via non-breaking spaces.
-*/
-
 /* helper: hex -> rgba */
 function hexToRgba(hex, a){
   hex = hex.replace('#','');
@@ -204,12 +190,11 @@ function hexToRgba(hex, a){
   return `rgba(${r},${g},${b},${a})`;
 }
 
-/* final palette and positions (tested) */
-const center = { x:280, y:280 };
-const labelRadius = 205; // mid-slice radius for label centers
+/* positions based on 560px wheel */
+const center = { x: 280, y: 280 };
+const labelRadius = 205;
 
-/* phases: angle (deg), color (slice color) */
-/* angles are the same as earlier: 15,85,160,220,285,325 */
+/* phases and final micro-nudges (applied exactly as requested) */
 const phases = [
   { name:"Planning & Analysis", angle:15,  color:"#2B5F90",  link:"https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Planning%20%20Analysis" },
   { name:"Design",              angle:85,  color:"#B8792F",  link:"https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Design%20Accelerators/Forms/AllItems.aspx" },
@@ -219,47 +204,44 @@ const phases = [
   { name:"Maintenance",         angle:325, color:"#6656E6",  link:"https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Maintenance/Forms/AllItems.aspx" }
 ];
 
-/* final per-phase tiny nudges to correct optical perception (kept minimal) */
+/* FINAL micro-nudge values (from visual validation) */
 const nudges = {
-  "Planning & Analysis":      { rx: 0,  ry: 6 },
-  "Design":                   { rx:-6,  ry: 0 },
-  "Implementation":           { rx:-10, ry:-10 },
-  "Testing & Integration":    { rx:+6,  ry:-6 },
-  "Deployment & Operations":  { rx:+6,  ry:+2 },
-  "Maintenance":              { rx:-6,  ry:+8 }
+  "Planning & Analysis":      { rx: 0,   ry: +9 },
+  "Design":                   { rx:-11,  ry:  0 },
+  "Implementation":           { rx:-10,  ry:-14 },
+  "Testing & Integration":    { rx:+3,   ry: -6 },
+  "Deployment & Operations":  { rx:+6,   ry: +2 },
+  "Maintenance":              { rx:-2,   ry:+13 }
 };
 
 const wheelEl = document.getElementById('wheel');
 const hoverPanel = document.getElementById('hover-panel');
 
-/* create labels */
+/* create labels with fixed tested positions */
 phases.forEach(p=>{
   const el = document.createElement('div');
   el.className = 'phase-label';
 
-  /* compute angle and position */
+  /* tint label with slice color for cohesion */
+  el.style.background = hexToRgba(p.color, 0.28);
+
+  /* Implementation forced single-line */
+  el.innerHTML = (p.name === "Implementation") ? p.name.replace(/\s+/g,'&nbsp;') : p.name;
+
   const theta = (p.angle - 90) * Math.PI / 180;
-  const rx = (nudges[p.name] && nudges[p.name].rx) ? nudges[p.name].rx : 0;
-  const ry = (nudges[p.name] && nudges[p.name].ry) ? nudges[p.name].ry : 0;
+  const rx = nudges[p.name].rx || 0;
+  const ry = nudges[p.name].ry || 0;
+
   const x = Math.round(center.x + (labelRadius + rx) * Math.cos(theta));
   const y = Math.round(center.y + (labelRadius + rx) * Math.sin(theta) + ry);
 
-  /* set position so that the label center is at (x,y) */
   el.style.left = `calc(${x}px - var(--label-size)/2)`;
   el.style.top  = `calc(${y}px - var(--label-size)/2)`;
 
-  /* tint label background with slice color (subtle) */
-  el.style.background = hexToRgba(p.color, 0.28);
-
-  /* force single-line for Implementation */
-  if (p.name === "Implementation") el.innerHTML = p.name.replace(/\s+/g,'&nbsp;');
-  else el.textContent = p.name;
-
   /* hover tooltip */
-  el.onmouseenter = (e)=>{
+  el.onmouseenter = ()=>{
     hoverPanel.style.display = 'block';
     hoverPanel.innerHTML = `<strong style="color:#003a6c">${p.name}</strong><div style="margin-top:6px;color:#333;font-size:13px">${getShortDesc(p.name)}</div>`;
-    // place tooltip near label (right side if possible)
     const rect = el.getBoundingClientRect();
     let left = rect.right + 12;
     let top = rect.top;
@@ -270,10 +252,8 @@ phases.forEach(p=>{
   };
   el.onmouseleave = ()=> hoverPanel.style.display = 'none';
 
-  /* click opens link */
   el.onclick = ()=> window.open(p.link, '_blank');
 
-  // append
   wheelEl.appendChild(el);
 });
 
@@ -286,7 +266,7 @@ function getShortDesc(name){
     case "Deployment & Operations": return "Release preparation, deployment execution, monitoring and operations.";
     case "Maintenance": return "Enhancements, fixes, optimizations and continuous improvements.";
     default: return "";
-}
+  }
 }
 </script>
 
