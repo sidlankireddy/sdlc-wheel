@@ -9,24 +9,23 @@
 <style>
 :root {
   --wheel-size: 560px;
-  --label-size: 90px;
+  --label-size: 80px; /* Smaller, more premium */
   --font: "Segoe UI", Arial, sans-serif;
 }
 
+/* Page fade-in */
 body {
   margin:0;
   font-family: var(--font);
-  background: radial-gradient(circle at center,#ffffff 0%,#eaf1f9 100%);
-
-  /* Fade-in animation */
+  background: radial-gradient(circle at center,#ffffff 0%,#eef2f7 100%);
   animation:fadeInPage .45s ease-out;
 }
-
 @keyframes fadeInPage {
   from { opacity:0; transform:translateY(8px); }
   to { opacity:1; transform:translateY(0); }
 }
 
+/* Top Bar */
 .topbar {
   background: linear-gradient(180deg,#002C5F 0%,#001F44 100%);
   color:#fff;
@@ -35,6 +34,7 @@ body {
   box-shadow:0 2px 4px rgba(0,0,0,.1);
 }
 
+/* Layout */
 .container {
   display:grid;
   grid-template-columns:1fr 340px;
@@ -44,7 +44,7 @@ body {
   padding:0 20px;
 }
 
-/* Wheel Wrapper */
+/* Wheel container */
 .wheel-wrap {
   position:relative;
   display:flex;
@@ -52,103 +52,102 @@ body {
   align-items:center;
   background:#fff;
   border-radius:16px;
-  box-shadow:0 6px 20px rgba(0,0,0,.05);
+  box-shadow:0 4px 14px rgba(0,0,0,.08);
   padding:24px;
-
-  /* Fade-in wheel animation */
   animation:fadeInWheel .55s ease-out;
 }
-
 @keyframes fadeInWheel {
   from { opacity:0; transform:scale(0.97); }
   to { opacity:1; transform:scale(1); }
 }
 
-/* Soft glow */
+/* Softer glow behind wheel */
 .wheel-wrap::before {
   content:"";
   position:absolute;
-  width:600px;
-  height:600px;
+  width:580px;
+  height:580px;
   border-radius:50%;
   background:radial-gradient(
     circle,
-    rgba(0,44,95,0.25) 0%,
+    rgba(0,44,95,0.18) 0%,
     rgba(0,44,95,0) 70%
   );
-  filter:blur(45px);
+  filter:blur(35px);
   z-index:0;
 }
 
-/* Wheel Slices – Stellantis Palette */
+/* Wheel (with subtle gradients + separators) */
 .wheel {
   position:relative;
   width:var(--wheel-size);
   height:var(--wheel-size);
   border-radius:50%;
-  background:conic-gradient(
-    #4A90E2 0deg 60deg,     /* Planning & Analysis */
-    #D98A39 60deg 120deg,    /* Design */
-    #E76F51 120deg 180deg,   /* Implementation */
-    #F4C542 180deg 240deg,   /* Testing & Integration */
-    #4BB4C7 240deg 300deg,   /* Deployment & Operations */
-    #6C63FF 300deg 360deg    /* Maintenance */
-  );
+  background:
+    conic-gradient(
+      from 0deg,
+      #3B6EA5 0deg 60deg,
+      #C27A32 60deg 120deg,
+      #BF5E4A 120deg 180deg,
+      #D8B441 180deg 240deg,
+      #4AA1A1 240deg 300deg,
+      #5A55CC 300deg 360deg
+    );
   z-index:1;
+  border:2px solid rgba(255,255,255,0.35); /* separator ring */
 }
 
-/* Center Circle */
+/* Wheel center */
 .center {
   position:absolute;
   top:50%; left:50%;
   transform:translate(-50%,-50%);
-  width:190px; height:190px;
+  width:180px; height:180px;
   border-radius:50%;
-  background:linear-gradient(145deg,#005A9E 0%,#004B82 50%,#003A63 100%);
+  background:linear-gradient(145deg,#005A9E 0%,#004B82 60%,#003A63 100%);
   color:#fff;
   text-align:center;
-  font-weight:600;
   display:flex;
   align-items:center;
   justify-content:center;
-  box-shadow:0 10px 25px rgba(0,0,0,.2);
-  z-index:2;
   font-size:18px;
+  font-weight:600;
+  box-shadow:0 10px 25px rgba(0,0,0,.25);
+  z-index:2;
 }
 
-/* Phase Labels – Frosted Glass */
+/* Frosted labels (more subtle opacity) */
 .phase-label {
   position:absolute;
   width:var(--label-size);
   height:var(--label-size);
   border-radius:50%;
   display:flex;
-  flex-direction:column;
   align-items:center;
   justify-content:center;
-  text-align:center;
   color:#fff;
-  font-size:13px;
+  font-size:12px;
   font-weight:600;
   cursor:pointer;
 
-  border:2px solid rgba(255,255,255,0.45);
-  background:rgba(0,0,0,0.12);
-  backdrop-filter:blur(6px);
+  background:rgba(255,255,255,0.04); /* lighter frost */
+  backdrop-filter:blur(5px);
+  border:1.5px solid rgba(255,255,255,0.35);
 
   box-shadow:
-    0 3px 8px rgba(0,0,0,0.2),
-    inset 0 0 10px rgba(255,255,255,0.25);
+    0 2px 6px rgba(0,0,0,0.18),
+    inset 0 0 8px rgba(255,255,255,0.20);
 
   transition:all .25s ease;
 }
 
+/* Hover highlight */
 .phase-label:hover {
-  transform:scale(1.1);
+  transform:scale(1.10);
   box-shadow:
-    0 0 14px rgba(255,255,255,0.9),
-    0 10px 22px rgba(0,0,0,0.25),
-    inset 0 0 14px rgba(255,255,255,0.35);
+    0 0 12px rgba(255,255,255,0.85),
+    0 6px 18px rgba(0,0,0,0.22),
+    inset 0 0 10px rgba(255,255,255,0.35);
 }
 
 /* Hover Panel */
@@ -169,18 +168,17 @@ body {
   font-size:14px;
   color:#004578;
 }
-
 @keyframes fadeIn {
   from {opacity:0; transform:translateY(4px);}
   to {opacity:1; transform:translateY(0);}
 }
 
-/* Sidebar Info Box */
+/* Right-side paragraph block */
 .info-box {
   background:#fff;
   padding:18px 20px;
   border-radius:12px;
-  box-shadow:0 6px 20px rgba(0,0,0,0.05);
+  box-shadow:0 4px 14px rgba(0,0,0,0.05);
   line-height:1.55;
   font-size:14px;
 }
@@ -201,12 +199,12 @@ footer {
   opacity:0.75;
 }
 
-/* Mobile */
+/* Mobile responsiveness */
 @media(max-width:950px){
   .container{grid-template-columns:1fr;}
   .info-box{order:2;margin-top:20px}
   .wheel{width:420px;height:420px}
-  .center{width:150px;height:150px;font-size:16px;}
+  .center{width:140px;height:140px;font-size:16px;}
 }
 </style>
 </head>
@@ -242,29 +240,29 @@ footer {
 </div>
 
 <script>
-/* PHASE DEFINITIONS WITH STELLANTIS COLORS */
+/* Phase Definitions – Improved Stellantis Palette */
 const phases = [
-  { name:"Planning & Analysis", angle:15, color:"#4A90E2",
+  { name:"Planning & Analysis", angle:15, color:"#3B6EA5",
     desc:"Requirements gathering, feasibility checks, and scope definition.",
     link:"https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Planning%20%20Analysis" },
 
-  { name:"Design", angle:85, color:"#D98A39",
+  { name:"Design", angle:85, color:"#C27A32",
     desc:"Solution architecture, UX planning, and technical design.",
     link:"https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Design%20Accelerators/Forms/AllItems.aspx" },
 
-  { name:"Implementation", angle:160, color:"#E76F51",
+  { name:"Implementation",angle:160,color:"#BF5E4A",
     desc:"Development and build activities aligned to defined designs.",
     link:"https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Implementation%20Accelerators/Forms/AllItems.aspx" },
 
-  { name:"Testing & Integration", angle:220, color:"#F4C542",
+  { name:"Testing & Integration",angle:220,color:"#D8B441",
     desc:"Functional testing, regression, validation, and system integration.",
     link:"https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Testing%20%20Integration/Forms/AllItems.aspx" },
 
-  { name:"Deployment & Operations", angle:285, color:"#4BB4C7",
+  { name:"Deployment & Operations",angle:285,color:"#4AA1A1",
     desc:"Release preparation, deployment execution, monitoring, and operations.",
     link:"https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Deployment%20%20Operations%20Accelerators/Forms/AllItems.aspx" },
 
-  { name:"Maintenance", angle:325, color:"#6C63FF",
+  { name:"Maintenance",angle:325,color:"#5A55CC",
     desc:"Enhancements, fixes, optimizations, and continuous improvements.",
     link:"https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Maintenance/Forms/AllItems.aspx" }
 ];
@@ -273,6 +271,7 @@ const radius = 180;
 const wheel = document.getElementById("wheel");
 const hoverPanel = document.getElementById("hover-panel");
 
+/* label positioning tweaks */
 const radiusAdjustments = {
   "Planning & Analysis": +30,
   "Design": -15,
@@ -281,7 +280,6 @@ const radiusAdjustments = {
   "Deployment & Operations": +65,
   "Maintenance": +40
 };
-
 const yAdjustments = {
   "Planning & Analysis": -32,
   "Design": -30,
@@ -291,11 +289,11 @@ const yAdjustments = {
   "Maintenance": -34
 };
 
-/* BUILD PHASE LABELS */
+/* Build label elements */
 phases.forEach(p => {
   const el = document.createElement("div");
   el.className = "phase-label";
-  el.style.background = p.color;
+  el.style.background = p.color + "33"; /* hex + 33 = 20% opacity, subtle tint */
 
   const rad = (p.angle - 90) * Math.PI / 180;
   const r = radius + (radiusAdjustments[p.name] || 0);
@@ -308,7 +306,7 @@ phases.forEach(p => {
   el.style.top  = `calc(50% + ${y}px)`;
   el.innerHTML = p.name;
 
-  /* HOVER TEXT */
+  /* Hover Description */
   el.onmouseenter = () => {
     hoverPanel.style.display = "block";
     hoverPanel.innerHTML = `<h4>${p.name}</h4><div>${p.desc}</div>`;
@@ -319,7 +317,6 @@ phases.forEach(p => {
 
   el.onmouseleave = () => hoverPanel.style.display = "none";
 
-  /* OPEN LINK */
   el.onclick = () => window.open(p.link, "_blank");
 
   wheel.appendChild(el);
