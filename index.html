@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>ICT-India AI-SDLC Hub — Final</title>
+<title>ICT-India AI-SDLC Hub — Final (Stable Auto-Center)</title>
 
 <style>
 :root{
@@ -22,9 +22,7 @@ body{
 
 .topbar{
   background:linear-gradient(180deg,#002C5F 0%,#001F44 100%);
-  color:#fff;
-  padding:12px 20px;
-  font-weight:600;
+  color:#fff;padding:12px 20px;font-weight:600;
 }
 
 .container{
@@ -42,10 +40,7 @@ body{
   border-radius:16px;
   padding:22px;
   box-shadow:0 6px 22px rgba(0,0,0,0.05);
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  overflow:visible;
+  display:flex;justify-content:center;align-items:center;
 }
 
 .wheel{
@@ -63,9 +58,8 @@ body{
       #3B9A95 240deg 300deg,
       #6656E6 300deg 360deg
     );
-  box-shadow:
-    inset 0 26px 50px rgba(255,255,255,0.06),
-    inset 0 -18px 36px rgba(0,0,0,0.035);
+  box-shadow:inset 0 26px 50px rgba(255,255,255,0.06),
+             inset 0 -18px 36px rgba(0,0,0,0.035);
   border:1px solid rgba(255,255,255,0.20);
 }
 
@@ -78,11 +72,8 @@ body{
   border-radius:50%;
   background:linear-gradient(145deg,#004e86 0%, #003b63 60%, #002a4a 100%);
   color:#fff;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-weight:700;
-  font-size:17px;
+  display:flex;align-items:center;justify-content:center;
+  font-weight:700;font-size:17px;
   box-shadow:0 10px 22px rgba(0,0,0,0.22);
   z-index:1000;
 }
@@ -95,20 +86,35 @@ body{
   display:flex;
   align-items:center;
   justify-content:center;
+  padding:10px;
   text-align:center;
-  padding:8px;
-  font-weight:700;
   color:#fff;
+  font-weight:700;
   font-size:13px;
-  background:rgba(255,255,255,0.22);
+  line-height:1.08;
+  white-space:normal;
+  background:rgba(255,255,255,0.20);
   border:1.4px solid rgba(255,255,255,0.42);
   box-shadow:0 6px 14px rgba(0,0,0,0.14);
-  transition:transform .18s ease;
   z-index:900;
+  transition:transform .16s ease, box-shadow .16s ease;
 }
 
 .phase-label:hover{
   transform:scale(1.06);
+  box-shadow:0 12px 26px rgba(0,0,0,0.22);
+}
+
+#hover-panel{
+  position:fixed;
+  display:none;
+  background:#fff;
+  padding:12px 14px;
+  border-radius:8px;
+  box-shadow:0 8px 26px rgba(0,0,0,0.12);
+  z-index:2000;
+  font-size:13px;
+  color:#222;
 }
 
 .info-box{
@@ -125,9 +131,8 @@ body{
   font-weight:600;
   text-decoration:none;
 }
-.info-box a:hover{
-  text-decoration:underline;
-}
+
+.info-box a:hover{text-decoration:underline;}
 
 footer{
   margin-top:40px;
@@ -137,14 +142,16 @@ footer{
 }
 
 @media(max-width:950px){
-  .container{grid-template-columns:1fr;}
-  :root{--label-size:86px; --center-size:140px;}
+  .container{grid-template-columns:1fr;padding-bottom:20px}
+  .info-box{order:2;margin-top:20px}
+  :root{--label-size:86px;--center-size:140px}
 }
 </style>
 </head>
-<body>
 
+<body>
 <div class="topbar">ICT-India AI-SDLC Hub</div>
+<div id="hover-panel"></div>
 
 <div class="container">
   <div class="wheel-wrap">
@@ -157,7 +164,7 @@ footer{
     <br><br>
     Click any repository on the wheel to navigate to its library and manage content.
     <br><br>
-    To learn more, visit the
+    To learn more, visit the 
     <a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/SitePages/About-AI-SDLC.aspx" target="_blank">About page</a>
     or share feedback via the
     <a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/SitePages/Feedback%20&%20Contact.aspx" target="_blank">Feedback & Contact</a>.
@@ -165,83 +172,111 @@ footer{
 </div>
 
 <script>
-//-----------------------------------------------------------------------
-//  FINAL STABLE SDLC WHEEL SCRIPT (NO ERRORS, PERFECT ALIGNMENT)
-//-----------------------------------------------------------------------
-console.log("SDLC wheel (final stable auto-center + nudges) initializing...");
+// clean absolute nudging math — correct & predictable
+console.log("SDLC wheel (absolute-nudge stable version) initializing...");
 
-const wheel = document.getElementById("wheel");
-if (!wheel) {
-  console.warn("SDLC wheel script: #wheel not found — aborting.");
-} else {
-
-  const center = { x: 280, y: 280 };
-  const labelRadius = 180;   // << THE FIXED VALUE
-
-  const phases = [
-    {name:"Planning & Analysis", angle:15,  color:"#2B5F90",
-      link:"https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Planning%20%20Analysis"},
-    {name:"Design", angle:85, color:"#B8792F",
-      link:"https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Design%20Accelerators/Forms/AllItems.aspx"},
-    {name:"Implementation", angle:160, color:"#BB4C46",
-      link:"https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Implementation%20Accelerators/Forms/AllItems.aspx"},
-    {name:"Testing & Integration", angle:220, color:"#D8B441",
-      link:"https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Testing%20%20Integration/Forms/AllItems.aspx"},
-    {name:"Deployment & Operations", angle:285, color:"#3B9A95",
-      link:"https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Deployment%20%20Operations%20Accelerators/Forms/AllItems.aspx"},
-    {name:"Maintenance", angle:325, color:"#6656E6",
-      link:"https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Maintenance/Forms/AllItems.aspx"}
-  ];
-
-  // PERFECTED MICRO-NUDGES
-  const nudges = {
-    "Planning & Analysis":      { rx: -4,  ry: +4 },
-    "Design":                   { rx: -6, ry: 0 },
-    "Implementation":           { rx: +4, ry: -8 },
-    "Testing & Integration":    { rx: +4,  ry: -4 },
-    "Deployment & Operations":  { rx: +18, ry: +28 },
-    "Maintenance":              { rx: +6, ry: +8 }
-  };
-
-  phases.forEach(p => {
-    const el = document.createElement("div");
-    el.className = "phase-label";
-    el.innerHTML = p.name.replace(/\s+/g, "<br>");
-
-    const theta = (p.angle - 90) * Math.PI / 180;
-
-    const nx = nudges[p.name].rx;
-    const ny = nudges[p.name].ry;
-
-    const x = Math.round(center.x + (labelRadius + nx) * Math.cos(theta));
-    const y = Math.round(center.y + (labelRadius + nx) * Math.sin(theta) + ny);
-
-    el.style.left = `calc(${x}px - var(--label-size)/2)`;
-    el.style.top  = `calc(${y}px - var(--label-size)/2)`;
-
-    el.onclick = () => window.open(p.link, "_blank");
-
-    wheel.appendChild(el);
-  });
-
-  console.log("SDLC wheel — fully rendered.");
+const wheelEl = document.getElementById("wheel");
+if (!wheelEl) {
+  console.error("SDLC wheel: #wheel not found.");
 }
+
+const hoverPanel = document.getElementById("hover-panel");
+
+// center of wheel in px
+const center = { x: 280, y: 280 };
+const labelRadius = 205;
+
+// phases
+const phases = [
+  {name:"Planning & Analysis", angle: 15,  color:"#2B5F90",
+    link:"https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Planning%20%20Analysis"},
+  {name:"Design", angle: 85, color:"#B8792F",
+    link:"https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Design%20Accelerators/Forms/AllItems.aspx"},
+  {name:"Implementation", angle:160,color:"#BB4C46",
+    link:"https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Implementation%20Accelerators/Forms/AllItems.aspx"},
+  {name:"Testing & Integration", angle:220,color:"#D8B441",
+    link:"https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Testing%20%20Integration/Forms/AllItems.aspx"},
+  {name:"Deployment & Operations", angle:285,color:"#3B9A95",
+    link:"https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Deployment%20%20Operations%20Accelerators/Forms/AllItems.aspx"},
+  {name:"Maintenance", angle:325,color:"#6656E6",
+    link:"https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Maintenance/Forms/AllItems.aspx"}
+];
+
+// new absolute nudges (these now behave correctly!)
+const nudges = {
+  "Planning & Analysis":      { rx:  0, ry:  8 },
+  "Design":                   { rx: -5, ry:  3 },
+  "Implementation":           { rx: -6, ry: -4 },
+  "Testing & Integration":    { rx:  2, ry: -8 },
+  "Deployment & Operations":  { rx: 12, ry:  2 },
+  "Maintenance":              { rx:  8, ry: 10 }
+};
+
+// helper
+function hexToRgba(hex,a){
+  hex=hex.replace('#','');
+  if(hex.length===3) hex=hex.split('').map(c=>c+c).join('');
+  const r=parseInt(hex.slice(0,2),16),
+        g=parseInt(hex.slice(2,4),16),
+        b=parseInt(hex.slice(4,6),16);
+  return`rgba(${r},${g},${b},${a})`;
+}
+
+// place phase labels
+phases.forEach(p=>{
+  const el=document.createElement("div");
+  el.className="phase-label";
+  el.style.background=hexToRgba(p.color,0.28);
+  el.innerHTML=p.name;
+
+  const rad=(p.angle-90)*Math.PI/180;
+  const nx = nudges[p.name].rx;
+  const ny = nudges[p.name].ry;
+
+  // correct absolute nudging math
+  const x = center.x + labelRadius * Math.cos(rad) + nx;
+  const y = center.y + labelRadius * Math.sin(rad) + ny;
+
+  el.style.left=`calc(${x}px - var(--label-size)/2)`;
+  el.style.top =`calc(${y}px - var(--label-size)/2)`;
+
+  // hover panel
+  el.onmouseenter = ()=>{
+    hoverPanel.style.display="block";
+    hoverPanel.innerHTML=
+      `<strong style='color:#003a6c'>${p.name}</strong>
+       <div style="margin-top:6px;color:#333;font-size:13px">
+         ${getShortDesc(p.name)}
+       </div>`;
+
+    const r=el.getBoundingClientRect();
+    let left=r.right+12;
+    let top=r.top;
+    if(left+260>window.innerWidth) left=r.left-260-12;
+    if(top+140>window.innerHeight) top=window.innerHeight-160;
+    hoverPanel.style.left=left+"px"; 
+    hoverPanel.style.top=top+"px";
+  };
+  el.onmouseleave=()=>hoverPanel.style.display="none";
+  el.onclick=()=>window.open(p.link,"_blank");
+
+  wheelEl.appendChild(el);
+});
+
+function getShortDesc(n){
+  switch(n){
+    case"Planning & Analysis":return"Requirements gathering, feasibility checks and scope definition.";
+    case"Design":return"Solution architecture, UX planning and technical design.";
+    case"Implementation":return"Development and build activities aligned to defined designs.";
+    case"Testing & Integration":return"Functional testing, regression, validation and system integration.";
+    case"Deployment & Operations":return"Release preparation, deployment execution, monitoring and operations.";
+    case"Maintenance":return"Enhancements, fixes, optimizations and continuous improvements.";
+  }
+  return"";
+}
+
 </script>
 
 <footer>ICT-India | AI-SDLC Hub | 2025</footer>
-
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
