@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>ICT-India SDLC Hub — SDLC Wheel</title>
 
 <style>
@@ -11,43 +11,40 @@
    Stellantis-aligned palette
    ========================= */
 :root{
-  /* Core brand blues & neutrals */
-  --stl-blue-1: #00133b;   /* deep navy */
-  --stl-blue-2: #243882;   /* Stellantis brand blue */
-  --stl-blue-3: #2f4aa0;   /* mid support tone (derived for contrast) */
-  --stl-blue-4: #4b66c6;   /* lighter accent for visuals */
-  --stl-ink:    #282b34;   /* dark neutral */
-  --stl-gray:   #bcbcbc;   /* light neutral */
-  --stl-white:  #ffffff;
+  /* Core brand tones */
+  --brand-blue: #243882;    /* Stellantis deep blue */
+  --brand-navy: #0f214f;    /* deeper companion */
+  --brand-ink:  #282b34;    /* dark neutral */
+  --brand-gray: #bcbcbc;    /* light neutral */
+  --white:      #ffffff;
 
   /* Component variables */
   --wheel-size: 560px;
-  --label-size: 102px;
-  --center-size: 170px;
+  --label-size: 108px;      /* slightly larger pill to give text breathing room */
+  --center-size: 156px;     /* slightly smaller center for visual balance */
   --font: "Segoe UI", Arial, sans-serif;
 
-  /* Slice colors — all cool/neutral, avoiding harsh warm tones */
-  /* Use a harmonious gradient of Stellantis blues + neutrals */
-  --slice-1: var(--stl-blue-2); /* Planning & Analysis */
-  --slice-2: var(--stl-blue-3); /* Design */
-  --slice-3: var(--stl-blue-4); /* Implementation */
-  --slice-4: #6e7fbf;           /* Testing & Integration (softened) */
-  --slice-5: #49506a;           /* Deployment & Operations (neutral cool) */
-  --slice-6: var(--stl-ink);    /* Maintenance */
+  /* Harmonized slice colors (tints of brand blue) */
+  --slice-1: #243882; /* Planning & Analysis */
+  --slice-2: #2f4aa0; /* Design */
+  --slice-3: #3a5ac0; /* Implementation */
+  --slice-4: #4b69c9; /* Testing & Integration */
+  --slice-5: #38528f; /* Deployment & Operations */
+  --slice-6: #1d2c61; /* Maintenance */
 
-  /* Label pills */
-  --pill-bg: rgba(40, 43, 52, 0.28); /* translucent ink */
-  --pill-border: rgba(255,255,255,0.46);
-  --pill-text: var(--stl-white);
+  /* Label pill styles */
+  --pill-bg: rgba(16, 33, 79, 0.32);     /* translucent deep navy for readability */
+  --pill-border: rgba(255,255,255,0.55);
+  --pill-text: #ffffff;
 
   /* Top bar & cards */
-  --topbar-bg: linear-gradient(180deg, var(--stl-blue-1) 0%, #001b4f 100%);
-  --card-bg: var(--stl-white);
+  --topbar-bg: linear-gradient(180deg, #00133b 0%, #001b4f 100%);
+  --card-bg: var(--white);
   --card-shadow: 0 6px 22px rgba(0,0,0,0.05);
 
   /* Effects */
   --hover-glow: 0 0 0 8px rgba(36,56,130,0.12);
-  --hover-scale: 1.06;
+  --hover-scale: 1.05;
   --transition-fast: 180ms cubic-bezier(.2,.6,.3,1);
   --transition-med: 260ms cubic-bezier(.2,.6,.3,1);
 }
@@ -98,9 +95,8 @@ body{
   aspect-ratio: 1 / 1;
   border-radius:50%;
   background:
-    /* subtle tick texture for premium feel */
+    /* subtle tick texture */
     repeating-conic-gradient(rgba(255,255,255,0.06) 0deg 0.35deg, transparent 0.35deg 60deg),
-    /* brand-aligned slice map */
     conic-gradient(
       var(--slice-1) 0deg   60deg,
       var(--slice-2) 60deg  120deg,
@@ -122,18 +118,19 @@ body{
   width:var(--center-size);
   height:var(--center-size);
   border-radius:50%;
-  background:linear-gradient(145deg, #0a2b66, #092356 60%, #071d49);
+  /* darker than slices to improve separation */
+  background:radial-gradient(circle at 35% 35%, #163063 0%, #0f214f 65%, #0b1a41 100%);
   color:#fff;
   display:flex;align-items:center;justify-content:center;
   text-align:center;
-  padding:10px;
+  padding:12px;              /* a bit more padding for the center text */
   font-weight:700;
   font-size:17px;
-  box-shadow:0 10px 22px rgba(0,0,0,0.22);
+  box-shadow:0 10px 22px rgba(0,0,0,0.24);
   z-index:1000;
 }
 
-/* ====== Labels (phase pills) ====== */
+/* ====== Phase labels (pills) ====== */
 .phase-label{
   position:absolute;
   width:var(--label-size);
@@ -142,22 +139,23 @@ body{
   display:flex;
   align-items:center;
   justify-content:center;
-  padding:10px;
+  padding:12px;              /* extra padding so text never touches edge */
   text-align:center;
   color:var(--pill-text);
   font-weight:700;
-  font-size:14px;             /* +1 for leadership readability */
-  line-height:1.08;
+  font-size:14px;            /* slightly larger for readability */
+  line-height:1.15;          /* improves multi-line balance */
   background:var(--pill-bg);
-  border:1.4px solid var(--pill-border);
-  box-shadow:0 6px 14px rgba(0,0,0,0.14);
+  border:1.5px solid var(--pill-border);
+  /* subtle inner + outer depth for premium legibility */
+  box-shadow:
+    inset 0 1px 3px rgba(255,255,255,0.22),
+    inset 0 -1px 3px rgba(0,0,0,0.10),
+    0 6px 14px rgba(0,0,0,0.14);
   z-index:900;
   user-select:none;
   cursor:pointer;
-
-  /* subtle polish */
   transition: transform var(--transition-fast), box-shadow var(--transition-fast), filter var(--transition-fast);
-  backdrop-filter: saturate(1.2) blur(0.2px);
 }
 
 .phase-label:hover{
@@ -166,7 +164,7 @@ body{
   filter: brightness(1.06);
 }
 
-/* ====== Hover panel (animated) ====== */
+/* ====== Hover panel (minimal, animated) ====== */
 #hover-panel{
   position:fixed;
   display:none;
@@ -188,24 +186,22 @@ body{
   transform: translateY(0);
 }
 
-/* ====== Right-side panel (dynamic title only) ====== */
+/* ====== Right-side panel (restored text + live links) ====== */
 .info-box{
   background:var(--card-bg);
   padding:18px 20px;
   border-radius:12px;
   box-shadow:0 4px 14px rgba(0,0,0,0.05);
   line-height:1.55;
+  color:#303030;
 }
-.info-title{
-  margin:0 0 8px 0;
-  font-weight:700;
-  color:var(--stl-blue-2);
-  font-size:18px;
+.info-box p{ margin:0 0 12px 0; }
+.info-box a{
+  color:#0a4ea1;
+  text-decoration:none;
+  font-weight:600;
 }
-.info-subtle{
-  color:#5a5a5a;
-  font-size:13px;
-}
+.info-box a:hover{ text-decoration:underline; }
 
 footer{
   margin-top:40px;
@@ -226,25 +222,31 @@ footer{
       <div class="center">SDLC Repository</div>
     </div>
 
+    <!-- Restored explanatory text + your About/Feedback links -->
     <div class="info-box" id="infoBox">
-      <h4 class="info-title" id="infoTitle">Select a phase</h4>
-      <div class="info-subtle">
-        Click a phase on the wheel to open its repository in a new tab.
-      </div>
-      <div style="margin-top:10px;">
-        #About page</a> |
-        #Feedback &amp; Contact</a>
-      </div>
+      <p>
+        The ICT-India SDLC Repository provides a centralized space to explore, upload, and access accelerators,
+        templates, and best-practice material across every phase of the software development lifecycle.
+      </p>
+      <p>Click any repository on the wheel to open its list in a new tab.</p>
+      <p>
+        <a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/SitePages/About-AI-SDLC.aspx" target="_blank" rel="noopener noreferrer">
+          About page
+        </a>
+        &nbsp;|&nbsp;
+        <a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/SitePages/Feedback%20&%20Contact.aspx" target="_blank" rel="noopener noreferrer">
+          Feedback &amp; Contact
+        </a>
+      </p>
     </div>
   </div>
 
   <script>
   /** --- Config --- */
-  const OPEN_IN_NEW_TAB = true; // keep new-tab behavior for demos
+  const OPEN_IN_NEW_TAB = true; // keep new-tab behavior
 
-  const wheelEl     = document.getElementById("wheel");
-  const hoverPanel  = document.getElementById("hover-panel");
-  const infoTitleEl = document.getElementById("infoTitle");
+  const wheelEl    = document.getElementById("wheel");
+  const hoverPanel = document.getElementById("hover-panel");
 
   /* Slice centers: 30, 90, 150, 210, 270, 330 */
   const phases = [
@@ -256,14 +258,11 @@ footer{
     { name:"Maintenance",             angle:330, link:"https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Lists/Maintenance/AllItems.aspx" }
   ];
 
-  /* Minimal hover content: just the phase name to keep things clean */
-  function hoverContent(name){
-    return `<strong>${name}</strong>`;
-  }
+  /** Minimal hover text for clean look */
+  const hoverContent = (name) => `<strong>${name}</strong>`;
 
-  /** Navigation (new tab) */
+  /** Navigation */
   function openLink(url){
-    if (!url) return;
     window.open(url, "_blank", "noopener,noreferrer");
   }
 
@@ -282,7 +281,7 @@ footer{
     const center      = { x: wheelW / 2, y: wheelH / 2 };
 
     const innerEdge   = centerSize / 2;
-    const outerEdge   = radiusOuter - (labelSize / 2) - 6;
+    const outerEdge   = radiusOuter - (labelSize / 2) - 8; /* extra 2px buffer */
     const labelRadius = (innerEdge + outerEdge) / 2;
 
     phases.forEach(p=>{
@@ -297,7 +296,7 @@ footer{
       el.style.left = `calc(${x}px - var(--label-size)/2)`;
       el.style.top  = `calc(${y}px - var(--label-size)/2)`;
 
-      /* Hover UI (animated fade/slide) */
+      /* Hover (animated) */
       el.onmouseenter = () => {
         hoverPanel.innerHTML = hoverContent(p.name);
         const r = el.getBoundingClientRect();
@@ -306,23 +305,19 @@ footer{
 
         const vw = window.innerWidth;
         const panelRect = hoverPanel.getBoundingClientRect();
-
         if (left + panelRect.width > vw - 10) left = r.left - panelRect.width - 15;
+
         hoverPanel.style.left = left + "px";
         hoverPanel.style.top  = top  + "px";
-
         hoverPanel.classList.add("visible");
       };
       el.onmouseleave = () => {
         hoverPanel.classList.remove("visible");
-        setTimeout(()=>{ hoverPanel.style.display = "none"; }, 1); // allow transition
+        setTimeout(()=>{ hoverPanel.style.display = "none"; }, 1);
       };
 
-      /* Click: update right panel title + open repo */
-      el.onclick = () => {
-        infoTitleEl.textContent = p.name;
-        openLink(p.link);
-      };
+      /* Click: open repo (new tab) */
+      el.onclick = () => openLink(p.link);
 
       wheelEl.appendChild(el);
     });
@@ -334,4 +329,3 @@ footer{
 
   <footer>ICT-India | SDLC Hub | 2025</footer>
 </body>
-</html>
