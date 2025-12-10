@@ -15,25 +15,24 @@
   --brand-blue: #243882;    /* Stellantis deep blue */
   --brand-navy: #0f214f;    /* deeper companion */
   --brand-ink:  #282b34;    /* dark neutral */
-  --brand-gray: #bcbcbc;    /* light neutral */
   --white:      #ffffff;
 
-  /* Component variables */
+  /* Component variables (you can tweak these later) */
   --wheel-size: 560px;
-  --label-size: 108px;      /* slightly larger pill to give text breathing room */
-  --center-size: 156px;     /* slightly smaller center for visual balance */
+  --label-size: 128px;      /* bigger inner phase circles */
+  --center-size: 172px;     /* slightly larger center for balance */
   --font: "Segoe UI", Arial, sans-serif;
 
-  /* Harmonized slice colors (tints of brand blue) */
-  --slice-1: #243882; /* Planning & Analysis */
-  --slice-2: #2f4aa0; /* Design */
-  --slice-3: #3a5ac0; /* Implementation */
-  --slice-4: #4b69c9; /* Testing & Integration */
-  --slice-5: #38528f; /* Deployment & Operations */
-  --slice-6: #1d2c61; /* Maintenance */
+  /* Harmonized slice colors (tints of #243882, lighten clockwise) */
+  --slice-1: #243882; /* base */
+  --slice-2: #2f4aa0;
+  --slice-3: #3b5bb6;
+  --slice-4: #4c6ccb;
+  --slice-5: #5f7dd7;
+  --slice-6: #7a95e2; /* lightest */
 
   /* Label pill styles */
-  --pill-bg: rgba(16, 33, 79, 0.32);     /* translucent deep navy for readability */
+  --pill-bg: rgba(16, 33, 79, 0.34);   /* translucent deep navy for readability */
   --pill-border: rgba(255,255,255,0.55);
   --pill-text: #ffffff;
 
@@ -44,7 +43,7 @@
 
   /* Effects */
   --hover-glow: 0 0 0 8px rgba(36,56,130,0.12);
-  --hover-scale: 1.05;
+  --hover-scale: 1.04;
   --transition-fast: 180ms cubic-bezier(.2,.6,.3,1);
   --transition-med: 260ms cubic-bezier(.2,.6,.3,1);
 }
@@ -123,14 +122,14 @@ body{
   color:#fff;
   display:flex;align-items:center;justify-content:center;
   text-align:center;
-  padding:12px;              /* a bit more padding for the center text */
+  padding:14px;
   font-weight:700;
   font-size:17px;
   box-shadow:0 10px 22px rgba(0,0,0,0.24);
   z-index:1000;
 }
 
-/* ====== Phase labels (pills) ====== */
+/* ====== Phase labels (inner circles) ====== */
 .phase-label{
   position:absolute;
   width:var(--label-size);
@@ -139,23 +138,31 @@ body{
   display:flex;
   align-items:center;
   justify-content:center;
-  padding:12px;              /* extra padding so text never touches edge */
+
+  /* text never touches border */
+  padding:14px;
   text-align:center;
   color:var(--pill-text);
   font-weight:700;
-  font-size:14px;            /* slightly larger for readability */
-  line-height:1.15;          /* improves multi-line balance */
+  font-size:14px;
+  line-height:1.18;
+
+  /* readability over any slice */
   background:var(--pill-bg);
-  border:1.5px solid var(--pill-border);
-  /* subtle inner + outer depth for premium legibility */
+  border:1.6px solid var(--pill-border);
   box-shadow:
     inset 0 1px 3px rgba(255,255,255,0.22),
     inset 0 -1px 3px rgba(0,0,0,0.10),
     0 6px 14px rgba(0,0,0,0.14);
+
   z-index:900;
   user-select:none;
   cursor:pointer;
   transition: transform var(--transition-fast), box-shadow var(--transition-fast), filter var(--transition-fast);
+
+  /* Make long words wrap nicely without touching edge */
+  word-break: break-word;
+  hyphens: auto;
 }
 
 .phase-label:hover{
@@ -164,7 +171,7 @@ body{
   filter: brightness(1.06);
 }
 
-/* ====== Hover panel (minimal, animated) ====== */
+/* ====== Hover panel (with bullets, animated) ====== */
 #hover-panel{
   position:fixed;
   display:none;
@@ -177,13 +184,16 @@ body{
   z-index:2000;
   font-size:13px;
   color:#222;
-  max-width:260px;
+  max-width:300px;
   transition: opacity var(--transition-med), transform var(--transition-med);
 }
 #hover-panel.visible{
   display:block;
   opacity:1;
   transform: translateY(0);
+}
+#hover-panel ul{
+  margin:6px 0 0 16px;
 }
 
 /* ====== Right-side panel (restored text + live links) ====== */
@@ -258,10 +268,53 @@ footer{
     { name:"Maintenance",             angle:330, link:"https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Lists/Maintenance/AllItems.aspx" }
   ];
 
-  /** Minimal hover text for clean look */
-  const hoverContent = (name) => `<strong>${name}</strong>`;
+  /* Accelerators (for hover bullets) */
+  const accelerators = {
+    "Planning & Analysis": [],
+    "Design": ["Customized login page"],
+    "Implementation": [
+      "In built Authorization",
+      "Automate tags in AWS resources",
+      "Role authorization tool",
+      "Tablespaces script creation",
+      "Calculate data file size"
+    ],
+    "Testing & Integration": [
+      "AI-driven risk scoring for features",
+      "Dynamic test suite optimization",
+      "Integration with defect tracking tools",
+      "Security Vulnerability checks and fixes",
+      "SonarQube and GitHub Copilot Integration"
+    ],
+    "Deployment & Operations": [
+      "GenAI Application deployment using CI/CD platform"
+    ],
+    "Maintenance": [
+      "Regulatory Compliance monitoring",
+      "Password Reset connector",
+      "SOX framework automation",
+      "Azure Service Principal (SP) API Automation",
+      "Catalog data updation"
+    ]
+  };
 
-  /** Navigation */
+  /* Hover HTML (phase name + bullets) */
+  function getHoverHtml(name){
+    let base="";
+    switch(name){
+      case "Planning & Analysis":      base="Requirements gathering, feasibility checks and scope definition."; break;
+      case "Design":                   base="Solution architecture, UX planning and technical design."; break;
+      case "Implementation":           base="Development and build activities aligned to defined designs."; break;
+      case "Testing & Integration":    base="Functional testing, regression, validation and system integration."; break;
+      case "Deployment & Operations":  base="Release preparation, deployment execution, monitoring and operations."; break;
+      case "Maintenance":              base="Enhancements, fixes, optimizations and continuous improvements."; break;
+    }
+    const acc = accelerators[name] || [];
+    const list = acc.length ? `<ul style="margin-top:6px;">${acc.map(x=>`<li>${x}</li>`).join("")}</ul>` : "";
+    return `<strong>${name}</strong><div style="margin-top:6px;">${base}${list}</div>`;
+  }
+
+  /** Navigation (new tab) */
   function openLink(url){
     window.open(url, "_blank", "noopener,noreferrer");
   }
@@ -281,7 +334,7 @@ footer{
     const center      = { x: wheelW / 2, y: wheelH / 2 };
 
     const innerEdge   = centerSize / 2;
-    const outerEdge   = radiusOuter - (labelSize / 2) - 8; /* extra 2px buffer */
+    const outerEdge   = radiusOuter - (labelSize / 2) - 8; /* small buffer */
     const labelRadius = (innerEdge + outerEdge) / 2;
 
     phases.forEach(p=>{
@@ -296,24 +349,29 @@ footer{
       el.style.left = `calc(${x}px - var(--label-size)/2)`;
       el.style.top  = `calc(${y}px - var(--label-size)/2)`;
 
-      /* Hover (animated) */
+      /* Hover (animated + bullets) */
       el.onmouseenter = () => {
-        hoverPanel.innerHTML = hoverContent(p.name);
+        hoverPanel.innerHTML = getHoverHtml(p.name);
+
         const r = el.getBoundingClientRect();
         let left = r.right + 15;
         let top  = r.top - 5;
 
         const vw = window.innerWidth;
+        // show, then measure to avoid 0 width/height
+        hoverPanel.style.display = "block";
         const panelRect = hoverPanel.getBoundingClientRect();
-        if (left + panelRect.width > vw - 10) left = r.left - panelRect.width - 15;
 
+        if (left + panelRect.width > vw - 10) left = r.left - panelRect.width - 15;
         hoverPanel.style.left = left + "px";
         hoverPanel.style.top  = top  + "px";
-        hoverPanel.classList.add("visible");
+
+        requestAnimationFrame(()=>hoverPanel.classList.add("visible"));
       };
       el.onmouseleave = () => {
         hoverPanel.classList.remove("visible");
-        setTimeout(()=>{ hoverPanel.style.display = "none"; }, 1);
+        // hide after transition end
+        setTimeout(()=>{ hoverPanel.style.display = "none"; }, 220);
       };
 
       /* Click: open repo (new tab) */
@@ -329,3 +387,4 @@ footer{
 
   <footer>ICT-India | SDLC Hub | 2025</footer>
 </body>
+</html>
