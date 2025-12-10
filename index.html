@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -7,11 +8,13 @@
 
 <style>
 :root{
-  --wheel-size: 560px;
+  --wheel-size: 560px;      /* You can change this to scale the wheel */
   --label-size: 102px;
   --center-size: 170px;
   --font: "Segoe UI", Arial, sans-serif;
 }
+
+* { box-sizing: border-box; }
 
 body{
   margin:0;
@@ -34,6 +37,10 @@ body{
   padding:0 20px;
 }
 
+@media (max-width: 980px){
+  .container{ grid-template-columns:1fr; }
+}
+
 .wheel-wrap{
   position:relative;
   background:#fff;
@@ -47,6 +54,9 @@ body{
   position:relative;
   width:var(--wheel-size);
   height:var(--wheel-size);
+  max-width:100%;
+  max-height:100%;
+  aspect-ratio: 1 / 1;
   border-radius:50%;
   background:
     repeating-conic-gradient(rgba(255,255,255,0.06) 0deg 0.35deg, transparent 0.35deg 60deg),
@@ -73,6 +83,8 @@ body{
   background:linear-gradient(145deg,#004e86, #003b63 60%, #002a4a);
   color:#fff;
   display:flex;align-items:center;justify-content:center;
+  text-align:center;
+  padding:10px;
   font-weight:700;font-size:17px;
   box-shadow:0 10px 22px rgba(0,0,0,0.22);
   z-index:1000;
@@ -96,6 +108,7 @@ body{
   border:1.4px solid rgba(255,255,255,0.42);
   box-shadow:0 6px 14px rgba(0,0,0,0.14);
   z-index:900;
+  user-select:none;
 }
 
 #hover-panel{
@@ -118,6 +131,9 @@ body{
   box-shadow:0 4px 14px rgba(0,0,0,0.05);
   line-height:1.55;
 }
+
+.info-box a { color:#0a4ea1; text-decoration:none; }
+.info-box a:hover { text-decoration:underline; }
 
 footer{
   margin-top:40px;
@@ -144,28 +160,26 @@ footer{
     Click any repository on the wheel to navigate to its corresponding list.
     <br><br>
     <a href="#">About page</a> |
-    <a href="#">Feedback & Contact</a>
+    <a href="#">Feedback &amp; Contact</a>
   </div>
 </div>
 
 <script>
+/** --- Data --- */
 const wheelEl = document.getElementById("wheel");
 const hoverPanel = document.getElementById("hover-panel");
 
-const center = { x: 280, y: 280 };
-const labelRadius = 205;
-
-// PHASE MIDPOINT ANGLES (perfect geometric centers)
+/* Centers of each 60° segment: 30, 90, 150, 210, 270, 330 */
 const phases = [
-  { name:"Planning & Analysis", angle:15, link:"#"},
-  { name:"Design", angle:85, link:"#"},
-  { name:"Implementation", angle:160, link:"#"},
-  { name:"Testing & Integration", angle:220, link:"#"},
-  { name:"Deployment & Operations", angle:285, link:"#"},
-  { name:"Maintenance", angle:325, link:"#"}
+  { name:"Planning & Analysis",         angle: 30,  link:"#"},
+  { name:"Design",                      angle: 90,  link:"#"},
+  { name:"Implementation",              angle:150,  link:"#"},
+  { name:"Testing & Integration",       angle:210,  link:"#"},
+  { name:"Deployment & Operations",     angle:270,  link:"#"},
+  { name:"Maintenance",                 angle:330,  link:"#"}
 ];
 
-// ACCELERATORS
+/* Accelerators list per phase */
 const accelerators = {
   "Planning & Analysis": [],
   "Design": ["Customized login page"],
@@ -195,59 +209,105 @@ const accelerators = {
   ]
 };
 
-// DESCRIPTION BUILDER
+/** Short description + accelerators list for hover */
 function getShortDesc(name){
   let base="";
   switch(name){
-    case "Planning & Analysis": base="Requirements gathering, feasibility checks and scope definition."; break;
-    case "Design": base="Solution architecture, UX planning and technical design."; break;
-    case "Implementation": base="Development and build activities aligned to defined designs."; break;
-    case "Testing & Integration": base="Functional testing, regression, validation and system integration."; break;
-    case "Deployment & Operations": base="Release preparation, deployment execution, monitoring and operations."; break;
-    case "Maintenance": base="Enhancements, fixes, optimizations and continuous improvements."; break;
+    case "Planning & Analysis":      base="Requirements gathering, feasibility checks and scope definition."; break;
+    case "Design":                   base="Solution architecture, UX planning and technical design."; break;
+    case "Implementation":           base="Development and build activities aligned to defined designs."; break;
+    case "Testing & Integration":    base="Functional testing, regression, validation and system integration."; break;
+    case "Deployment & Operations":  base="Release preparation, deployment execution, monitoring and operations."; break;
+    case "Maintenance":              base="Enhancements, fixes, optimizations and continuous improvements."; break;
   }
 
-  const acc = accelerators[name];
+  const acc = accelerators[name] || [];
   if (acc.length > 0){
     return `${base}<ul style="margin-top:6px; padding-left:16px;">${acc.map(x=>`<li>${x}</li>`).join("")}</ul>`;
   }
   return base;
 }
 
-// PLACE PHASE LABELS PERFECTLY
-phases.forEach(p=>{
-  const el=document.createElement("div");
-  el.className="phase-label";
-  el.innerHTML = p.name;
+/** --- Layout logic --- */
 
-  const rad = (p.angle - 90) * Math.PI/180;
+/* Place phase labels using actual runtime dimensions.
+   - center = (wheel width/2, wheel height/2)
+   - labelRadius = halfway between the outside of the center circle and inside of the outer rim,
+                   minus half the label size + small padding
+*/
+function placeLabels(){
+  // Clear any existing labels
+  wheelEl.querySelectorAll(".phase-label").forEach(n => n.remove());
 
-  // PERFECT geometric placement
-  const x = center.x + labelRadius * Math.cos(rad);
-  const y = center.y + labelRadius * Math.sin(rad);
+  const cs = getComputedStyle(document.documentElement);
+  const labelSize  = parseFloat(cs.getPropertyValue('--label-size'));
+  const centerSize = parseFloat(cs.getPropertyValue('--center-size'));
 
-  el.style.left = `calc(${x}px - var(--label-size)/2)`;
-  el.style.top  = `calc(${y}px - var(--label-size)/2)`;
+  // Use the actual rendered size of the wheel
+  const wheelRect = wheelEl.getBoundingClientRect();
+  const wheelW = wheelRect.width;
+  const wheelH = wheelRect.height;
 
-  // hover
-  el.onmouseenter=()=>{
-    hoverPanel.style.display="block";
-    hoverPanel.innerHTML =
-      `<strong>${p.name}</strong><div style="margin-top:6px;">${getShortDesc(p.name)}</div>`;
+  // Defensive: keep it circular
+  const radiusOuter = Math.min(wheelW, wheelH) / 2;
 
-    const r = el.getBoundingClientRect();
-    hoverPanel.style.left = (r.right + 15) + "px";
-    hoverPanel.style.top  = (r.top - 5) + "px";
-  };
+  const center = { x: wheelW / 2, y: wheelH / 2 };
 
-  el.onmouseleave=()=>hoverPanel.style.display="none";
+  // Compute a visually ideal ring for labels:
+  // halfway between (center circle outer edge) and (wheel inner edge for label)
+  const innerEdge = centerSize / 2;                     // outer edge of center disk
+  const outerEdge = radiusOuter - (labelSize / 2) - 6;  // keep label inside the wheel
+  const labelRadius = (innerEdge + outerEdge) / 2;      // mid-ring
 
-  el.onclick=()=>window.open(p.link,"_blank");
+  phases.forEach(p=>{
+    const el = document.createElement("div");
+    el.className = "phase-label";
+    el.textContent = p.name;
 
-  wheelEl.appendChild(el);
-});
+    // Convert polar to cartesian. 0° points right; subtract 90° to orient 0° to top.
+    const rad = (p.angle - 90) * Math.PI/180;
+    const x = center.x + labelRadius * Math.cos(rad);
+    const y = center.y + labelRadius * Math.sin(rad);
+
+    el.style.left = `calc(${x}px - var(--label-size)/2)`;
+    el.style.top  = `calc(${y}px - var(--label-size)/2)`;
+
+    // Hover behavior
+    el.onmouseenter = () => {
+      hoverPanel.style.display = "block";
+      hoverPanel.innerHTML =
+        `<strong>${p.name}</strong><div style="margin-top:6px;">${getShortDesc(p.name)}</div>`;
+
+      const r = el.getBoundingClientRect();
+      // Try placing hover panel to the right; clamp to viewport if needed
+      let left = r.right + 15;
+      let top  = r.top - 5;
+
+      const panelRect = hoverPanel.getBoundingClientRect();
+      const vw = window.innerWidth;
+      const vh = window.innerHeight;
+
+      if (left + panelRect.width > vw - 10) left = r.left - panelRect.width - 15;
+      if (top + panelRect.height > vh - 10) top = vh - panelRect.height - 10;
+      if (top < 10) top = 10;
+
+      hoverPanel.style.left = left + "px";
+      hoverPanel.style.top  = top  + "px";
+    };
+    el.onmouseleave = () => hoverPanel.style.display = "none";
+
+    // Click behavior
+    el.onclick = () => window.open(p.link, "_blank");
+
+    wheelEl.appendChild(el);
+  });
+}
+
+// Initial placement after layout paints
+window.addEventListener('load', placeLabels);
+// Recompute on resize (e.g., responsive or zoom changes)
+window.addEventListener('resize', placeLabels);
 </script>
 
 <footer>ICT-India | SDLC Hub | 2025</footer>
 </body>
-</html>
