@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>ICT-India SDLC Hub — Geometric Centered Wheel</title>
+<title>ICT-India SDLC Hub — Centered Wheel</title>
 
 <style>
 :root{
@@ -70,7 +70,7 @@ body{
   width:var(--center-size);
   height:var(--center-size);
   border-radius:50%;
-  background:linear-gradient(145deg,#004e86 0%, #003b63 60%, #002a4a 100%);
+  background:linear-gradient(145deg,#004e86, #003b63 60%, #002a4a);
   color:#fff;
   display:flex;align-items:center;justify-content:center;
   font-weight:700;font-size:17px;
@@ -96,12 +96,6 @@ body{
   border:1.4px solid rgba(255,255,255,0.42);
   box-shadow:0 6px 14px rgba(0,0,0,0.14);
   z-index:900;
-  transition:transform .16s ease, box-shadow .16s ease;
-}
-
-.phase-label:hover{
-  transform:scale(1.06);
-  box-shadow:0 12px 26px rgba(0,0,0,0.22);
 }
 
 #hover-panel{
@@ -117,40 +111,12 @@ body{
   max-width:260px;
 }
 
-/* GUIDE LINES (you can disable by setting display:none) */
-.guide-line {
-  position: absolute;
-  width: 2px;
-  background: rgba(255, 255, 255, 0.35);
-  top: 0;
-  left: 50%;
-  transform-origin: bottom center;
-  pointer-events: none;
-}
-
-.boundary-line {
-  position: absolute;
-  width: 1px;
-  background: rgba(0, 0, 0, 0.25);
-  top: 0;
-  left: 50%;
-  transform-origin: bottom center;
-  pointer-events: none;
-}
-
 .info-box{
   background:#fff;
   padding:18px 20px;
   border-radius:12px;
   box-shadow:0 4px 14px rgba(0,0,0,0.05);
   line-height:1.55;
-  font-size:14px;
-}
-
-.info-box a{
-  color:#005A9E;
-  font-weight:600;
-  text-decoration:none;
 }
 
 footer{
@@ -158,12 +124,6 @@ footer{
   text-align:center;
   color:#666;
   font-size:13px;
-}
-
-@media(max-width:950px){
-  .container{grid-template-columns:1fr;padding-bottom:20px}
-  .info-box{order:2;margin-top:20px}
-  :root{--label-size:86px;--center-size:140px}
 }
 </style>
 </head>
@@ -183,28 +143,26 @@ footer{
     <br><br>
     Click any repository on the wheel to navigate to its corresponding list.
     <br><br>
-    <a href="#" target="_blank">About page</a> |
-    <a href="#" target="_blank">Feedback & Contact</a>
+    <a href="#">About page</a> |
+    <a href="#">Feedback & Contact</a>
   </div>
 </div>
 
 <script>
-console.log("SDLC wheel initializing...");
-
 const wheelEl = document.getElementById("wheel");
 const hoverPanel = document.getElementById("hover-panel");
 
 const center = { x: 280, y: 280 };
 const labelRadius = 205;
 
-// PHASES
+// PHASE MIDPOINT ANGLES (perfect geometric centers)
 const phases = [
-  { name:"Planning & Analysis", angle:15, color:"#2B5F90", link:"#"},
-  { name:"Design", angle:85, color:"#B8792F", link:"#"},
-  { name:"Implementation", angle:160, color:"#BB4C46", link:"#"},
-  { name:"Testing & Integration", angle:220, color:"#D8B441", link:"#"},
-  { name:"Deployment & Operations", angle:285, color:"#3B9A95", link:"#"},
-  { name:"Maintenance", angle:325, color:"#6656E6", link:"#"}
+  { name:"Planning & Analysis", angle:15, link:"#"},
+  { name:"Design", angle:85, link:"#"},
+  { name:"Implementation", angle:160, link:"#"},
+  { name:"Testing & Integration", angle:220, link:"#"},
+  { name:"Deployment & Operations", angle:285, link:"#"},
+  { name:"Maintenance", angle:325, link:"#"}
 ];
 
 // ACCELERATORS
@@ -237,9 +195,9 @@ const accelerators = {
   ]
 };
 
-// DESCRIPTION + ACCELERATOR LIST
+// DESCRIPTION BUILDER
 function getShortDesc(name){
-  let base = "";
+  let base="";
   switch(name){
     case "Planning & Analysis": base="Requirements gathering, feasibility checks and scope definition."; break;
     case "Design": base="Solution architecture, UX planning and technical design."; break;
@@ -256,64 +214,35 @@ function getShortDesc(name){
   return base;
 }
 
-// DRAW GUIDELINES
-function drawGuideLines(){
-  const wheel = document.getElementById("wheel");
-  const radius = parseInt(getComputedStyle(wheel).width) / 2;
-
-  phases.forEach(p=>{
-    // midpoint line
-    const mid = document.createElement("div");
-    mid.className="guide-line";
-    mid.style.height = radius + "px";
-    mid.style.transform = `translateX(-1px) rotate(${p.angle}deg)`;
-    wheel.appendChild(mid);
-
-    // boundaries at ±30°
-    const b1 = document.createElement("div");
-    b1.className="boundary-line";
-    b1.style.height = radius + "px";
-    b1.style.transform = `translateX(-0.5px) rotate(${p.angle - 30}deg)`;
-    wheel.appendChild(b1);
-
-    const b2 = document.createElement("div");
-    b2.className="boundary-line";
-    b2.style.height = radius + "px";
-    b2.style.transform = `translateX(-0.5px) rotate(${p.angle + 30}deg)`;
-    wheel.appendChild(b2);
-  });
-}
-
-drawGuideLines(); // REMOVE OR COMMENT OUT TO HIDE GUIDES
-
-// RENDER PHASE LABELS (perfect centering)
+// PLACE PHASE LABELS PERFECTLY
 phases.forEach(p=>{
-  const el = document.createElement("div");
+  const el=document.createElement("div");
   el.className="phase-label";
-  el.style.background = "rgba(255,255,255,0.25)";
   el.innerHTML = p.name;
 
-  const rad = (p.angle - 90) * Math.PI / 180;
+  const rad = (p.angle - 90) * Math.PI/180;
 
-  // PERFECT GEOMETRIC CENTER
+  // PERFECT geometric placement
   const x = center.x + labelRadius * Math.cos(rad);
   const y = center.y + labelRadius * Math.sin(rad);
 
   el.style.left = `calc(${x}px - var(--label-size)/2)`;
   el.style.top  = `calc(${y}px - var(--label-size)/2)`;
 
-  el.onmouseenter = () => {
+  // hover
+  el.onmouseenter=()=>{
     hoverPanel.style.display="block";
     hoverPanel.innerHTML =
-      `<strong style='color:#003a6c'>${p.name}</strong>
-       <div style="margin-top:6px;">${getShortDesc(p.name)}</div>`;
+      `<strong>${p.name}</strong><div style="margin-top:6px;">${getShortDesc(p.name)}</div>`;
+
     const r = el.getBoundingClientRect();
     hoverPanel.style.left = (r.right + 15) + "px";
-    hoverPanel.style.top = (r.top - 10) + "px";
+    hoverPanel.style.top  = (r.top - 5) + "px";
   };
 
-  el.onmouseleave = () => hoverPanel.style.display="none";
-  el.onclick = () => window.open(p.link, "_blank");
+  el.onmouseleave=()=>hoverPanel.style.display="none";
+
+  el.onclick=()=>window.open(p.link,"_blank");
 
   wheelEl.appendChild(el);
 });
