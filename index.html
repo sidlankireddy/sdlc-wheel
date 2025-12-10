@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>ICT-India SDLC Hub — Final (Stable Auto-Center)</title>
+<title>ICT-India SDLC Hub — Geometric Centered Wheel</title>
 
 <style>
 :root{
@@ -92,7 +92,6 @@ body{
   font-weight:700;
   font-size:13px;
   line-height:1.08;
-  white-space:normal;
   background:rgba(255,255,255,0.20);
   border:1.4px solid rgba(255,255,255,0.42);
   box-shadow:0 6px 14px rgba(0,0,0,0.14);
@@ -118,6 +117,27 @@ body{
   max-width:260px;
 }
 
+/* GUIDE LINES (you can disable by setting display:none) */
+.guide-line {
+  position: absolute;
+  width: 2px;
+  background: rgba(255, 255, 255, 0.35);
+  top: 0;
+  left: 50%;
+  transform-origin: bottom center;
+  pointer-events: none;
+}
+
+.boundary-line {
+  position: absolute;
+  width: 1px;
+  background: rgba(0, 0, 0, 0.25);
+  top: 0;
+  left: 50%;
+  transform-origin: bottom center;
+  pointer-events: none;
+}
+
 .info-box{
   background:#fff;
   padding:18px 20px;
@@ -132,8 +152,6 @@ body{
   font-weight:600;
   text-decoration:none;
 }
-
-.info-box a:hover{text-decoration:underline;}
 
 footer{
   margin-top:40px;
@@ -165,8 +183,8 @@ footer{
     <br><br>
     Click any repository on the wheel to navigate to its corresponding list.
     <br><br>
-    <a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/SitePages/About-AI-SDLC.aspx" target="_blank">About page</a> |
-    <a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/SitePages/Feedback%20&%20Contact.aspx" target="_blank">Feedback & Contact</a>
+    <a href="#" target="_blank">About page</a> |
+    <a href="#" target="_blank">Feedback & Contact</a>
   </div>
 </div>
 
@@ -176,45 +194,23 @@ console.log("SDLC wheel initializing...");
 const wheelEl = document.getElementById("wheel");
 const hoverPanel = document.getElementById("hover-panel");
 
-// center of wheel
 const center = { x: 280, y: 280 };
 const labelRadius = 205;
 
+// PHASES
 const phases = [
-  {
-    name:"Planning & Analysis", angle: 15, color:"#2B5F90",
-    link:"https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Lists/Planning%20%20Analysis/AllItems.aspx"
-  },
-  {
-    name:"Design", angle: 85, color:"#B8792F",
-    link:"https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Lists/Design/AllItems.aspx"
-  },
-  {
-    name:"Implementation", angle:160, color:"#BB4C46",
-    link:"https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Lists/Implementation/AllItems.aspx"
-  },
-  {
-    name:"Testing & Integration", angle:220, color:"#D8B441",
-    link:"https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Lists/Testing%20%20Integration/AllItems.aspx"
-  },
-  {
-    name:"Deployment & Operations", angle:285, color:"#3B9A95",
-    link:"https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Lists/Deployment%20%20Operations/AllItems.aspx"
-  },
-  {
-    name:"Maintenance", angle:325, color:"#6656E6",
-    link:"https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Lists/Maintenance/AllItems.aspx"
-  }
+  { name:"Planning & Analysis", angle:15, color:"#2B5F90", link:"#"},
+  { name:"Design", angle:85, color:"#B8792F", link:"#"},
+  { name:"Implementation", angle:160, color:"#BB4C46", link:"#"},
+  { name:"Testing & Integration", angle:220, color:"#D8B441", link:"#"},
+  { name:"Deployment & Operations", angle:285, color:"#3B9A95", link:"#"},
+  { name:"Maintenance", angle:325, color:"#6656E6", link:"#"}
 ];
 
-// accelerator bullets per phase
+// ACCELERATORS
 const accelerators = {
   "Planning & Analysis": [],
-
-  "Design": [
-    "Customized login page"
-  ],
-
+  "Design": ["Customized login page"],
   "Implementation": [
     "In built Authorization",
     "Automate tags in AWS resources",
@@ -222,7 +218,6 @@ const accelerators = {
     "Tablespaces script creation",
     "Calculate data file size"
   ],
-
   "Testing & Integration": [
     "AI-driven risk scoring for features",
     "Dynamic test suite optimization",
@@ -230,11 +225,9 @@ const accelerators = {
     "Security Vulnerability checks and fixes",
     "SonarQube and GitHub Copilot Integration"
   ],
-
   "Deployment & Operations": [
     "GenAI Application deployment using CI/CD platform"
   ],
-
   "Maintenance": [
     "Regulatory Compliance monitoring",
     "Password Reset connector",
@@ -244,103 +237,86 @@ const accelerators = {
   ]
 };
 
-const nudges = {
-  "Planning & Analysis":      { rx:  34, ry:  4 },
-  "Design":                   { rx: -5,  ry:  3 },
-  "Implementation":           { rx: -0,  ry: -14 },
-  "Testing & Integration":    { rx:  2,  ry: -8 },
-  "Deployment & Operations":  { rx: -4,  ry: 20 },
-  "Maintenance":              { rx:  8,  ry: 10 }
-};
-
-function hexToRgba(hex,a){
-  hex=hex.replace('#','');
-  if(hex.length===3) hex=hex.split('').map(c=>c+c).join('');
-  const r=parseInt(hex.slice(0,2),16),
-        g=parseInt(hex.slice(2,4),16),
-        b=parseInt(hex.slice(4,6),16);
-  return`rgba(${r},${g},${b},${a})`;
-}
-
-// NEW: Description + bullet list builder
+// DESCRIPTION + ACCELERATOR LIST
 function getShortDesc(name){
   let base = "";
   switch(name){
-    case "Planning & Analysis":
-      base = "Requirements gathering, feasibility checks and scope definition.";
-      break;
-    case "Design":
-      base = "Solution architecture, UX planning and technical design.";
-      break;
-    case "Implementation":
-      base = "Development and build activities aligned to defined designs.";
-      break;
-    case "Testing & Integration":
-      base = "Functional testing, regression, validation and system integration.";
-      break;
-    case "Deployment & Operations":
-      base = "Release preparation, deployment execution, monitoring and operations.";
-      break;
-    case "Maintenance":
-      base = "Enhancements, fixes, optimizations and continuous improvements.";
-      break;
+    case "Planning & Analysis": base="Requirements gathering, feasibility checks and scope definition."; break;
+    case "Design": base="Solution architecture, UX planning and technical design."; break;
+    case "Implementation": base="Development and build activities aligned to defined designs."; break;
+    case "Testing & Integration": base="Functional testing, regression, validation and system integration."; break;
+    case "Deployment & Operations": base="Release preparation, deployment execution, monitoring and operations."; break;
+    case "Maintenance": base="Enhancements, fixes, optimizations and continuous improvements."; break;
   }
 
-  const items = accelerators[name];
-  if (items && items.length > 0){
-    const list = items.map(i => `<li style="margin-top:4px;">${i}</li>`).join("");
-    return `
-      ${base}
-      <ul style="margin-top:6px; padding-left:18px;">
-        ${list}
-      </ul>
-    `;
+  const acc = accelerators[name];
+  if (acc.length > 0){
+    return `${base}<ul style="margin-top:6px; padding-left:16px;">${acc.map(x=>`<li>${x}</li>`).join("")}</ul>`;
   }
   return base;
 }
 
-// render all phase labels
+// DRAW GUIDELINES
+function drawGuideLines(){
+  const wheel = document.getElementById("wheel");
+  const radius = parseInt(getComputedStyle(wheel).width) / 2;
+
+  phases.forEach(p=>{
+    // midpoint line
+    const mid = document.createElement("div");
+    mid.className="guide-line";
+    mid.style.height = radius + "px";
+    mid.style.transform = `translateX(-1px) rotate(${p.angle}deg)`;
+    wheel.appendChild(mid);
+
+    // boundaries at ±30°
+    const b1 = document.createElement("div");
+    b1.className="boundary-line";
+    b1.style.height = radius + "px";
+    b1.style.transform = `translateX(-0.5px) rotate(${p.angle - 30}deg)`;
+    wheel.appendChild(b1);
+
+    const b2 = document.createElement("div");
+    b2.className="boundary-line";
+    b2.style.height = radius + "px";
+    b2.style.transform = `translateX(-0.5px) rotate(${p.angle + 30}deg)`;
+    wheel.appendChild(b2);
+  });
+}
+
+drawGuideLines(); // REMOVE OR COMMENT OUT TO HIDE GUIDES
+
+// RENDER PHASE LABELS (perfect centering)
 phases.forEach(p=>{
-  const el=document.createElement("div");
+  const el = document.createElement("div");
   el.className="phase-label";
-  el.style.background=hexToRgba(p.color,0.28);
-  el.innerHTML=p.name;
+  el.style.background = "rgba(255,255,255,0.25)";
+  el.innerHTML = p.name;
 
-  const rad=(p.angle-90)*Math.PI/180;
-  const nx = nudges[p.name].rx;
-  const ny = nudges[p.name].ry;
+  const rad = (p.angle - 90) * Math.PI / 180;
 
-  const x = center.x + labelRadius * Math.cos(rad) + nx;
-  const y = center.y + labelRadius * Math.sin(rad) + ny;
+  // PERFECT GEOMETRIC CENTER
+  const x = center.x + labelRadius * Math.cos(rad);
+  const y = center.y + labelRadius * Math.sin(rad);
 
-  el.style.left=`calc(${x}px - var(--label-size)/2)`;
-  el.style.top =`calc(${y}px - var(--label-size)/2)`;
+  el.style.left = `calc(${x}px - var(--label-size)/2)`;
+  el.style.top  = `calc(${y}px - var(--label-size)/2)`;
 
-  el.onmouseenter=()=>{
+  el.onmouseenter = () => {
     hoverPanel.style.display="block";
     hoverPanel.innerHTML =
       `<strong style='color:#003a6c'>${p.name}</strong>
-       <div style="margin-top:6px;color:#333;font-size:13px">
-         ${getShortDesc(p.name)}
-       </div>`;
-
-    const r=el.getBoundingClientRect();
-    let left=r.right+12;
-    let top=r.top;
-
-    if(left+260>window.innerWidth) left=r.left-260-12;
-    if(top+160>window.innerHeight) top=window.innerHeight-180;
-
-    hoverPanel.style.left=left+"px";
-    hoverPanel.style.top=top+"px";
+       <div style="margin-top:6px;">${getShortDesc(p.name)}</div>`;
+    const r = el.getBoundingClientRect();
+    hoverPanel.style.left = (r.right + 15) + "px";
+    hoverPanel.style.top = (r.top - 10) + "px";
   };
 
-  el.onmouseleave=()=>hoverPanel.style.display="none";
-  el.onclick=()=>window.open(p.link,"_blank");
+  el.onmouseleave = () => hoverPanel.style.display="none";
+  el.onclick = () => window.open(p.link, "_blank");
 
   wheelEl.appendChild(el);
 });
-
 </script>
 
 <footer>ICT-India | SDLC Hub | 2025</footer>
