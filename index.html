@@ -18,7 +18,7 @@
 
   /* Component sizes (tweak to taste) */
   --wheel-size: 560px;
-  --label-size: 128px;      /* inner phase circles */
+  --label-size: 136px;      /* inner phase circles (↑ for better text fit) */
   --center-size: 172px;     /* center disk */
 
   /* Ring placement controls (geometry knobs) */
@@ -166,18 +166,19 @@ body{
   transition: transform var(--transition-fast), box-shadow var(--transition-fast), filter var(--transition-fast);
   z-index:900;
 
-  word-break: break-word;
-  hyphens: auto;
+  /* Prevent awkward hyphenation/wraps */
+  word-break: keep-all;
+  hyphens: none;
 }
 .phase-label:hover{
   transform: scale(var(--hover-scale));
   box-shadow: var(--hover-glow), 0 8px 18px rgba(0,0,0,0.18);
   filter: brightness(1.06);
 }
-/* ====== Selected phase highlight ====== */
+/* ====== Selected phase highlight (toned down) ====== */
 .phase-label.selected{
-  box-shadow: 0 0 0 4px #243882, var(--hover-glow), 0 8px 18px rgba(0,0,0,0.18);
-  border: 2.5px solid #243882;
+  box-shadow: 0 0 0 3px #243882, var(--hover-glow), 0 6px 14px rgba(0,0,0,0.16);
+  border: 2px solid #243882;
   z-index: 1001;
 }
 
@@ -226,6 +227,8 @@ body{
   font-weight: 600;
   text-decoration: none;
   margin-right: 10px;
+  margin-bottom: 0;          /* keep side-by-side on one line */
+  vertical-align: middle;
   box-shadow: 0 2px 8px rgba(36,56,130,0.08);
   transition: background var(--transition-fast);
 }
