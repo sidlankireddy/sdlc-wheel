@@ -115,6 +115,7 @@ body{
   z-index:2000;
   font-size:13px;
   color:#222;
+  max-width:260px;
 }
 
 .info-box{
@@ -170,21 +171,15 @@ footer{
 </div>
 
 <script>
-// clean absolute nudging math — correct & predictable
-console.log("SDLC wheel (absolute-nudge stable version) initializing...");
+console.log("SDLC wheel initializing...");
 
 const wheelEl = document.getElementById("wheel");
-if (!wheelEl) {
-  console.error("SDLC wheel: #wheel not found.");
-}
-
 const hoverPanel = document.getElementById("hover-panel");
 
-// center of wheel in px
+// center of wheel
 const center = { x: 280, y: 280 };
 const labelRadius = 205;
 
-// phases (updated to point to the LIST URLs)
 const phases = [
   {
     name:"Planning & Analysis", angle: 15, color:"#2B5F90",
@@ -212,17 +207,52 @@ const phases = [
   }
 ];
 
-// new absolute nudges (these now behave correctly!)
-const nudges = {
-  "Planning & Analysis":      { rx:  34, ry:  4 },
-  "Design":                   { rx: -5, ry:  3 },
-  "Implementation":           { rx: -0, ry: -14 },
-  "Testing & Integration":    { rx:  2, ry: -8 },
-  "Deployment & Operations":  { rx: -4, ry:  20 },
-  "Maintenance":              { rx:  8, ry: 10 }
+// accelerator bullets per phase
+const accelerators = {
+  "Planning & Analysis": [],
+
+  "Design": [
+    "Customized login page"
+  ],
+
+  "Implementation": [
+    "In built Authorization",
+    "Automate tags in AWS resources",
+    "Role authorization tool",
+    "Tablespaces script creation",
+    "Calculate data file size"
+  ],
+
+  "Testing & Integration": [
+    "AI-driven risk scoring for features",
+    "Dynamic test suite optimization",
+    "Integration with defect tracking tools",
+    "Security Vulnerability checks and fixes",
+    "SonarQube and GitHub Copilot Integration"
+  ],
+
+  "Deployment & Operations": [
+    "GenAI Application deployment using CI/CD platform"
+  ],
+
+  "Maintenance": [
+    "Regulatory Compliance monitoring",
+    "Password Reset connector",
+    "SOX framework automation",
+    "Azure Service Principal (SP) API Automation",
+    "Catalog data updation"
+  ]
 };
 
-// helper
+const nudges = {
+  "Planning & Analysis":      { rx:  34, ry:  4 },
+  "Design":                   { rx: -5,  ry:  3 },
+  "Implementation":           { rx: -0,  ry: -14 },
+  "Testing & Integration":    { rx:  2,  ry: -8 },
+  "Deployment & Operations":  { rx: -4,  ry: 20 },
+  "Maintenance":              { rx:  8,  ry: 10 }
+};
+
 function hexToRgba(hex,a){
   hex=hex.replace('#','');
   if(hex.length===3) hex=hex.split('').map(c=>c+c).join('');
@@ -232,66 +262,87 @@ function hexToRgba(hex,a){
   return`rgba(${r},${g},${b},${a})`;
 }
 
-// place phase labels
-phases.forEach(p=>{
-  try {
-    const el=document.createElement("div");
-    el.className="phase-label";
-    el.style.background=hexToRgba(p.color,0.28);
-    el.innerHTML=p.name;
-
-    const rad=(p.angle-90)*Math.PI/180;
-    const nx = nudges[p.name] ? nudges[p.name].rx : 0;
-    const ny = nudges[p.name] ? nudges[p.name].ry : 0;
-
-    // correct absolute nudging math
-    const x = center.x + labelRadius * Math.cos(rad) + nx;
-    const y = center.y + labelRadius * Math.sin(rad) + ny;
-
-    el.style.left=`calc(${x}px - var(--label-size)/2)`;
-    el.style.top =`calc(${y}px - var(--label-size)/2)`;
-
-    // hover panel
-    el.onmouseenter = ()=>{
-      hoverPanel.style.display="block";
-      hoverPanel.innerHTML=
-        `<strong style='color:#003a6c'>${p.name}</strong>
-         <div style="margin-top:6px;color:#333;font-size:13px">
-           ${getShortDesc(p.name)}
-         </div>`;
-
-      const r=el.getBoundingClientRect();
-      let left=r.right+12;
-      let top=r.top;
-      if(left+260>window.innerWidth) left=r.left-260-12;
-      if(top+140>window.innerHeight) top=window.innerHeight-160;
-      hoverPanel.style.left=left+"px"; 
-      hoverPanel.style.top=top+"px";
-    };
-    el.onmouseleave=()=>hoverPanel.style.display="none";
-    el.onclick=()=>window.open(p.link,"_blank");
-
-    wheelEl.appendChild(el);
-  } catch(e) {
-    console.error("Error rendering phase label:", p.name, e);
+// NEW: Description + bullet list builder
+function getShortDesc(name){
+  let base = "";
+  switch(name){
+    case "Planning & Analysis":
+      base = "Requirements gathering, feasibility checks and scope definition.";
+      break;
+    case "Design":
+      base = "Solution architecture, UX planning and technical design.";
+      break;
+    case "Implementation":
+      base = "Development and build activities aligned to defined designs.";
+      break;
+    case "Testing & Integration":
+      base = "Functional testing, regression, validation and system integration.";
+      break;
+    case "Deployment & Operations":
+      base = "Release preparation, deployment execution, monitoring and operations.";
+      break;
+    case "Maintenance":
+      base = "Enhancements, fixes, optimizations and continuous improvements.";
+      break;
   }
-});
 
-function getShortDesc(n){
-  switch(n){
-    case"Planning & Analysis":return"Requirements gathering, feasibility checks and scope definition.";
-    case"Design":return"Solution architecture, UX planning and technical design.";
-    case"Implementation":return"Development and build activities aligned to defined designs.";
-    case"Testing & Integration":return"Functional testing, regression, validation and system integration.";
-    case"Deployment & Operations":return"Release preparation, deployment execution, monitoring and operations.";
-    case"Maintenance":return"Enhancements, fixes, optimizations and continuous improvements.";
+  const items = accelerators[name];
+  if (items && items.length > 0){
+    const list = items.map(i => `<li style="margin-top:4px;">${i}</li>`).join("");
+    return `
+      ${base}
+      <ul style="margin-top:6px; padding-left:18px;">
+        ${list}
+      </ul>
+    `;
   }
-  return"";
+  return base;
 }
+
+// render all phase labels
+phases.forEach(p=>{
+  const el=document.createElement("div");
+  el.className="phase-label";
+  el.style.background=hexToRgba(p.color,0.28);
+  el.innerHTML=p.name;
+
+  const rad=(p.angle-90)*Math.PI/180;
+  const nx = nudges[p.name].rx;
+  const ny = nudges[p.name].ry;
+
+  const x = center.x + labelRadius * Math.cos(rad) + nx;
+  const y = center.y + labelRadius * Math.sin(rad) + ny;
+
+  el.style.left=`calc(${x}px - var(--label-size)/2)`;
+  el.style.top =`calc(${y}px - var(--label-size)/2)`;
+
+  el.onmouseenter=()=>{
+    hoverPanel.style.display="block";
+    hoverPanel.innerHTML =
+      `<strong style='color:#003a6c'>${p.name}</strong>
+       <div style="margin-top:6px;color:#333;font-size:13px">
+         ${getShortDesc(p.name)}
+       </div>`;
+
+    const r=el.getBoundingClientRect();
+    let left=r.right+12;
+    let top=r.top;
+
+    if(left+260>window.innerWidth) left=r.left-260-12;
+    if(top+160>window.innerHeight) top=window.innerHeight-180;
+
+    hoverPanel.style.left=left+"px";
+    hoverPanel.style.top=top+"px";
+  };
+
+  el.onmouseleave=()=>hoverPanel.style.display="none";
+  el.onclick=()=>window.open(p.link,"_blank");
+
+  wheelEl.appendChild(el);
+});
 
 </script>
 
 <footer>ICT-India | SDLC Hub | 2025</footer>
 </body>
 </html>
-
