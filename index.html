@@ -21,10 +21,10 @@
   --label-size: 128px;      /* inner phase circles */
   --center-size: 172px;     /* center disk */
 
-  /* Ring placement controls (new) */
-  --label-ring-factor: 0.68; /* 0..1 between center edge and wheel rim (pushes labels outward) */
+  /* Ring placement controls (geometry knobs) */
+  --label-ring-factor: 0.70; /* 0..1, weighted toward rim; pushes labels outward */
   --label-ring-gap: 10px;    /* min gap from center disk to inner circle */
-  --label-rim-pad: 8px;      /* gap from wheel rim */
+  --label-rim-pad: 8px;      /* min gap from wheel rim to inner circle */
 
   --font: "Segoe UI", Arial, sans-serif;
 
@@ -98,6 +98,7 @@ body{
   aspect-ratio: 1 / 1;
   border-radius:50%;
   background:
+    /* subtle tick texture */
     repeating-conic-gradient(rgba(255,255,255,0.06) 0deg 0.35deg, transparent 0.35deg 60deg),
     conic-gradient(
       var(--slice-1) 0deg   60deg,
@@ -107,7 +108,9 @@ body{
       var(--slice-5) 240deg 300deg,
       var(--slice-6) 300deg 360deg
     );
+  /* Premium outer drop shadow + inner shading */
   box-shadow:
+    0 12px 32px rgba(36,56,130,0.10),
     inset 0 26px 50px rgba(255,255,255,0.06),
     inset 0 -18px 36px rgba(0,0,0,0.035);
   border:1px solid rgba(255,255,255,0.20);
@@ -120,7 +123,10 @@ body{
   width:var(--center-size);
   height:var(--center-size);
   border-radius:50%;
-  background:radial-gradient(circle at 35% 35%, #163063 0%, #0f214f 65%, #0b1a41 100%);
+  /* darker than slices + subtle gloss */
+  background:
+    radial-gradient(circle at 35% 35%, #163063 0%, #0f214f 65%, #0b1a41 100%),
+    linear-gradient(180deg, rgba(255,255,255,0.12) 0%, rgba(36,56,130,0.08) 100%);
   color:#fff;
   display:flex;align-items:center;justify-content:center;
   text-align:center;
@@ -163,11 +169,16 @@ body{
   word-break: break-word;
   hyphens: auto;
 }
-
 .phase-label:hover{
   transform: scale(var(--hover-scale));
   box-shadow: var(--hover-glow), 0 8px 18px rgba(0,0,0,0.18);
   filter: brightness(1.06);
+}
+/* ====== Selected phase highlight ====== */
+.phase-label.selected{
+  box-shadow: 0 0 0 4px #243882, var(--hover-glow), 0 8px 18px rgba(0,0,0,0.18);
+  border: 2.5px solid #243882;
+  z-index: 1001;
 }
 
 /* ====== Hover panel ====== */
@@ -185,7 +196,7 @@ body{
   color:#222;
   max-width:320px;
   transition: opacity var(--transition-med), transform var(--transition-med);
-  pointer-events:auto;
+  pointer-events:auto;       /* allow entering panel to cancel hide */
 }
 #hover-panel.visible{
   display:block;
@@ -204,12 +215,21 @@ body{
   color:#303030;
 }
 .info-box p{ margin:0 0 12px 0; }
-.info-box a{
-  color:#0a4ea1;
-  text-decoration:none;
-  font-weight:600;
+
+/* Action buttons (About / Feedback) */
+.action-btn {
+  display: inline-block;
+  background: #243882;
+  color: #fff !important;
+  padding: 7px 18px;
+  border-radius: 6px;
+  font-weight: 600;
+  text-decoration: none;
+  margin-right: 10px;
+  box-shadow: 0 2px 8px rgba(36,56,130,0.08);
+  transition: background var(--transition-fast);
 }
-.info-box a:hover{ text-decoration:underline; }
+.action-btn:hover { background: #2f4aa0; }
 
 footer{
   margin-top:40px;
@@ -237,11 +257,12 @@ footer{
       </p>
       <p>Click any repository on the wheel to open its list in a new tab.</p>
       <p>
-        <a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/SitePages/About-AI-SDLC.aspx" target="_blank" rel="noopener noreferrer">
+        <a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/SitePages/About-AI-SDLC.aspx"
+           target="_blank" rel="noopener noreferrer" class="action-btn">
           About page
         </a>
-        &nbsp;|&nbsp;
-        <a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/SitePages/Feedback%20%26%20Contact.aspx" target="_blank" rel="noopener noreferrer">
+        <a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/SitePages/Feedback%20%26%20Contact.aspx"
+           target="_blank" rel="noopener noreferrer" class="action-btn">
           Feedback &amp; Contact
         </a>
       </p>
@@ -360,7 +381,7 @@ footer{
     const cs = getComputedStyle(document.documentElement);
     const labelSize   = parseFloat(cs.getPropertyValue('--label-size'));
     const centerSize  = parseFloat(cs.getPropertyValue('--center-size'));
-    const ringFactor  = parseFloat(cs.getPropertyValue('--label-ring-factor')) || 0.68;
+    const ringFactor  = parseFloat(cs.getPropertyValue('--label-ring-factor')) || 0.70;
     const ringGap     = parseFloat(cs.getPropertyValue('--label-ring-gap')) || 10;
     const rimPad      = parseFloat(cs.getPropertyValue('--label-rim-pad')) || 8;
 
@@ -396,8 +417,12 @@ footer{
       });
       el.addEventListener('mouseleave', scheduleHoverHide);
 
-      // Click
-      el.addEventListener('click', ()=>openLink(p.link));
+      // Click (highlight + open)
+      el.addEventListener('click', ()=>{
+        document.querySelectorAll('.phase-label').forEach(n => n.classList.remove('selected'));
+        el.classList.add('selected');
+        openLink(p.link);
+      });
 
       wheelEl.appendChild(el);
     });
