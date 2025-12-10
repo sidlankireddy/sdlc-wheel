@@ -8,19 +8,24 @@
 
 <style>
 /* =========================
-   Stellantis-aligned palette
+   Stellantis-aligned look
    ========================= */
 :root{
-  /* Core brand tones */
+  /* Core tones */
   --brand-blue: #243882;    /* Stellantis deep blue */
   --brand-navy: #0f214f;    /* deeper companion */
-  --brand-ink:  #282b34;    /* dark neutral */
   --white:      #ffffff;
 
-  /* Component variables (you can tweak these later) */
+  /* Component sizes (tweak to taste) */
   --wheel-size: 560px;
-  --label-size: 128px;      /* bigger inner phase circles */
-  --center-size: 172px;     /* slightly larger center for balance */
+  --label-size: 128px;      /* inner phase circles */
+  --center-size: 172px;     /* center disk */
+
+  /* Ring placement controls (new) */
+  --label-ring-factor: 0.68; /* 0..1 between center edge and wheel rim (pushes labels outward) */
+  --label-ring-gap: 10px;    /* min gap from center disk to inner circle */
+  --label-rim-pad: 8px;      /* gap from wheel rim */
+
   --font: "Segoe UI", Arial, sans-serif;
 
   /* Harmonized slice colors (tints of #243882, lighten clockwise) */
@@ -31,12 +36,12 @@
   --slice-5: #5f7dd7;
   --slice-6: #7a95e2; /* lightest */
 
-  /* Label pill styles */
-  --pill-bg: rgba(16, 33, 79, 0.34);   /* translucent deep navy for readability */
+  /* Inner phase pills */
+  --pill-bg: rgba(16, 33, 79, 0.34);
   --pill-border: rgba(255,255,255,0.55);
   --pill-text: #ffffff;
 
-  /* Top bar & cards */
+  /* Shell */
   --topbar-bg: linear-gradient(180deg, #00133b 0%, #001b4f 100%);
   --card-bg: var(--white);
   --card-shadow: 0 6px 22px rgba(0,0,0,0.05);
@@ -49,7 +54,6 @@
 }
 
 * { box-sizing: border-box; }
-
 body{
   margin:0;
   font-family:var(--font);
@@ -94,7 +98,6 @@ body{
   aspect-ratio: 1 / 1;
   border-radius:50%;
   background:
-    /* subtle tick texture */
     repeating-conic-gradient(rgba(255,255,255,0.06) 0deg 0.35deg, transparent 0.35deg 60deg),
     conic-gradient(
       var(--slice-1) 0deg   60deg,
@@ -117,7 +120,6 @@ body{
   width:var(--center-size);
   height:var(--center-size);
   border-radius:50%;
-  /* darker than slices to improve separation */
   background:radial-gradient(circle at 35% 35%, #163063 0%, #0f214f 65%, #0b1a41 100%);
   color:#fff;
   display:flex;align-items:center;justify-content:center;
@@ -129,7 +131,7 @@ body{
   z-index:1000;
 }
 
-/* ====== Phase labels (inner circles) ====== */
+/* ====== Inner phase circles ====== */
 .phase-label{
   position:absolute;
   width:var(--label-size);
@@ -139,15 +141,13 @@ body{
   align-items:center;
   justify-content:center;
 
-  /* text never touches border */
-  padding:14px;
+  padding:14px;             /* keeps text away from border */
   text-align:center;
   color:var(--pill-text);
   font-weight:700;
   font-size:14px;
   line-height:1.18;
 
-  /* readability over any slice */
   background:var(--pill-bg);
   border:1.6px solid var(--pill-border);
   box-shadow:
@@ -155,12 +155,11 @@ body{
     inset 0 -1px 3px rgba(0,0,0,0.10),
     0 6px 14px rgba(0,0,0,0.14);
 
-  z-index:900;
   user-select:none;
   cursor:pointer;
   transition: transform var(--transition-fast), box-shadow var(--transition-fast), filter var(--transition-fast);
+  z-index:900;
 
-  /* Make long words wrap nicely without touching edge */
   word-break: break-word;
   hyphens: auto;
 }
@@ -171,7 +170,7 @@ body{
   filter: brightness(1.06);
 }
 
-/* ====== Hover panel (with bullets, animated) ====== */
+/* ====== Hover panel ====== */
 #hover-panel{
   position:fixed;
   display:none;
@@ -181,22 +180,21 @@ body{
   padding:12px 14px;
   border-radius:8px;
   box-shadow:0 8px 26px rgba(0,0,0,0.12);
-  z-index:2000;
+  z-index:9999;              /* above everything */
   font-size:13px;
   color:#222;
-  max-width:300px;
+  max-width:320px;
   transition: opacity var(--transition-med), transform var(--transition-med);
+  pointer-events:auto;
 }
 #hover-panel.visible{
   display:block;
   opacity:1;
   transform: translateY(0);
 }
-#hover-panel ul{
-  margin:6px 0 0 16px;
-}
+#hover-panel ul{ margin:6px 0 0 16px; }
 
-/* ====== Right-side panel (restored text + live links) ====== */
+/* ====== Right-side panel ====== */
 .info-box{
   background:var(--card-bg);
   padding:18px 20px;
@@ -232,7 +230,6 @@ footer{
       <div class="center">SDLC Repository</div>
     </div>
 
-    <!-- Restored explanatory text + your About/Feedback links -->
     <div class="info-box" id="infoBox">
       <p>
         The ICT-India SDLC Repository provides a centralized space to explore, upload, and access accelerators,
@@ -244,7 +241,7 @@ footer{
           About page
         </a>
         &nbsp;|&nbsp;
-        <a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/SitePages/Feedback%20&%20Contact.aspx" target="_blank" rel="noopener noreferrer">
+        <a href="https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/SitePages/Feedback%20%26%20Contact.aspx" target="_blank" rel="noopener noreferrer">
           Feedback &amp; Contact
         </a>
       </p>
@@ -253,7 +250,7 @@ footer{
 
   <script>
   /** --- Config --- */
-  const OPEN_IN_NEW_TAB = true; // keep new-tab behavior
+  const OPEN_IN_NEW_TAB = true;
 
   const wheelEl    = document.getElementById("wheel");
   const hoverPanel = document.getElementById("hover-panel");
@@ -268,7 +265,6 @@ footer{
     { name:"Maintenance",             angle:330, link:"https://shiftup.sharepoint.com/sites/ICT-India-AI-SDLC-Hub/Lists/Maintenance/AllItems.aspx" }
   ];
 
-  /* Accelerators (for hover bullets) */
   const accelerators = {
     "Planning & Analysis": [],
     "Design": ["Customized login page"],
@@ -298,7 +294,7 @@ footer{
     ]
   };
 
-  /* Hover HTML (phase name + bullets) */
+  /* Hover content builder */
   function getHoverHtml(name){
     let base="";
     switch(name){
@@ -310,32 +306,77 @@ footer{
       case "Maintenance":              base="Enhancements, fixes, optimizations and continuous improvements."; break;
     }
     const acc = accelerators[name] || [];
-    const list = acc.length ? `<ul style="margin-top:6px;">${acc.map(x=>`<li>${x}</li>`).join("")}</ul>` : "";
+    const list = acc.length ? `<ul>${acc.map(x=>`<li>${x}</li>`).join("")}</ul>` : "";
     return `<strong>${name}</strong><div style="margin-top:6px;">${base}${list}</div>`;
   }
 
-  /** Navigation (new tab) */
+  /* Navigation */
   function openLink(url){
     window.open(url, "_blank", "noopener,noreferrer");
   }
 
-  /** Place labels with dynamic geometry */
+  /* Stable hover show/hide with delay cancellation */
+  let hoverHideTimer = null;
+  function showHoverFor(el, html){
+    if (hoverHideTimer){ clearTimeout(hoverHideTimer); hoverHideTimer = null; }
+    hoverPanel.innerHTML = html;
+
+    // Show first, then measure
+    hoverPanel.style.display = "block";
+    hoverPanel.classList.add("visible");
+
+    // Position beside the element; clamp to viewport
+    const r = el.getBoundingClientRect();
+    let left = r.right + 15;
+    let top  = r.top - 5;
+
+    const panelRect = hoverPanel.getBoundingClientRect();
+    const vw = window.innerWidth;
+    const vh = window.innerHeight;
+
+    if (left + panelRect.width > vw - 10) left = r.left - panelRect.width - 15;
+    if (top + panelRect.height > vh - 10) top = vh - panelRect.height - 10;
+    if (top < 10) top = 10;
+
+    hoverPanel.style.left = left + "px";
+    hoverPanel.style.top  = top  + "px";
+  }
+  function scheduleHoverHide(){
+    if (hoverHideTimer) clearTimeout(hoverHideTimer);
+    hoverHideTimer = setTimeout(()=>{
+      hoverPanel.classList.remove("visible");
+      setTimeout(()=>{ hoverPanel.style.display = "none"; }, 150);
+    }, 120); // short grace period lets you move between labels smoothly
+  }
+  // Keep panel visible if pointer enters it; hide when leaving it
+  hoverPanel.addEventListener('mouseenter', ()=>{ if (hoverHideTimer) { clearTimeout(hoverHideTimer); hoverHideTimer=null; } });
+  hoverPanel.addEventListener('mouseleave', scheduleHoverHide);
+
+  /* Place labels using safe outward-biased geometry */
   function placeLabels(){
+    // Clear existing
     wheelEl.querySelectorAll(".phase-label").forEach(n => n.remove());
 
     const cs = getComputedStyle(document.documentElement);
-    const labelSize  = parseFloat(cs.getPropertyValue('--label-size'));
-    const centerSize = parseFloat(cs.getPropertyValue('--center-size'));
-    const wheelRect  = wheelEl.getBoundingClientRect();
-    const wheelW     = wheelRect.width;
-    const wheelH     = wheelRect.height;
+    const labelSize   = parseFloat(cs.getPropertyValue('--label-size'));
+    const centerSize  = parseFloat(cs.getPropertyValue('--center-size'));
+    const ringFactor  = parseFloat(cs.getPropertyValue('--label-ring-factor')) || 0.68;
+    const ringGap     = parseFloat(cs.getPropertyValue('--label-ring-gap')) || 10;
+    const rimPad      = parseFloat(cs.getPropertyValue('--label-rim-pad')) || 8;
 
-    const radiusOuter = Math.min(wheelW, wheelH) / 2;
-    const center      = { x: wheelW / 2, y: wheelH / 2 };
+    const rect   = wheelEl.getBoundingClientRect();
+    const w      = rect.width;
+    const h      = rect.height;
+    const R      = Math.min(w, h) / 2;       // wheel outer radius
 
-    const innerEdge   = centerSize / 2;
-    const outerEdge   = radiusOuter - (labelSize / 2) - 8; /* small buffer */
-    const labelRadius = (innerEdge + outerEdge) / 2;
+    const center = { x: w/2, y: h/2 };
+    const innerEdge = centerSize / 2;        // center disk outer edge
+    const outerEdge = R - (labelSize/2) - rimPad;
+
+    // Weighted toward the rim + guaranteed clearance from the center disk
+    const idealRadius = innerEdge + (outerEdge - innerEdge) * ringFactor;
+    const minSafe     = innerEdge + (labelSize/2) + ringGap;
+    const labelRadius = Math.max(idealRadius, minSafe);
 
     phases.forEach(p=>{
       const el = document.createElement("div");
@@ -349,33 +390,14 @@ footer{
       el.style.left = `calc(${x}px - var(--label-size)/2)`;
       el.style.top  = `calc(${y}px - var(--label-size)/2)`;
 
-      /* Hover (animated + bullets) */
-      el.onmouseenter = () => {
-        hoverPanel.innerHTML = getHoverHtml(p.name);
+      // Hover (stable)
+      el.addEventListener('mouseenter', ()=>{
+        showHoverFor(el, getHoverHtml(p.name));
+      });
+      el.addEventListener('mouseleave', scheduleHoverHide);
 
-        const r = el.getBoundingClientRect();
-        let left = r.right + 15;
-        let top  = r.top - 5;
-
-        const vw = window.innerWidth;
-        // show, then measure to avoid 0 width/height
-        hoverPanel.style.display = "block";
-        const panelRect = hoverPanel.getBoundingClientRect();
-
-        if (left + panelRect.width > vw - 10) left = r.left - panelRect.width - 15;
-        hoverPanel.style.left = left + "px";
-        hoverPanel.style.top  = top  + "px";
-
-        requestAnimationFrame(()=>hoverPanel.classList.add("visible"));
-      };
-      el.onmouseleave = () => {
-        hoverPanel.classList.remove("visible");
-        // hide after transition end
-        setTimeout(()=>{ hoverPanel.style.display = "none"; }, 220);
-      };
-
-      /* Click: open repo (new tab) */
-      el.onclick = () => openLink(p.link);
+      // Click
+      el.addEventListener('click', ()=>openLink(p.link));
 
       wheelEl.appendChild(el);
     });
